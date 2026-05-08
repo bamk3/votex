@@ -2885,7 +2885,7 @@ async function calculateFinalBalance(userId) {
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <Avatar name={user.name} userId={user.id} size={28} editable={true}/>
           <span style={{fontSize:12,color:'var(--color-text-secondary)'}}>{user.name.split(' ')[0]}</span>
-          <button className="btn-sm" onClick={()=>{window.location.href=document.documentElement.lang==='fr'?'/index.html':'/index-fr.html';}} style={{fontSize:11}}>🌐 FR</button>
+          <button className="btn-sm" onClick={()=>{window.location.href=document.documentElement.lang==='fr'?'/index-fr.html':'/index.html';}} style={{fontSize:11}}>🌐 EN</button>
           <button className="btn-sm" onClick={onLogout}>Sign out</button>
         </div>
       </div>

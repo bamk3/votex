@@ -1129,7 +1129,7 @@ function StudentDash({user,onLogout}){
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <Avatar name={user.name} userId={user.id} size={28} editable={true}/>
           <span style={{fontSize:12,color:'var(--color-text-secondary)'}}>{user.name.split(' ')[0]}</span>
-          <button className="btn-sm" onClick={()=>{const lang=document.documentElement.lang==='fr'?'en':'fr';window.location.href=lang==='fr'?'/index-fr.html':'/index.html';}} style={{fontSize:11}}>🌐 {document.documentElement.lang==='fr'?'EN':'FR'}</button>
+          <button className="btn-sm" onClick={()=>{const lang=document.documentElement.lang==='fr'?'en':'fr';window.location.href=lang==='en'?'/index.html':'/index-fr.html';}} style={{fontSize:11}}>🌐 {document.documentElement.lang==='fr'?'EN':'FR'}</button>
           <button className="btn-sm" onClick={onLogout} style={{fontSize:12}}>Sign out</button>
         </div>
       </div>
