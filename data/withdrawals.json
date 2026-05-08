@@ -1,0 +1,56 @@
+[
+  {
+    "id": "w_1778248529925",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "tagName": "Panth",
+    "amount": 183,
+    "currency": "CDF",
+    "paidAt": "2026-05-08T13:55:29.925Z"
+  },
+  {
+    "id": "w_1778245898656",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "tagName": "Panth",
+    "amount": 18000,
+    "currency": "CDF",
+    "paidAt": "2026-05-08T13:11:38.656Z"
+  },
+  {
+    "id": "w_1778237846512",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "tagName": "Panther",
+    "amount": 8184,
+    "currency": "CDF",
+    "paidAt": "2026-05-08T10:57:26.512Z"
+  },
+  {
+    "id": "w_1778190708253",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "tagName": "Panther",
+    "amount": 4201,
+    "currency": "CDF",
+    "paidAt": "2026-05-07T21:51:48.253Z"
+  },
+  {
+    "id": "w_1778190469906",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "tagName": "Panther",
+    "amount": 993,
+    "currency": "CDF",
+    "paidAt": "2026-05-07T21:47:49.906Z"
+  },
+  {
+    "id": "w_1778190153214",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "tagName": "Panther",
+    "amount": 799,
+    "currency": "CDF",
+    "paidAt": "2026-05-07T21:42:33.214Z"
+  }
+]

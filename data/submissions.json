@@ -1,0 +1,161 @@
+[
+  {
+    "id": "s_1778184531791_f3rn64pd1dq",
+    "batchId": "batch_1778184531572",
+    "userId": "u_1777758541558",
+    "uploadFolder": "u_1777758541558",
+    "userName": "Jack Ma",
+    "userEmail": "you@ex.ed",
+    "isMathDoc": true,
+    "fileName": "Practical-1.pdf",
+    "storedName": "2026-05-07T20-08-51_Practical-1.pdf",
+    "fileType": "application/pdf",
+    "fileSize": 386352,
+    "notes": "",
+    "templateName": "Mémoire_(Thèse)_I.pdf",
+    "uploadedAt": "2026-05-07T20:08:51.791Z",
+    "status": "done",
+    "pages": 2,
+    "price": 1598,
+    "paid": true,
+    "finalDoc": {
+      "fileName": "Practical_1_pdf.pdf",
+      "storedName": "final_2026-05-07T20-29-04_Practical_1_pdf.pdf"
+    },
+    "paymentProof": {
+      "fileName": "ko.jpg",
+      "storedName": "proof_2026-05-07T20-09-17_ko.jpg"
+    },
+    "assignedTo": {
+      "id": "m_1777807659235",
+      "name": "Chad Boseman"
+    },
+    "mathpixResult": {
+      "fileName": "Jack_Ma_2026-05-07_20-25.tex",
+      "storedName": "u_1777758541558/Jack_Ma_2026-05-07_20-25.tex",
+      "processedAt": "2026-05-07T20:25:10.523Z",
+      "outputType": "latex"
+    },
+    "feedbackClosed": true
+  },
+  {
+    "id": "s_1778190373283_qz1r6k8o5po",
+    "batchId": "batch_1778190372955",
+    "userId": "u_1777758541558",
+    "uploadFolder": "u_1777758541558",
+    "userName": "Jack Ma",
+    "userEmail": "you@ex.ed",
+    "isMathDoc": true,
+    "fileName": "Article Guy.pdf",
+    "storedName": "2026-05-07T21-46-13_Article_Guy.pdf",
+    "fileType": "application/pdf",
+    "fileSize": 130835,
+    "notes": "",
+    "templateName": "Mémoire_(Thèse)_I.pdf",
+    "uploadedAt": "2026-05-07T21:46:13.283Z",
+    "status": "done",
+    "pages": 13,
+    "price": 10387,
+    "paid": true,
+    "finalDoc": {
+      "fileName": "17781904038767370740627215576335.jpg",
+      "storedName": "final_2026-05-07T21-46-54_17781904038767370740627215576335.jpg"
+    },
+    "assignedTo": {
+      "id": "m_1777807659235",
+      "name": "Chad Boseman"
+    }
+  },
+  {
+    "id": "s_1778237286158_qgh3c8v8bqm",
+    "batchId": "batch_1778237285834",
+    "userId": "u_1777758616327",
+    "uploadFolder": "u_Sam_Tab_2026-05-02",
+    "userName": "Sam Tab",
+    "userEmail": "sq,2ex:cd",
+    "isMathDoc": true,
+    "fileName": "Example_Sheet_3_M2_JuliaLagunaSolutions.pdf",
+    "storedName": "2026-05-08T10-48-05_Example_Sheet_3_M2_JuliaLagunaSolutions.pdf",
+    "fileType": "application/pdf",
+    "fileSize": 313319,
+    "notes": "",
+    "templateName": "Mémoire_(Thèse)_I.pdf",
+    "uploadedAt": "2026-05-08T10:48:06.158Z",
+    "status": "done",
+    "pages": 33,
+    "price": 26367,
+    "paid": true,
+    "finalDoc": {
+      "fileName": "td1_pdf.pdf",
+      "storedName": "final_2026-05-08T10-51-49_td1_pdf.pdf"
+    },
+    "paymentProof": {
+      "fileName": "image.jpg",
+      "storedName": "proof_2026-05-08T10-48-45_image.jpg"
+    },
+    "assignedTo": {
+      "id": "m_1777807659235",
+      "name": "Chad Boseman"
+    }
+  },
+  {
+    "id": "s_1778245190681_hlkjvaesynj",
+    "batchId": "batch_1778245190473",
+    "userId": "u_1777758616327",
+    "uploadFolder": "u_Sam_Tab_2026-05-02",
+    "userName": "Sam Tab",
+    "userEmail": "sq,2ex:cd",
+    "isMathDoc": true,
+    "fileName": "Example_Sheet_3_M2_JuliaLagunaSolutions.pdf",
+    "storedName": "2026-05-08T12-59-50_Example_Sheet_3_M2_JuliaLagunaSolutions.pdf",
+    "fileType": "application/pdf",
+    "fileSize": 313319,
+    "notes": "Blabla",
+    "templateName": "Mémoire_(Thèse)_I.pdf",
+    "uploadedAt": "2026-05-08T12:59:50.681Z",
+    "status": "done",
+    "pages": 33,
+    "price": 26367,
+    "paid": true,
+    "finalDoc": {
+      "fileName": "td1_pdf.pdf",
+      "storedName": "final_2026-05-08T13-00-49_td1_pdf.pdf"
+    },
+    "assignedTo": {
+      "id": "m_1777807659235",
+      "name": "Chad Boseman"
+    }
+  },
+  {
+    "id": "s_1778249040632_l1jvuz7eav",
+    "batchId": "batch_1778249040548",
+    "userId": "u_1777833082862",
+    "uploadFolder": "u_Samy_Tab_2026-05-03",
+    "userName": "Samy Tab",
+    "userEmail": "samy@ex.cd",
+    "isMathDoc": true,
+    "fileName": "Practical-1.pdf",
+    "storedName": "2026-05-08T14-04-00_Practical-1.pdf",
+    "fileType": "application/pdf",
+    "fileSize": 386352,
+    "notes": "",
+    "templateName": "Mémoire_(Thèse)_I.pdf",
+    "uploadedAt": "2026-05-08T14:04:00.632Z",
+    "status": "done",
+    "pages": 2,
+    "price": 1598,
+    "paid": true,
+    "finalDoc": {
+      "fileName": "td1_pdf.pdf",
+      "storedName": "final_2026-05-08T14-05-15_td1_pdf.pdf"
+    },
+    "paymentProof": {
+      "fileName": "ko.jpg",
+      "storedName": "proof_2026-05-08T14-04-14_ko.jpg"
+    },
+    "assignedTo": {
+      "id": "m_1777807659235",
+      "name": "Chad Boseman"
+    }
+  }
+]

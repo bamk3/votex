@@ -1,0 +1,104 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{siunitx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{lmodern}
+\geometry{margin=2.5cm}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+
+\title{IMG 6203.jpeg, IMG 6204.jpeg, IMG 6202.jpeg, IMG 6201.jpeg}
+\author{Yadibere Clemie}
+\date{05 mai 2026}
+
+\begin{document}
+\maketitle
+
+\section*{IMG 6203.jpeg}
+\begin{array}{l}
+\text { Caveman } 3\\
+\begin{array}{l}
+\int \frac{d x}{x \sqrt{1+x^{8}}} \\
+\int \frac{d x}{x \sqrt{x^{8}\left(\frac{1}{x^{8}}+1\right)}}=\int \frac{d x}{x \cdot x^{4} \sqrt{x^{-8}+1}} \\
+=\int \frac{d x}{x^{5} \sqrt{x^{-8}+1}}=\int \frac{x^{-5} d x}{\sqrt{x^{-8}+1}} \\
+\begin{aligned}
+u & =x^{-4} \rightarrow u^{2}=x^{-8} \\
+d u & =-4 x^{-5} d x \\
+-\frac{1}{4} d u & =x^{-5} d x
+\end{aligned} \\
+u=\tan \theta \\
+d u=\sec ^{2} \theta d \theta
+\end{array}\\
+\begin{array}{l}
+\text { I } \\
+-\frac{1}{4} \int \frac{\sec ^{2} \theta}{\sqrt{\tan ^{2} \theta+1}} d \theta=-\frac{1}{4} \int \frac{\sec ^{2} \theta}{\sqrt{\sec ^{2} \theta}} d \theta \\
+=-\frac{1}{4} \int \frac{\sec ^{2} \theta}{\sec \theta} d \theta=-\frac{1}{4} \int \sec \theta d \theta \\
+=-\frac{1}{4} \ln |\sec \theta+\tan \theta|+C \\
+=-\frac{1}{4} \ln \left|\sqrt{x^{-8}+1}+x^{-4}\right|+C \\
+\sec \theta=\sqrt{u^{2}+1} \\
+=\sqrt{x^{-8}+1} \\
+\tan \theta=u \\
+=x^{-4}
+\end{array}
+\end{array}
+
+\bigskip
+\section*{IMG 6204.jpeg}
+\begin{array}{l}
+\begin{array}{l} 
+\int \frac{d x}{x^{\frac{169}{169}} x^{\frac{144}{169}}+x^{\frac{25}{169}}}=\int \frac{d x}{x^{\frac{25}{169}}\left(x^{\frac{144}{169}} \cdot x^{\frac{44}{169}}+1\right)} \\
+= \int \frac{d x}{x^{\frac{25}{169}}\left(\left(x^{\frac{144}{169}}\right)^{2}+1\right)} \Rightarrow d u=x^{144 / 169} \\
+= \int \frac{x^{\frac{169}{169}} d x}{\frac{169}{144} d u=x^{-25 / 169} d x} \\
+\left(\left(x^{\frac{144}{169}}\right)^{2}+1\right)
+\end{array}\\
+\begin{array}{l}
+\frac{169}{144} \int \frac{d u}{u^{2}+1}=\frac{169}{144} \arctan (u)+C \\
+\frac{169}{144} \arctan \left(x^{144 / 169}\right)+C
+\end{array}
+\end{array}
+
+\bigskip
+\section*{IMG 6202.jpeg}
+\begin{array}{l}
+\text { Caveman Method } 2\\
+\begin{array}{l}
+\int \frac{x^{2}+1}{x^{4}+1} d x \\
+\int \frac{\frac{x^{2}+1}{x^{2}}}{\frac{x^{4+1}}{x^{2}}} d x=\int \frac{1+\frac{1}{x^{2}}}{x^{2}+\frac{1}{x^{2}}} d x \\
+\left(\begin{array}{l}
+d u=1+\frac{1}{x^{2}} d x=1+x^{-2} d x \\
+u=x-x^{-1} \\
+\left(x-\frac{1}{x}\right)^{2}=x^{2}-2+\frac{1}{x^{2}}
+\end{array}\right) \\
+\int \frac{1+\frac{1}{x^{2}}}{x^{2}-2+\frac{1}{x^{2}}+2} d x \\
+=\int \frac{1+\frac{1}{x^{2}}}{\left(x-\frac{1}{x}\right)^{2}}+2 d x \\
+=\int \frac{1}{u^{2}+2} d u=\frac{1}{\sqrt{2}} \arctan \frac{u}{\sqrt{2}}+C \\
+=\frac{1}{\sqrt{2}} \arctan \frac{x-\frac{1}{x}}{\sqrt{2}}+C
+\end{array}
+\end{array}
+
+\bigskip
+\section*{IMG 6201.jpeg}
+\begin{array}{l}
+\text { Caveman Method } \\
+\int \frac{1}{x^{200}+x} d x \\
+\int \frac{1 / x^{200}}{\frac{x^{200}+x}{x^{200}}} d x=\int \frac{x^{-200}}{1+x^{-199}} d x \\
+\begin{aligned}
+u & =1+x^{-199} \\
+d u & =-199 x^{-200} d x=-\frac{1}{199} \int \frac{1}{u} d u \\
+-\frac{1}{199} d u & =x^{-200} d x \quad=-\frac{1}{199} \ln |u|+C \\
+& =-\frac{1}{199} \ln \left|1+x^{-199}\right|+C \\
+& =-\frac{1}{199} \ln \left|\frac{x^{199}+1}{x^{199}}\right|+C
+\end{aligned}
+\end{array}
+
+
+\end{document}

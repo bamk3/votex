@@ -1,0 +1,113 @@
+% Document écrit par 'SIFI Khedidja'(sifikhedidja@gmail.com)
+% Compilé avec XELATEX
+\documentclass[a4paper,12pt]{report}
+\usepackage[margin=0cm]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{fancybox}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{polyglossia}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins,breakable,xparse}
+\usepackage{varwidth}
+\tikzstyle{a} = [rectangle,draw=Black,line width=.9mm,minimum size=.8cm]
+\def\border{%
+\begin{tikzpicture}[remember picture,overlay]
+\foreach \i/\j/\n in {1/south west/,2/north east/180+,3/north west/-,4/south east/180-}{
+\node[a] (a\i) at ([shift={(\n45:1.75)}]current page.\j){};}
+\draw [line width=2.5mm,color=blue!40!black]([shift={(-.1,-.1)}]a1)rectangle([shift={(.1,.1)}]a2);
+\draw[a] ([xshift=.05cm]a4.135)--+(0,.2)-|([xshift=-.05cm,yshift=-.2cm]a2.-45)-|+(-.8,.2) ;
+\draw[a] ([xshift=-.05cm]a1.45)--+(0,.2)-|([xshift=.05cm,yshift=-.2cm]a3.225)-|+(.8,.2) ;
+\draw[a] ([yshift=.05cm]a2.225)--+(-.2,0)|-([xshift=.2cm,yshift=-.05cm]a3.45)|-+(-.2,-.8);
+\draw[a] ([yshift=-.05cm]a1.45)--+(.2,0)|-([xshift=-.2cm,yshift=.05cm]a4.225)|-+(.2,.8);
+\node[anchor=north east] at ([shift={(-1.3,-2.7)}]current page.north east){\includegraphics[width=2.7cm]{u}};
+\node[anchor=north west] at ([shift={(1.3,-2.7)}]current page.north west){\includegraphics[width=2.7cm]{u}};
+\end{tikzpicture}}
+
+\colorlet{Darkblue}{blue!40!black}
+\newtcolorbox{mybox}[2]{enhanced,breakable,height=6.4cm,before skip=2mm,after skip=2mm,
+colback=white,colframe=Darkblue,boxrule=0.3mm,rightrule=0.3mm,
+attach boxed title to top center={xshift=0cm,yshift*=1mm-\tcboxedtitleheight},varwidth boxed title*=-3cm,
+boxed title style={frame code={\path[fill=#2!30!black]([yshift=-1mm,xshift=-1mm]frame.north west)arc[start angle=0,end angle=180,radius=1mm]([yshift=-1mm,xshift=1mm]frame.north east)arc[start angle=180,end angle=0,radius=1mm];
+\path[draw=black,line width=1pt,left color=#2!1!white,right color=#2!1!white,middle color=#2!1!white]
+([xshift=-2mm]frame.north west) -- ([xshift=2mm]frame.north east)[rounded corners=1mm]-- ([xshift=1mm,yshift=-1mm]frame.north east)--(frame.south east) -- (frame.south west)-- ([xshift=-1mm,yshift=-1mm]frame.north west)[sharp corners]-- cycle;},interior engine=empty,},title=#1,coltitle=black}
+\pagestyle{empty}
+\def\stl{\Large{\textbf{}}}
+
+\begin{document}
+\newgeometry{margin=.45cm}
+\def\bordersep{2cm}
+\border
+
+\vspace{2.5cm}
+\centering
+
+\textsf{\textbf{\large \textbf{UNIVERSITÉ DE KINSHASA}}}
+
+\vspace{.6cm}
+\textsf{\large \textbf{FACULTÉ DES SCIENCES ET TECHNOLOGIES}}\\
+\vspace{.6cm}
+\textsf{\large \textbf{MENTION MATHÉMATIQUES, STATISTIQUE ET INFORMATIQUE}}\\ 
+\vspace{.4cm}
+\textbf{B.P. 190 KINSHASA XI}
+\vspace*{.6cm}
+
+\vspace{.75cm}
+
+\raggedleft
+\hspace{2cm}
+
+
+\hspace{2cm}
+
+\hspace{2cm}
+
+\hspace{2cm}
+
+\vspace{.8cm}
+\color{blue!40!black}
+\centering
+\shadowbox{\LARGE\bf
+\begin{minipage}{16.5cm}
+\centering
+\vspace{.5cm}
+VOTRE TITRE SERA ICI
+\vspace{.5cm}
+\end{minipage}}
+
+\color{black}
+\vspace{.55cm}
+
+
+
+\vspace{.3cm}
+%\raggedleft
+\begin{center}
+	Par : 
+\end{center}
+\begin{center}
+\textbf{\Large \textsf{Prénom Nom}}\\ \ \\ \textbf{Gradué en Sciences}
+\end{center}
+\textbf{Mémoire présenté et défendu en vue de l’obtention d'une maitrise en ...}
+\vspace{1cm}
+\vspace{1cm}
+	\begin{tabular}{lcl}
+	%	\textbf{Groupe}&: & \textbf{Mathématiques}\\
+	%	\textbf{Option} &:& \textbf{Mathématiques Pures}\\
+	\textbf{Directeur} &:& \textbf{Prof.  \textsf{Prénom Nom}}
+	\end{tabular}
+
+
+\vspace{1cm}
+\vspace{3.5cm}
+\begin{center}
+\textbf{ \textsf{Année académique 2025- 2026}}
+\end{center}
+
+
+
+
+
+\end{document} 

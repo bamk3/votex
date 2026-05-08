@@ -1,0 +1,3080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>voTex Platform</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  :root{--color-background-primary:#ffffff;--color-background-secondary:#f5f5f3;--color-background-tertiary:#eeecea;--color-text-primary:#1a1a1a;--color-text-secondary:#6b6b6b;--color-border-tertiary:rgba(0,0,0,0.12);--color-border-secondary:rgba(0,0,0,0.22);--color-border-primary:rgba(0,0,0,0.35);--border-radius-md:8px;--border-radius-lg:12px;--font-sans:system-ui,-apple-system,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  #root{height:100%;display:flex;flex-direction:column}
+  body{font-family:var(--font-sans);background:var(--color-background-tertiary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-size='48' font-weight='700' fill='rgba(30,58,95,0.055)' transform='rotate(-35 150 150)'%3EvoTex%3C/text%3E%3C/svg%3E");color:var(--color-text-primary)}
+  .app-shell{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+  .app-navbar{flex-shrink:0;background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary)}
+  .app-tabbar{flex-shrink:0;background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary)}
+  .app-content{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .app-footer{flex-shrink:0;position:sticky;bottom:0;z-index:10}
+  .page-footer{flex-shrink:0}
+  input,textarea,select{font-family:inherit;font-size:14px;width:100%;padding:9px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);outline:none;transition:border-color 0.15s}
+  input:focus,textarea:focus,select:focus{border-color:var(--color-border-primary)}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:var(--border-radius-md);transition:all 0.15s;font-size:13px}
+  .btn-primary{background:#1e3a5f;color:#fff;padding:9px 18px;font-weight:500}
+  .btn-primary:hover{background:#162d4a}
+  .btn-primary:disabled{opacity:0.5;cursor:not-allowed}
+  .btn-sm{background:transparent;color:var(--color-text-secondary);padding:5px 10px;border:0.5px solid var(--color-border-secondary)}
+  .btn-sm:hover{background:var(--color-background-secondary)}
+  .btn-danger{background:transparent;color:#a32d2d;padding:5px 10px;border:0.5px solid #f0959577;font-size:12px}
+  .btn-danger:hover{background:#fcebeb}
+  .btn-green{background:transparent;color:#0f6e56;padding:5px 10px;border:0.5px solid #5dcaa577;font-size:12px}
+  .btn-green:hover{background:#e1f5ee}
+  .btn-blue{background:transparent;color:#1e3a5f;padding:5px 10px;border:0.5px solid #85b7eb77;font-size:12px;display:inline-flex;align-items:center;gap:4px}
+  .btn-blue:hover{background:#e6f1fb}
+  .btn-amber{background:transparent;color:#854f0b;padding:5px 10px;border:0.5px solid #d4960077;font-size:12px;display:inline-flex;align-items:center;gap:4px}
+  .btn-amber:hover{background:#faeeda}
+  label{font-size:13px;color:var(--color-text-secondary);display:block;margin-bottom:5px}
+  .field{margin-bottom:14px}
+  .err{font-size:12px;color:#a32d2d;margin-top:5px}
+  .badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:20px;font-weight:500}
+  .tab{padding:8px 14px;background:transparent;border:none;border-bottom:2px solid transparent;font-size:13px;color:var(--color-text-secondary);cursor:pointer;font-family:inherit}
+  .tab.active{color:#1e3a5f;border-bottom:2px solid #1e3a5f;font-weight:500}
+  .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem}
+  .row{display:flex;align-items:center;gap:10px;padding:11px 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .row:last-child{border-bottom:none}
+  a{color:#1e3a5f}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:200;padding:1rem}
+  .modal{background:var(--color-background-primary);border-radius:var(--border-radius-lg);padding:1.5rem;width:100%;max-width:480px;max-height:90vh;overflow-y:auto}
+  .chat-fab{position:fixed;bottom:24px;right:24px;z-index:300;width:52px;height:52px;border-radius:50%;background:#1e3a5f;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(30,58,95,0.35);transition:background 0.15s,transform 0.15s}
+  .chat-fab:hover{background:#162d4a;transform:scale(1.07)}
+  .chat-fab-badge{position:absolute;top:-3px;right:-3px;background:#e24b4a;color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid #fff}
+  .chat-panel{position:fixed;bottom:88px;right:24px;z-index:300;width:340px;max-height:520px;background:var(--color-background-primary);border-radius:var(--border-radius-lg);box-shadow:0 8px 32px rgba(0,0,0,0.18);border:0.5px solid var(--color-border-tertiary);display:flex;flex-direction:column;overflow:hidden}
+  .chat-panel-head{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;background:#1e3a5f;border-radius:var(--border-radius-lg) var(--border-radius-lg) 0 0}
+  .chat-panel-body{flex:1;overflow-y:auto;padding:12px}
+  .chat-msg-row{padding:10px 12px;border-radius:var(--border-radius-md);margin-bottom:8px;cursor:pointer;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);transition:background 0.1s}
+  .chat-msg-row:hover{background:var(--color-background-secondary)}
+  .chat-msg-row.unread{border-left:3px solid #1e3a5f}
+  .chat-detail{padding:16px;overflow-y:auto;flex:1}
+  /* conversation thread */
+  .conv-wrap{display:flex;flex-direction:column;gap:10px;padding:12px}
+  .conv-bubble{max-width:82%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.6}
+  .conv-bubble.admin{background:#1e3a5f;color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+  .conv-bubble.student{background:var(--color-background-secondary);color:var(--color-text-primary);align-self:flex-start;border-bottom-left-radius:3px}
+  .conv-bubble.feedback{background:#fff3cd;color:#92400e;align-self:flex-start;border-bottom-left-radius:3px;border:1px solid #f59e0b55}
+  .date-sep{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:11px;color:var(--color-text-secondary);font-weight:600;letter-spacing:0.02em}
+  .date-sep::before,.date-sep::after{content:'';flex:1;height:0.5px;background:var(--color-border-tertiary)}
+  .app-footer{flex-shrink:0;position:sticky;bottom:0;z-index:5}
+  .page-footer{text-align:center;padding:12px 16px;font-size:10px;color:var(--color-text-secondary);border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);letter-spacing:0.01em}
+  .staff-fab{position:fixed;bottom:24px;left:24px;z-index:300;width:52px;height:52px;border-radius:50%;background:#0f6e56;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(15,110,86,0.35);transition:background 0.15s,transform 0.15s}
+  .staff-fab:hover{background:#0b5a45;transform:scale(1.07)}
+  .staff-panel{position:fixed;bottom:88px;left:24px;z-index:300;width:320px;max-height:480px;background:var(--color-background-primary);border-radius:var(--border-radius-lg);box-shadow:0 8px 32px rgba(0,0,0,0.18);border:0.5px solid var(--color-border-tertiary);display:flex;flex-direction:column;overflow:hidden}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useRef}=React;
+const getSession=()=>{try{return JSON.parse(localStorage.getItem('vt_session')||'null')}catch{return null}};
+const saveSession=u=>localStorage.setItem('vt_session',JSON.stringify(u));
+const clearSession=()=>localStorage.removeItem('vt_session');
+const api={
+  post:(url,b)=>fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(r=>r.json()),
+  patch:(url,b)=>fetch(url,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(r=>r.json()),
+  get:url=>fetch(url).then(r=>r.json()),
+  del:url=>fetch(url,{method:'DELETE'}).then(r=>r.json()),
+};
+const currencySymbols={USD:'$',EUR:'€',GBP:'£',CDF:'FC ',XAF:'FCFA '};
+const sym=c=>currencySymbols[c]||c+' ';
+
+                  
+// ── NOTIFICATION SOUND ────────────────────────────────────────────────────────
+function playNotifSound(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [[880,0],[1100,160]].forEach(([freq,delay])=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.type='sine';o.frequency.value=freq;
+      const t=ctx.currentTime+delay/1000;
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(0.18,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.001,t+0.28);
+      o.start(t);o.stop(t+0.3);
+    });
+  }catch{}
+}
+
+// ── CONSTANTS ─────────────────────────────────────────────────────────────────
+const POLL_MS = 5000;  // 5 seconds everywhere — real-time
+const CHAT_MS = 5000;  // 5 seconds for open conversations
+
+// ── FOOTER ────────────────────────────────────────────────────────────────────
+function Footer(){
+  return <div className="page-footer app-footer"><strong> Pay with MPesa at 43331.</strong> <p> MakTech&reg; Group SARL (admin@maktech.co.uk)</p> <p>  &#169; Copyright 2026 · United Kingdom · DRC · Cameroon    </p> </div>;
+}
+const STATUS={
+  awaiting_payment:{label:'Awaiting Payment', bg:'#fff3cd', color:'#856404'},
+  in_progress:     {label:'In Progress',      bg:'#e6f1fb', color:'#1e3a5f'},
+  done:            {label:'Done',              bg:'#e1f5ee', color:'#0f6e56'},
+};
+const stl=s=>(STATUS[s]||{label:s,bg:'#f5f5f3',color:'#6b6b6b'});
+
+function Avatar({name,userId,size=34,editable=false,onUpdate}){
+  const [imgErr,setImgErr]=useState(false);
+  const fileRef=useRef();
+  const cols=['#1e3a5f','#0f6e56','#533b14','#4a1b0c','#3c3489'];
+  const initials=(name||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const bg=cols[(name||'?').charCodeAt(0)%cols.length];
+  const [ts,setTs]=useState(Date.now());
+
+  async function handlePick(file){
+    if(!file)return;
+    const fd=new FormData();fd.append('file',file);
+    const res=await fetch(`/api/users/${userId}/avatar`,{method:'POST',body:fd});
+    if(res.ok){setImgErr(false);setTs(Date.now());onUpdate&&onUpdate();}
+  }
+
+  const showImg=userId&&!imgErr;
+  return(
+    <div style={{position:'relative',display:'inline-block',flexShrink:0,cursor:editable?'pointer':'default'}}
+      onClick={editable?()=>fileRef.current.click():undefined}
+      title={editable?'Click to change photo':name}>
+      {showImg
+        ?<img src={`/api/users/${userId}/avatar?t=${ts}`} onError={()=>setImgErr(true)}
+           style={{width:size,height:size,borderRadius:'50%',objectFit:'cover',display:'block'}}/>
+        :<div style={{width:size,height:size,borderRadius:'50%',background:bg,display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontWeight:500,fontSize:size*0.36}}>{initials}</div>
+      }
+      {editable&&<div style={{position:'absolute',bottom:0,right:0,width:14,height:14,background:'#1e3a5f',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',border:'1.5px solid #fff'}}>
+        <svg width="8" height="8" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
+      </div>}
+      {editable&&<input ref={fileRef} type="file" accept="image/*" style={{display:'none'}} onChange={e=>handlePick(e.target.files[0])}/>}
+    </div>
+  );
+}
+
+// ── FLOATING CHAT (student) ───────────────────────────────────────────────────
+function ChatFloating({userId,userName,userEmail}){
+  const [open,setOpen]=useState(false);
+  const [messages,setMessages]=useState([]);
+  const [selectedSub,setSelectedSub]=useState(null); // submissionId of open thread
+  const [reply,setReply]=useState('');
+  const [sending,setSending]=useState(false);
+  const prevUnreadRef=useRef(-1);
+  const bottomRef=useRef();
+
+  async function load(){
+    try{
+      const m=await api.get(`/api/messages?userId=${userId}`);
+      const unreadNow=m.filter(x=>!x.read).length;
+      if(prevUnreadRef.current>=0&&unreadNow>prevUnreadRef.current) playNotifSound();
+      prevUnreadRef.current=unreadNow;
+      setMessages(m);
+    }catch{}
+  }
+  useEffect(()=>{load();const t=setInterval(load,POLL_MS);return()=>clearInterval(t)},[]);
+  useEffect(()=>{if(open&&selectedSub&&bottomRef.current) bottomRef.current.scrollIntoView({behavior:'smooth'})},[messages,selectedSub,open]);
+
+  // Group messages by submissionId (batch). Messages with no submissionId go into a "general" group.
+  const threads={};
+  messages.forEach(m=>{
+    const key=m.submissionId||'general';
+    if(!threads[key]) threads[key]={key,submissionFileName:m.submissionFileName||'General',msgs:[],unread:0,lastAt:m.sentAt};
+    threads[key].msgs.push(m);
+    if(!m.read) threads[key].unread++;
+    if(new Date(m.sentAt)>new Date(threads[key].lastAt)) threads[key].lastAt=m.sentAt;
+  });
+  const threadList=Object.values(threads).sort((a,b)=>new Date(b.lastAt)-new Date(a.lastAt));
+  const activeThread=selectedSub?threads[selectedSub]:null;
+
+  async function openThread(key){
+    setSelectedSub(key);setReply('');
+    // Mark all messages in this thread as read
+    const unreadMsgs=(threads[key]?.msgs||[]).filter(m=>!m.read);
+    await Promise.all(unreadMsgs.map(m=>api.patch(`/api/messages/${m.id}`,{read:true})));
+    setMessages(prev=>prev.map(m=>(m.submissionId||'general')===key?{...m,read:true}:m));
+  }
+
+  async function sendReply(){
+    if(!reply.trim()||!activeThread)return;
+    // Find who to reply to — the last message not from student
+    const staffMsgs=activeThread.msgs.filter(m=>m.fromId!==userId).sort((a,b)=>new Date(b.sentAt)-new Date(a.sentAt));
+    const lastStaff=staffMsgs[0];
+    // Check if last staff message has replyBlocked
+    if(lastStaff?.replyBlocked)return;
+    setSending(true);
+    await api.post('/api/messages',{
+      fromId:userId,fromName:userName,
+      toId:lastStaff?.fromId||'admin',toName:lastStaff?.fromName||'Admin',
+      subject:`Re: ${activeThread.submissionFileName}`,
+      body:reply.trim(),
+      submissionId:selectedSub==='general'?null:selectedSub,
+      submissionFileName:activeThread.submissionFileName,
+      isStudentReply:true
+    });
+    setReply('');await load();setSending(false);
+  }
+
+  // Can student reply? Only if last staff msg exists and not blocked
+  const lastStaffMsg=activeThread?.msgs.filter(m=>m.fromId!==userId&&(m.fromId==='admin'||m.fromId?.startsWith('m_'))).sort((a,b)=>new Date(b.sentAt)-new Date(a.sentAt))[0];
+  const canReply=lastStaffMsg&&!lastStaffMsg.replyBlocked;
+
+  const totalUnread=messages.filter(m=>!m.read).length;
+
+  return(
+    <>
+      {open&&(
+        <div className="chat-panel">
+          <div className="chat-panel-head">
+            <div style={{display:'flex',alignItems:'center',gap:8,flex:1,minWidth:0}}>
+              {selectedSub&&<button onClick={()=>{setSelectedSub(null);setReply('');}} style={{background:'transparent',border:'none',color:'rgba(255,255,255,0.7)',cursor:'pointer',padding:'2px 6px',fontSize:16,lineHeight:1}}>←</button>}
+              <span style={{fontSize:13,fontWeight:500,color:'#fff',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+                {selectedSub?activeThread?.submissionFileName:'Joe'}
+              </span>
+            </div>
+            <button onClick={()=>{setOpen(false);setSelectedSub(null);setReply('');}} style={{background:'transparent',border:'none',color:'rgba(255,255,255,0.7)',cursor:'pointer',fontSize:18,lineHeight:1,padding:'2px 4px'}}>✕</button>
+          </div>
+
+          {!selectedSub?(
+            // Thread list view
+            <div className="chat-panel-body">
+              {threadList.length===0&&(
+                <div style={{textAlign:'center',padding:'2rem 1rem',color:'var(--color-text-secondary)'}}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style={{margin:'0 auto 8px',display:'block',opacity:0.4}}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <div style={{fontSize:13}}>No messages yet</div>
+                  <div style={{fontSize:11,marginTop:4}}>Messages from admin will appear here</div>
+                </div>
+              )}
+              {threadList.map(t=>{
+                const lastMsg=t.msgs.sort((a,b)=>new Date(b.sentAt)-new Date(a.sentAt))[0];
+                return(
+                  <div key={t.key} className={'chat-msg-row'+(t.unread>0?' unread':'')} onClick={()=>openThread(t.key)}>
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:6}}>
+                      <div style={{fontSize:13,fontWeight:t.unread>0?600:400,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flex:1}}>{t.submissionFileName}</div>
+                      {t.unread>0&&<span style={{background:'#1e3a5f',color:'#fff',fontSize:10,fontWeight:700,minWidth:18,height:18,borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 4px',flexShrink:0}}>{t.unread}</span>}
+                    </div>
+                    <div style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:3,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{lastMsg?.body?.split('\n')[0]||'…'}</div>
+                    <div style={{fontSize:10,color:'var(--color-text-secondary)',marginTop:3}}>{new Date(t.lastAt).toLocaleString()}</div>
+                  </div>
+                );
+              })}
+            </div>
+          ):(
+            // Thread detail view
+            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0}}>
+              <div style={{flex:1,overflowY:'auto',padding:'10px 12px',display:'flex',flexDirection:'column',gap:8}}>
+                {activeThread&&[...activeThread.msgs].sort((a,b)=>new Date(a.sentAt)-new Date(b.sentAt)).map(m=>{
+                  const isMe=m.fromId===userId;
+                  return(
+                    <div key={m.id} style={{display:'flex',flexDirection:'column',alignItems:isMe?'flex-end':'flex-start'}}>
+                      <div style={{fontSize:9,color:'var(--color-text-secondary)',marginBottom:2,paddingLeft:4,paddingRight:4}}>
+                        {isMe?'You':m.fromName||'Admin'} · {new Date(m.sentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}
+                      </div>
+                      <div style={{maxWidth:'85%',padding:'8px 11px',borderRadius:10,fontSize:12,lineHeight:1.55,
+                        background:isMe?'#1e3a5f':'var(--color-background-secondary)',
+                        color:isMe?'#fff':'var(--color-text-primary)',
+                        borderBottomRightRadius:isMe?2:10,borderBottomLeftRadius:isMe?10:2}}>
+                        {m.body}
+                      </div>
+                    </div>
+                  );
+                })}
+                <div ref={bottomRef}/>
+              </div>
+              {/* Reply box */}
+              {canReply?(
+                <div style={{padding:'8px',borderTop:'0.5px solid var(--color-border-tertiary)',display:'flex',gap:6,flexShrink:0}}>
+                  <textarea value={reply} onChange={e=>setReply(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendReply()}}} placeholder="Reply… (Enter to send)" style={{flex:1,height:40,resize:'none',fontSize:12,padding:'6px 8px'}}/>
+                  <button onClick={sendReply} disabled={sending||!reply.trim()} style={{background:'#1e3a5f',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'6px 10px',cursor:'pointer',fontSize:13,alignSelf:'flex-end'}}>{sending?'…':'↑'}</button>
+                </div>
+              ):lastStaffMsg?.replyBlocked?(
+                <div style={{padding:'8px 12px',fontSize:11,color:'#6b6b6b',textAlign:'center',background:'var(--color-background-secondary)',flexShrink:0}}>Replies are disabled.</div>
+              ):null}
+            </div>
+          )}
+        </div>
+      )}
+      <button className="chat-fab" onClick={()=>{setOpen(o=>!o);if(open){setSelectedSub(null);setReply('');}}} style={{position:'fixed',bottom:24,right:24}}>
+        {open
+          ?<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg>
+          :<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        }
+        {totalUnread>0&&!open&&<span className="chat-fab-badge">{totalUnread}</span>}
+      </button>
+    </>
+  );
+}
+
+// ── COMPOSE MODAL (admin) ─────────────────────────────────────────────────────
+function ComposeModal({target,pricing,onClose}){
+  const [subject,setSubject]=useState(target.suggestedSubject||'');
+  const [body,setBody]=useState(target.suggestedBody||'');
+  const [sending,setSending]=useState(false);
+  const [sent,setSent]=useState(false);
+  const [err,setErr]=useState('');
+  const templates=[
+    {label:'Price quote',fn:(f,p)=>({subject:`Price quote — ${f}`,body:`Hi ${target.toName},\n\nThank you for submitting "${f}".\n\nHere is your price quote:\n\nPages: \nPrice per page: ${sym(p.currency)}${p.pricePerPage}\nTotal: \n\nPlease arrange payment to proceed.\n\nBest regards,\nvoTex Team`})},
+    {label:'Document ready',fn:(f)=>({subject:`Your document is ready — ${f}`,body:`Hi ${target.toName},\n\nYour document "${f}" has been typed and is ready for download.\n\nPlease log in to your account to download it.\n\nBest regards,\nvoTex Team`})},
+    {label:'Missing info',fn:(f)=>({subject:`Action needed — ${f}`,body:`Hi ${target.toName},\n\nWe received "${f}" but need some clarification:\n\n- \n\nThank you,\nvoTex Team`})},
+    {label:'Payment reminder',fn:(f)=>({subject:`Payment reminder — ${f}`,body:`Hi ${target.toName},\n\nThis is a reminder that payment is outstanding for "${f}".\n\nThank you,\nvoTex Team`})},
+  ];
+  async function send(){
+    if(!subject.trim()||!body.trim()){setErr('Subject and message are required.');return}
+    setSending(true);
+    try{
+      const res=await api.post('/api/messages',{toId:target.toId,toName:target.toName,toEmail:target.toEmail,subject:subject.trim(),body:body.trim(),submissionId:target.submissionId||null,submissionFileName:target.submissionFileName||null});
+      if(res.error){setErr(res.error);setSending(false);return}
+      setSent(true);setTimeout(onClose,1200);
+    }catch{setErr('Server error. Is the server running?');setSending(false)}
+  }
+  return(
+    <div className="overlay" onClick={e=>e.target===e.currentTarget&&onClose()}>
+      <div className="modal">
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1.25rem'}}>
+          <div style={{fontSize:15,fontWeight:500}}>Send message</div>
+          <button className="btn-sm" onClick={onClose} style={{padding:'4px 10px'}}>✕</button>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:10,background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)',padding:'10px 12px',marginBottom:'1rem'}}>
+          <Avatar name={target.toName} size={30}/>
+          <div><div style={{fontSize:13,fontWeight:500}}>{target.toName}</div><div style={{fontSize:11,color:'var(--color-text-secondary)'}}>{target.toEmail}</div></div>
+          {target.submissionFileName&&<span className="badge" style={{background:'#e6f1fb',color:'#1e3a5f',marginLeft:'auto',maxWidth:160,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>re: {target.submissionFileName}</span>}
+        </div>
+        {target.submissionFileName&&(
+          <div style={{marginBottom:'1rem'}}>
+            <div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:6}}>Quick templates</div>
+            <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+              {templates.map(t=><button key={t.label} className="btn-sm" style={{fontSize:11}} onClick={()=>{const r=t.fn(target.submissionFileName,pricing);setSubject(r.subject);setBody(r.body);setErr('')}}>{t.label}</button>)}
+            </div>
+          </div>
+        )}
+        <div className="field"><label>Subject</label><input value={subject} onChange={e=>{setSubject(e.target.value);setErr('')}} placeholder="Subject line"/></div>
+        <div className="field"><label>Message</label><textarea value={body} onChange={e=>{setBody(e.target.value);setErr('')}} placeholder="Write your message here…" style={{height:160,resize:'vertical'}}/></div>
+        {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
+        {sent?<div style={{textAlign:'center',color:'#0f6e56',fontWeight:500,padding:'8px 0'}}>Message sent!</div>
+          :<button className="btn-primary" onClick={send} disabled={sending} style={{width:'100%'}}>{sending?'Sending…':'Send message'}</button>}
+      </div>
+    </div>
+  );
+}
+
+// ── SEND FINAL DOC MODAL (admin) ──────────────────────────────────────────────
+function SendFinalModal({doc,onClose,onDone}){
+  const [file,setFile]=useState(null);
+  const [sending,setSending]=useState(false);
+  const [sent,setSent]=useState(false);
+  const [err,setErr]=useState('');
+  const fileRef=useRef();
+  // const vatRate=0.16;
+  let vatRate=0;
+
+  async function send(){
+    if(!file){setErr('Please select a file.');return}
+    setSending(true);
+    const fd=new FormData();
+    fd.append('file',file);
+    try{
+      const res=await fetch(`/api/submissions/${doc.id}/final`,{method:'POST',body:fd});
+      const data=await res.json();
+      if(data.error){setErr(data.error);setSending(false);return}
+      setSent(true);setTimeout(()=>{onDone();onClose()},1200);
+    }catch{setErr('Upload failed.');setSending(false)}
+  }
+
+  return(
+    <div className="overlay" onClick={e=>e.target===e.currentTarget&&onClose()}>
+      <div className="modal" style={{maxWidth:400}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem'}}>
+          <div style={{fontSize:15,fontWeight:500}}>Send final document</div>
+          <button className="btn-sm" onClick={onClose} style={{padding:'4px 10px'}}>✕</button>
+        </div>
+        <div style={{fontSize:13,color:'var(--color-text-secondary)',marginBottom:'1rem',background:'var(--color-background-secondary)',padding:'10px 12px',borderRadius:'var(--border-radius-md)'}}>
+          Upload the typed version of <strong style={{color:'var(--color-text-primary)'}}>{doc.fileName}</strong>. The student will be notified and can download it immediately.
+        </div>
+        <div className="field">
+          <label>Typed document file</label>
+          <div onClick={()=>fileRef.current.click()} style={{border:'1.5px dashed var(--color-border-secondary)',borderRadius:'var(--border-radius-md)',padding:'1.25rem',textAlign:'center',cursor:'pointer',background:file?'#e1f5ee':'transparent'}}
+            onMouseEnter={e=>e.currentTarget.style.background=file?'#e1f5ee':'var(--color-background-secondary)'}
+            onMouseLeave={e=>e.currentTarget.style.background=file?'#e1f5ee':'transparent'}>
+            {file
+              ?<div style={{fontSize:13,color:'#0f6e56',fontWeight:500}}>✓ {file.name}</div>
+              :<div style={{fontSize:13,color:'var(--color-text-secondary)'}}>Click to choose file (PDF, DOCX, etc.)</div>
+            }
+          </div>
+          <input ref={fileRef} type="file" style={{display:'none'}} onChange={e=>setFile(e.target.files[0]||null)}/>
+        </div>
+        {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
+        {sent?<div style={{textAlign:'center',color:'#0f6e56',fontWeight:500,padding:'8px 0'}}>Sent! Student notified.</div>
+          :<button className="btn-primary" onClick={send} disabled={sending||!file} style={{width:'100%'}}>{sending?'Uploading…':'Send to student'}</button>}
+      </div>
+    </div>
+  );
+}
+
+// ── PAYMENT PROOF MODAL (student) ─────────────────────────────────────────────
+function PaymentProofModal({sub,user,pricing,onClose,onDone}){
+  // sub is now an array of submissions (a batch)
+  const batch=Array.isArray(sub)?sub:[sub];
+  const batchTotal=batch.reduce((a,s)=>a+(s.price||0),0);
+  // const vatRate = 0.16
+  const vatRate = 0;
+  const batchTTC = batchTotal + vatRate*batchTotal;
+  const repSub=batch[0]; // representative sub for the upload endpoint
+  const [file,setFile]=useState(null);
+  const [preview,setPreview]=useState(null);
+  const [uploading,setUploading]=useState(false);
+  const [done,setDone]=useState(false);
+  const [err,setErr]=useState('');
+  const fileRef=useRef();
+
+  function pick(f){
+    if(!f)return;
+    if(f.size>5*1024*1024){setErr('File too large (max 5 MB).');return}
+    setFile(f);setErr('');
+    const reader=new FileReader();
+    reader.onload=e=>setPreview(e.target.result);
+    reader.readAsDataURL(f);
+  }
+
+  async function submit(){
+    if(!file){setErr('Please select your payment screenshot.');return}
+    setUploading(true);
+    const fd=new FormData();
+    fd.append('file',file);
+    try{
+      // upload proof to the representative (first) submission — server propagates to batch
+      const res=await fetch(`/api/submissions/${repSub.id}/payment-proof`,{method:'POST',body:fd});
+      const data=await res.json();
+      if(data.error){setErr(data.error);setUploading(false);return}
+      setDone(true);
+      setTimeout(onDone,1800);
+    }catch{setErr('Upload failed. Is the server running?');setUploading(false)}
+  }
+
+  return(
+    <div className="overlay" onClick={e=>e.target===e.currentTarget&&!uploading&&onClose()}>
+      <div className="modal" style={{maxWidth:420}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem'}}>
+          <div style={{fontSize:15,fontWeight:500}}>Upload payment proof</div>
+          {!uploading&&<button className="btn-sm" onClick={onClose} style={{padding:'4px 10px'}}>✕</button>}
+        </div>
+
+        {/* amount reminder */}
+        <div style={{background:'#fffbeb',border:'1px solid #f59e0b',borderRadius:'var(--border-radius-md)',padding:'12px 14px',marginBottom:'1rem'}}>
+          {batch.length>1&&<div style={{fontSize:11,color:'#92400e',marginBottom:6}}>{batch.length} files in this batch:</div>}
+          {batch.map(s=><div key={s.id} style={{fontSize:12,color:'#92400e',marginBottom:2,fontWeight:500}}>• {s.fileName} — {sym(pricing.currency)}{s.price}</div>)}
+          <div style={{fontSize:18,fontWeight:700,color:'#92400e',marginTop:6,paddingTop:6,borderTop:'0.5px solid #f59e0b55'}}>Total: {sym(pricing.currency)}{batchTTC} TTC</div>
+        </div>
+
+        <div style={{fontSize:13,color:'var(--color-text-secondary)',marginBottom:'1rem'}}>
+          Take a screenshot of your payment confirmation (MPesa, bank transfer, etc.) and upload it below. Admin will review and confirm your payment.
+        </div>
+
+        {/* file picker */}
+        {!done&&(
+          <>
+            <div onClick={()=>!uploading&&fileRef.current.click()} style={{border:'1.5px dashed '+(file?'#d97706':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',overflow:'hidden',cursor:uploading?'not-allowed':'pointer',marginBottom:'1rem',background:file?'#fffbeb':'transparent'}}
+              onMouseEnter={e=>{if(!uploading)e.currentTarget.style.background=file?'#fffbeb':'var(--color-background-secondary)'}}
+              onMouseLeave={e=>e.currentTarget.style.background=file?'#fffbeb':'transparent'}>
+              {preview
+                ?<img src={preview} alt="proof preview" style={{width:'100%',maxHeight:220,objectFit:'contain',display:'block'}}/>
+                :<div style={{padding:'1.5rem',textAlign:'center'}}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style={{margin:'0 auto 8px',display:'block',opacity:0.4}}><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" strokeWidth="1.5"/><path d="M21 15l-5-5L5 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <div style={{fontSize:13,color:'var(--color-text-secondary)'}}>Tap to choose screenshot</div>
+                  <div style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:4}}>JPG, PNG · Max 5 MB</div>
+                </div>
+              }
+            </div>
+            <input ref={fileRef} type="file" accept="image/*" style={{display:'none'}} onChange={e=>pick(e.target.files[0]||null)}/>
+            {file&&<div style={{fontSize:11,color:'#856404',marginBottom:'0.75rem',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>📎 {file.name}</div>}
+            {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
+            <button className="btn-primary" onClick={submit} disabled={uploading||!file} style={{width:'100%',background:'#d97706'}}>
+              {uploading?'Uploading…':'Send proof to admin'}
+            </button>
+          </>
+        )}
+
+        {done&&(
+          <div style={{textAlign:'center',padding:'1rem 0'}}>
+            <div style={{fontSize:32,marginBottom:8}}>✅</div>
+            <div style={{fontSize:14,fontWeight:600,color:'#0f6e56'}}>Proof submitted!</div>
+            <div style={{fontSize:12,color:'var(--color-text-secondary)',marginTop:4}}>Admin will review and confirm your payment shortly.</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── INVOICE MODAL (in-page overlay, replaces new window) ─────────────────────
+function InvoiceModal({sub, user, pricing, isReceipt, onClose}){
+  const sym_=c=>({USD:'$',EUR:'€',GBP:'£',CDF:'FC ',XAF:'FCFA '}[c]||c+' ');
+  const currency=sym_(pricing.currency);
+  const subtotal=sub.price||0;
+  // const tvaAmount=subtotal*0.16;
+   const tvaAmount=subtotal*0;
+  const totalTTC=subtotal+tvaAmount;
+  const date=new Date().toLocaleDateString('fr-FR',{year:'numeric',month:'long',day:'numeric'});
+
+  const html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
+<style>
+  @page{size:A4;margin:0}
+  :root{--primary:#1e293b;--secondary:#64748b;--accent:${isReceipt?'#0f6e56':'#0284c7'};--table-header:#f8fafc;--wm:rgba(220,38,38,0.18)}
+  body{font-family:system-ui,sans-serif;margin:0;padding:16px;background:#e2e8f0}
+  .page{width:210mm;min-height:297mm;padding:14mm;margin:0 auto;background:#fff;position:relative;box-sizing:border-box;display:flex;flex-direction:column}
+  .wm{position:absolute;top:45%;left:55%;transform:translate(-50%,-50%) rotate(-45deg);font-size:72px;font-weight:700;color:var(--wm);pointer-events:none;text-transform:uppercase;z-index:5;border:10px solid var(--wm);padding:16px;border-radius:16px;letter-spacing:10px}
+  .header{display:flex;justify-content:space-between;margin-bottom:40px}
+  .brand p{margin:2px 0;font-size:11px;color:var(--secondary)}
+  h1{margin:0;font-size:18px;color:var(--accent)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:32px}
+  .sec-label{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--accent);border-bottom:1px solid #e2e8f0;padding-bottom:5px;margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;margin-bottom:24px}
+  th{background:var(--table-header);text-align:left;font-size:11px;padding:10px;border-bottom:2px solid #e2e8f0}
+  td{padding:10px;border-bottom:1px solid #f1f5f9;font-size:12px}
+  .sum{display:flex;justify-content:flex-end;margin-bottom:24px}
+  .sum-t{width:240px;font-size:12px}
+  .sum-t td{border:none;padding:4px 0}
+  .total{font-weight:700;font-size:14px}
+  .rib{background:#f8fafc;padding:14px;border-radius:6px;border:1px solid #e2e8f0;margin-top:auto;font-size:11px}
+  .rib-g{display:grid;grid-template-columns:1fr 2fr;gap:5px;margin-top:10px}
+  .tr{text-align:right}
+  @media print{body{background:none;padding:0}}
+</style></head><body>
+<div class="page">
+  <div class="wm">${isReceipt?'PAYÉ':'PROFORMA'}</div>
+  <div class="header">
+    <div class="brand">
+      <img src="/invoice_generator/logo.png" alt="voTex" style="width:130px;margin-bottom:8px">
+      <p>ID. NAT. : 12345</p><p>RCCM. : 12345/RTR?</p>
+      <p>Email : admin@abc.com</p><p>Tél : 0815044784</p>
+    </div>
+    <div>
+      <h1>${isReceipt?'REÇU DE PAIEMENT':'FACTURE PRO FORMA'}</h1>
+      <p style="margin-top:10px;font-size:12px"><strong>N° :</strong> VoTex/${new Date(sub.uploadedAt||Date.now()).getFullYear()}/${new Date(sub.uploadedAt||Date.now()).toLocaleDateString('fr-FR',{month:'2-digit',day:'2-digit'}).replace('/','')}-${(sub.fileName||'DOC').split('.')[0].replace(/[^a-zA-Z0-9]/g,'').slice(0,6).toUpperCase()}</p>
+      <p style="font-size:12px"><strong>Date :</strong> ${new Date(sub.uploadedAt||Date.now()).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})}</p>
+    </div>
+  </div>
+  <div class="grid">
+    <div><div class="sec-label">Client</div><p style="margin:0;font-weight:600">${sub.userName}</p><p style="margin:4px 0;color:var(--secondary);font-size:12px">${sub.userEmail}</p></div>
+    <div><div class="sec-label">Objet</div><p style="font-size:12px">Traitement du document :<br><strong>${sub.fileName}</strong></p></div>
+  </div>
+  <table>
+    <thead><tr><th>Description</th><th class="tr">Pages</th><th class="tr">Prix Unitaire</th><th class="tr">Total HT</th></tr></thead>
+    <tbody><tr>
+      <td>Service de numérisation/saisie</td>
+      <td class="tr">${sub.pages||0}</td>
+      <td class="tr">${currency}${(pricing.pricePerPage||0).toFixed(2)}</td>
+      <td class="tr">${currency}${subtotal.toFixed(2)}</td>
+    </tr></tbody>
+  </table>
+  <div class="sum"><table class="sum-t">
+    <tr><td>Sous-total HT</td><td class="tr">${currency}${subtotal.toFixed(2)}</td></tr>
+    <tr><td>TVA (16%)</td><td class="tr">${currency}${tvaAmount.toFixed(2)}</td></tr>
+    <tr class="total"><td style="padding-top:8px;border-top:1px solid #000">Total TTC</td><td class="tr" style="padding-top:8px;border-top:1px solid #000">${currency}${totalTTC.toFixed(2)}</td></tr>
+  </table></div>
+  <div class="rib">
+    <div class="sec-label" style="border:none;margin-bottom:0">Coordonnées bancaires</div>
+    <div class="rib-g">
+      <span><strong>Bénéficiaire :</strong></span><span>Maktech Group sarl</span>
+      <span><strong>Banque :</strong></span><span>EquityBCDC | MPesa</span>
+      <span><strong>BIC/SWIFT :</strong></span><span>IBBKGB2L</span>
+      <span><strong>Status :</strong></span><span style="color:var(--accent)"><strong>${isReceipt?'Paiement Confirmé':'Action Requise'}</strong></span>
+    </div>
+  </div>
+  <p style="text-align:center;font-size:10px;color:var(--secondary);margin-top:16px">Facture générée numériquement — Un produit de MakTech Group SARL</p>
+</div>
+</body></html>`;
+
+  return(
+    <div className="overlay" onClick={e=>e.target===e.currentTarget&&onClose()} style={{zIndex:500,alignItems:'stretch',padding:0}}>
+      <div style={{display:'flex',flexDirection:'column',width:'100%',height:'100%',maxWidth:900,margin:'0 auto',background:'#e2e8f0'}}>
+        <div style={{display:'flex',alignItems:'center',gap:12,padding:'10px 16px',background:'#1e3a5f',flexShrink:0}}>
+          <button onClick={onClose} style={{background:'rgba(255,255,255,0.15)',border:'none',color:'#fff',padding:'6px 14px',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit',fontSize:13,display:'flex',alignItems:'center',gap:6}}>
+            ← Back
+          </button>
+          <span style={{color:'#fff',fontSize:13,fontWeight:500}}>{isReceipt?'Receipt':'Invoice'} — {sub.fileName}</span>
+          <button onClick={()=>{const w=window.open('','_blank');w.document.write(html);w.document.close();w.print();}} style={{marginLeft:'auto',background:'rgba(255,255,255,0.15)',border:'none',color:'#fff',padding:'6px 14px',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit',fontSize:13}}>
+            🖨 Print
+          </button>
+        </div>
+        <iframe srcDoc={html} style={{flex:1,border:'none',width:'100%'}} title="Invoice"/>
+      </div>
+    </div>
+  );
+}
+
+// ── TEMPLATE PREVIEWER (in-page popup) ────────────────────────────────────────
+function TemplatePreviewer({templateName, onClose}){
+  return(
+    <div className="overlay" onClick={e=>e.target===e.currentTarget&&onClose()} style={{zIndex:500,alignItems:'stretch',padding:0}}>
+      <div style={{display:'flex',flexDirection:'column',width:'100%',height:'100%',maxWidth:860,margin:'0 auto',background:'#e2e8f0'}}>
+        <div style={{display:'flex',alignItems:'center',gap:12,padding:'10px 16px',background:'#1e3a5f',flexShrink:0}}>
+          <button onClick={onClose} style={{background:'rgba(255,255,255,0.15)',border:'none',color:'#fff',padding:'6px 14px',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit',fontSize:13,display:'flex',alignItems:'center',gap:6}}>
+            ← Close
+          </button>
+          <span style={{color:'#fff',fontSize:13,fontWeight:500}}>{templateName.replace(/_/g,' ').replace(/\.pdf$/i,'')}</span>
+        </div>
+        <iframe src={`/templates/${encodeURIComponent(templateName)}`} style={{flex:1,border:'none',width:'100%'}} title="Template preview"/>
+      </div>
+    </div>
+  );
+}
+
+// ── FEEDBACK MODAL (student — after doc is done) ──────────────────────────────
+function FeedbackModal({sub,onClose,onDone}){
+  const [mode,setMode]=useState('text'); // 'text' | 'image' | 'audio'
+  const [text,setText]=useState('');
+  const [file,setFile]=useState(null);
+  const [preview,setPreview]=useState(null);
+  const [recording,setRecording]=useState(false);
+  const [audioBlob,setAudioBlob]=useState(null);
+  const [audioUrl,setAudioUrl]=useState(null);
+  const [sending,setSending]=useState(false);
+  const [done,setDone]=useState(false);
+  const [err,setErr]=useState('');
+  const imgRef=useRef();
+  const mrRef=useRef();
+  const chunksRef=useRef([]);
+
+  function pickImage(f){
+    if(!f)return;
+    if(f.size>5*1024*1024){setErr('Image too large (max 5 MB).');return}
+    setFile(f);setErr('');
+    const r=new FileReader();r.onload=e=>setPreview(e.target.result);r.readAsDataURL(f);
+  }
+
+  async function startRec(){
+    setErr('');
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      const mr=new MediaRecorder(stream,{mimeType:'audio/webm'});
+      chunksRef.current=[];
+      mr.ondataavailable=e=>e.data.size&&chunksRef.current.push(e.data);
+      mr.onstop=()=>{
+        const blob=new Blob(chunksRef.current,{type:'audio/webm'});
+        setAudioBlob(blob);setAudioUrl(URL.createObjectURL(blob));
+        stream.getTracks().forEach(t=>t.stop());
+      };
+      mr.start();mrRef.current=mr;setRecording(true);
+    }catch{setErr('Microphone access denied.')}
+  }
+  function stopRec(){mrRef.current&&mrRef.current.stop();setRecording(false);}
+  function discardAudio(){setAudioBlob(null);setAudioUrl(null);}
+
+  async function submit(){
+    if(!text.trim()&&!file&&!audioBlob){setErr('Add a message, image, or voice note.');return}
+    setSending(true);
+    const fd=new FormData();
+    fd.append('text',text.trim());
+    if(mode==='image'&&file) fd.append('file',file);
+    if(mode==='audio'&&audioBlob) fd.append('file',new File([audioBlob],'voice-note.webm',{type:'audio/webm'}));
+    try{
+      const res=await fetch(`/api/submissions/${sub.id}/feedback`,{method:'POST',body:fd});
+      const data=await res.json();
+      if(data.error){setErr(data.error);setSending(false);return}
+      setDone(true);setTimeout(onDone,1500);
+    }catch{setErr('Failed. Is the server running?');setSending(false)}
+  }
+
+  return(
+    <div className="overlay" onClick={e=>e.target===e.currentTarget&&!sending&&onClose()}>
+      <div className="modal" style={{maxWidth:440}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem'}}>
+          <div>
+            <div style={{fontSize:15,fontWeight:500}}>Send feedback</div>
+            <div style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:2}}>{sub.fileName}</div>
+          </div>
+          {!sending&&<button className="btn-sm" onClick={onClose} style={{padding:'4px 10px'}}>✕</button>}
+        </div>
+
+        {done?(
+          <div style={{textAlign:'center',padding:'1.5rem 0'}}>
+            <div style={{fontSize:32,marginBottom:8}}>✅</div>
+            <div style={{fontSize:14,fontWeight:600,color:'#0f6e56'}}>Feedback sent!</div>
+            <div style={{fontSize:12,color:'var(--color-text-secondary)',marginTop:4}}>The admin will review and respond shortly.</div>
+          </div>
+        ):(
+          <>
+            {/* mode selector */}
+            <div style={{display:'flex',gap:6,marginBottom:'1rem'}}>
+              {[['text','✏️ Text'],['image','🖼 Screenshot'],['audio','🎙 Voice']].map(([m,l])=>(
+                <button key={m} onClick={()=>{setMode(m);setErr('');}} style={{flex:1,padding:'7px',background:mode===m?'#1e3a5f':'transparent',color:mode===m?'#fff':'var(--color-text-secondary)',border:'0.5px solid '+(mode===m?'#1e3a5f':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',cursor:'pointer',fontSize:12,fontFamily:'inherit'}}>
+                  {l}
+                </button>
+              ))}
+            </div>
+
+            {/* text area — always visible */}
+            <div className="field">
+              <label>Your message {mode!=='text'&&<span style={{fontWeight:400}}>(optional)</span>}</label>
+              <textarea value={text} onChange={e=>setText(e.target.value)} placeholder="Describe the typos or corrections needed…" style={{height:80,resize:'vertical'}}/>
+            </div>
+
+            {/* image picker */}
+            {mode==='image'&&(
+              <div className="field">
+                <label>Screenshot</label>
+                <div onClick={()=>imgRef.current.click()} style={{border:'1.5px dashed '+(file?'#1e3a5f':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',overflow:'hidden',cursor:'pointer',background:file?'#e6f1fb':'transparent',marginBottom:4}}
+                  onMouseEnter={e=>e.currentTarget.style.background=file?'#e6f1fb':'var(--color-background-secondary)'}
+                  onMouseLeave={e=>e.currentTarget.style.background=file?'#e6f1fb':'transparent'}>
+                  {preview?<img src={preview} alt="preview" style={{width:'100%',maxHeight:180,objectFit:'contain',display:'block'}}/>
+                    :<div style={{padding:'1.25rem',textAlign:'center',fontSize:13,color:'var(--color-text-secondary)'}}>Tap to attach screenshot</div>}
+                </div>
+                <input ref={imgRef} type="file" accept="image/*" style={{display:'none'}} onChange={e=>pickImage(e.target.files[0]||null)}/>
+              </div>
+            )}
+
+            {/* audio recorder */}
+            {mode==='audio'&&(
+              <div className="field">
+                <label>Voice note</label>
+                {!audioUrl?(
+                  <button onClick={recording?stopRec:startRec} style={{width:'100%',padding:'10px',background:recording?'#a32d2d':'#1e3a5f',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontSize:13,fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}}>
+                    {recording?<><span style={{width:10,height:10,borderRadius:2,background:'#fff',display:'inline-block'}}/>Stop recording</>:<><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="12" rx="3" fill="currentColor"/><path d="M5 10a7 7 0 0 0 14 0M12 19v3M9 22h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>Start recording</>}
+                  </button>
+                ):(
+                  <div style={{display:'flex',alignItems:'center',gap:8,background:'var(--color-background-secondary)',padding:'10px',borderRadius:'var(--border-radius-md)'}}>
+                    <audio src={audioUrl} controls style={{flex:1,height:32}}/>
+                    <button onClick={discardAudio} className="btn-danger" style={{flexShrink:0}}>✕</button>
+                  </div>
+                )}
+                {recording&&<div style={{fontSize:11,color:'#a32d2d',marginTop:6,textAlign:'center'}}>● Recording… click Stop when done</div>}
+              </div>
+            )}
+
+            {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
+            <button className="btn-primary" onClick={submit} disabled={sending} style={{width:'100%'}}>
+              {sending?'Sending…':'Send feedback'}
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── CONVERSATION MODAL (admin — thread view per submission) ───────────────────
+function ConversationModal({doc,adminUser,pricing,onClose}){
+  const [messages,setMessages]=useState([]);
+  const [feedbacks,setFeedbacks]=useState([]);
+  const [reply,setReply]=useState('');
+  const [sending,setSending]=useState(false);
+  const [err,setErr]=useState('');
+  const bottomRef=useRef();
+
+  async function load(){
+    const [msgs,fbs]=await Promise.all([
+      api.get('/api/messages'),
+      api.get(`/api/submissions/${doc.id}/feedbacks`)
+    ]);
+    // filter messages: those specifically about this submission OR general (no submissionId) between admin and this student
+    const related=msgs.filter(m=>
+      m.submissionId===doc.id
+      ||(!m.submissionId&&(
+        (m.toId===doc.userId&&m.fromId==='admin')
+        ||(m.fromId===doc.userId&&m.toId==='admin')
+      ))
+    );
+    setMessages(related);
+    setFeedbacks(fbs);
+    // mark unread feedbacks AND unread messages-to-admin as read server-side
+    fbs.filter(f=>!f.read).forEach(f=>api.patch(`/api/feedbacks/${f.id}`,{read:true}));
+    // Mark only messages addressed to the current viewer as read (per-reader, not shared)
+    const viewerId=adminUser.id;
+    related.filter(m=>m.toId===viewerId&&!(m.readBy||[]).includes(viewerId)).forEach(m=>api.patch(`/api/messages/${m.id}`,{readerId:viewerId}));
+  }
+
+  useEffect(()=>{load();const t=setInterval(load,CHAT_MS);return()=>clearInterval(t)},[]);
+  useEffect(()=>{bottomRef.current&&bottomRef.current.scrollIntoView({behavior:'smooth'})},[messages,feedbacks]);
+
+  // merge messages + feedbacks + payment proof chronologically
+  const proofItem = doc.paymentProof ? [{
+    id: 'proof_'+doc.id, _type:'proof',
+    sentAt: doc.uploadedAt, // approximate — proof time not stored separately
+    userName: doc.userName, fromName: doc.userName
+  }] : [];
+  const thread=[
+    ...messages.map(m=>({...m,_type:'message'})),
+    ...feedbacks.map(f=>({...f,_type:'feedback'})),
+    ...proofItem
+  ].sort((a,b)=>new Date(a.sentAt)-new Date(b.sentAt));
+
+  async function sendReply(){
+    if(!reply.trim()){return}
+    setSending(true);
+    const res=await api.post('/api/messages',{
+      fromId:adminUser.id,fromName:adminUser.name,
+      toId:doc.userId,toName:doc.userName,toEmail:doc.userEmail,
+      subject:`Re: ${doc.fileName}`,
+      body:reply.trim(),
+      submissionId:doc.id,submissionFileName:doc.fileName
+    });
+    if(res.error){setErr(res.error);setSending(false);return}
+    setReply('');setSending(false);load();
+  }
+
+  async function markCompleted(){
+    if(!confirm('Mark this case as completed? The student will no longer be able to send feedback.'))return;
+    await fetch(`/api/submissions/${doc.id}/close-feedback`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:'{}'});
+    onClose();
+  }
+
+  return(
+    <div className="overlay" onClick={e=>e.target===e.currentTarget&&onClose()}>
+      <div className="modal" style={{maxWidth:520,display:'flex',flexDirection:'column',height:'80vh',padding:0}}>
+        {/* header */}
+        <div style={{padding:'14px 16px',background:'#1e3a5f',borderRadius:'var(--border-radius-lg) var(--border-radius-lg) 0 0',display:'flex',alignItems:'center',justifyContent:'space-between',flexShrink:0}}>
+          <div>
+            <div style={{fontSize:14,fontWeight:500,color:'#fff'}}>{doc.userName}</div>
+            <div style={{fontSize:11,color:'rgba(255,255,255,0.7)',marginTop:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:300}}>{doc.fileName}</div>
+          </div>
+          <div style={{display:'flex',gap:6,alignItems:'center'}}>
+            {doc.feedbackClosed
+              ?<span style={{fontSize:10,background:'rgba(255,255,255,0.15)',color:'#fff',padding:'3px 8px',borderRadius:20,fontWeight:500}}>✓ Completed</span>
+              :<button onClick={markCompleted} style={{background:'#0f6e56',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'5px 10px',fontSize:11,cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>✓ Mark completed</button>
+            }
+            <button onClick={onClose} style={{background:'transparent',border:'none',color:'rgba(255,255,255,0.7)',cursor:'pointer',fontSize:18,padding:'2px 4px'}}>✕</button>
+          </div>
+        </div>
+
+        {/* thread */}
+        <div style={{flex:1,overflowY:'auto',padding:'12px'}}>
+          {thread.length===0&&<div style={{textAlign:'center',padding:'2rem',color:'var(--color-text-secondary)',fontSize:13}}>No messages yet. Start the conversation below.</div>}
+          <div className="conv-wrap">
+            {thread.map(item=>{
+              const isAdmin=item._type==='message'&&item.fromId==='admin';
+              const isFeedback=item._type==='feedback';
+              const isProof=item._type==='proof';
+              const cls=isAdmin?'admin':isFeedback?'feedback':'student';
+              return(
+                <div key={item.id} style={{display:'flex',flexDirection:'column',alignItems:isAdmin?'flex-end':'flex-start'}}>
+                  <div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:3,paddingLeft:4,paddingRight:4}}>
+                    {isAdmin?'Admin':item.userName||item.fromName} · {new Date(item.sentAt).toLocaleString()}
+                    {isFeedback&&<span style={{marginLeft:6,background:'#f59e0b',color:'#fff',padding:'1px 5px',borderRadius:8,fontSize:9}}>FEEDBACK</span>}
+                    {isProof&&<span style={{marginLeft:6,background:'#d97706',color:'#fff',padding:'1px 5px',borderRadius:8,fontSize:9}}>PAYMENT PROOF</span>}
+                  </div>
+                  {isProof?(
+                    <div style={{background:'#fffbeb',border:'1px solid #f59e0b55',borderRadius:12,padding:'8px',maxWidth:'82%',borderBottomLeftRadius:3}}>
+                      <div style={{fontSize:11,color:'#92400e',marginBottom:6,fontWeight:500}}>📎 Payment proof submitted</div>
+                      <img src={`/api/submissions/${doc.id}/payment-proof/view`} alt="Payment proof"
+                        style={{maxWidth:'100%',maxHeight:240,borderRadius:6,display:'block',objectFit:'contain',cursor:'pointer'}}
+                        onClick={()=>window.open(`/api/submissions/${doc.id}/payment-proof/view`,'_blank')}
+                      />
+                      <div style={{fontSize:10,color:'#b45309',marginTop:4}}>Click to open full size</div>
+                    </div>
+                  ):(
+                  <div className={`conv-bubble ${cls}`}>
+                    {/* text body */}
+                    {(item.body||item.text)&&<div style={{whiteSpace:'pre-line'}}>{item.body||item.text}</div>}
+                    {/* feedback file */}
+                    {isFeedback&&item.file&&(
+                      <div style={{marginTop:item.text?8:0}}>
+                        {item.file.mimeType&&item.file.mimeType.startsWith('audio')?(
+                          <audio src={`/api/feedback/${item.submissionId}/${item.file.storedName}`} controls style={{width:'100%',height:32}}/>
+                        ):item.file.mimeType&&item.file.mimeType.startsWith('image')?(
+                          <img src={`/api/feedback/${item.submissionId}/${item.file.storedName}`} alt="screenshot" style={{maxWidth:'100%',borderRadius:6,marginTop:4,display:'block'}}/>
+                        ):(
+                          <a href={`/api/feedback/${item.submissionId}/${item.file.storedName}`} target="_blank" rel="noreferrer" style={{color:'#856404',fontSize:12}}>📎 {item.file.fileName}</a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  )}
+                </div>
+              );
+            })}
+            <div ref={bottomRef}/>
+          </div>
+        </div>
+
+        {/* reply box */}
+        <div style={{padding:'12px',borderTop:'0.5px solid var(--color-border-tertiary)',flexShrink:0}}>
+          {doc.feedbackClosed?(
+            <div style={{textAlign:'center',padding:'8px',background:'#e1f5ee',borderRadius:'var(--border-radius-md)',fontSize:12,color:'#0f6e56',fontWeight:500}}>✓ Case closed — no further feedback accepted</div>
+          ):(
+            <>
+              {err&&<div className="err" style={{marginBottom:8}}>{err}</div>}
+              <div style={{display:'flex',gap:8}}>
+                <textarea value={reply} onChange={e=>setReply(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendReply()}}} placeholder="Reply to student… (Enter to send)" style={{flex:1,height:60,resize:'none',fontSize:13}}/>
+                <button onClick={sendReply} disabled={sending||!reply.trim()} className="btn-primary" style={{alignSelf:'flex-end',padding:'10px 14px'}}>
+                  {sending?'…':'Send'}
+                </button>
+              </div>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:4}}>
+                <div style={{fontSize:10,color:'var(--color-text-secondary)'}}>Shift+Enter for new line</div>
+                <button onClick={async()=>{
+                  // Find the most recent outgoing message to this student and block its reply
+                  const outgoing=messages.filter(m=>m.toId===doc.userId).sort((a,b)=>new Date(b.sentAt)-new Date(a.sentAt));
+                  if(outgoing[0]) await api.patch(`/api/messages/${outgoing[0].id}`,{replyBlocked:true});
+                  load();
+                }} style={{fontSize:10,background:'transparent',color:'#a32d2d',border:'0.5px solid #f0959577',borderRadius:6,padding:'2px 7px',cursor:'pointer',fontFamily:'inherit'}}>
+                  🚫 Block student reply
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── DOCUMENT PREVIEW MODAL (student — view final doc before downloading) ──────
+function DocPreviewModal({sub, onClose}){
+  const isPDF = sub.finalDoc && /\.pdf$/i.test(sub.finalDoc.fileName);
+  const isImage = sub.finalDoc && /\.(png|jpe?g|gif|webp)$/i.test(sub.finalDoc.fileName);
+  const viewUrl = `/api/submissions/${sub.id}/final/view`;
+
+  return(
+    <div className="overlay" onClick={e=>e.target===e.currentTarget&&onClose()} style={{zIndex:500,alignItems:'stretch',padding:0}}>
+      <div style={{display:'flex',flexDirection:'column',width:'100%',height:'100%',maxWidth:900,margin:'0 auto',background:'#e2e8f0'}}>
+        {/* header */}
+        <div style={{display:'flex',alignItems:'center',gap:12,padding:'10px 16px',background:'#1e3a5f',flexShrink:0}}>
+          <button onClick={onClose} style={{background:'rgba(255,255,255,0.15)',border:'none',color:'#fff',padding:'6px 14px',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit',fontSize:13}}>
+            ← Back
+          </button>
+          <span style={{color:'#fff',fontSize:13,fontWeight:500,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+            {sub.finalDoc?.fileName}
+          </span>
+          <a href={`/api/submissions/${sub.id}/final`} download={sub.finalDoc?.fileName}
+            style={{background:'rgba(255,255,255,0.15)',color:'#fff',padding:'6px 14px',borderRadius:'var(--border-radius-md)',textDecoration:'none',fontSize:13,fontFamily:'inherit',whiteSpace:'nowrap'}}>
+            ⬇ Download
+          </a>
+        </div>
+
+        {/* viewer */}
+        <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'flex-start',justifyContent:'center',padding:isPDF?0:'1rem',background:'#e2e8f0'}}>
+          {isPDF&&(
+            <iframe src={viewUrl} style={{width:'100%',height:'100%',border:'none'}} title="Document preview"/>
+          )}
+          {isImage&&(
+            <img src={viewUrl} alt="Document preview" style={{maxWidth:'100%',maxHeight:'100%',objectFit:'contain',borderRadius:4,boxShadow:'0 4px 24px rgba(0,0,0,0.2)'}}/>
+          )}
+          {!isPDF&&!isImage&&(
+            <div style={{background:'#fff',borderRadius:8,padding:'3rem 2rem',textAlign:'center',marginTop:'2rem'}}>
+              <div style={{fontSize:40,marginBottom:16}}>📄</div>
+              <div style={{fontSize:14,fontWeight:500,marginBottom:8}}>{sub.finalDoc?.fileName}</div>
+              <div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:'1.5rem'}}>Preview not available for this file type</div>
+              <a href={`/api/submissions/${sub.id}/final`} download={sub.finalDoc?.fileName}
+                style={{background:'#1e3a5f',color:'#fff',padding:'10px 20px',borderRadius:'var(--border-radius-md)',textDecoration:'none',fontSize:13,fontWeight:500}}>
+                ⬇ Download file
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+function AuthScreen({onLogin}){
+  const [mode,setMode]=useState('login');
+  const [form,setForm]=useState({name:'',email:'',password:''});
+  const [err,setErr]=useState('');
+  const [loading,setLoading]=useState(false);
+  function handle(e){setForm(f=>({...f,[e.target.name]:e.target.value}));setErr('')}
+  async function submit(){
+    const{name,email,password}=form;
+    if(!email||!password){setErr('Please fill all fields.');return}
+    setLoading(true);
+    try{
+      const res=mode==='login'?await api.post('/api/auth/login',{email,password}):await api.post('/api/auth/register',{name,email,password});
+      if(res.error)setErr(res.error);
+      else{saveSession(res.user);onLogin(res.user)}
+    }catch{setErr('Cannot reach server. Make sure server.js is running.')}
+    setLoading(false);
+  }
+  return(
+    <div className="app-shell">
+      <div className="app-content" style={{display:'flex',alignItems:'center',justifyContent:'center',padding:'1rem'}}>
+      <div style={{width:'100%',maxWidth:400}}>
+        <div style={{textAlign:'center',marginBottom:'1.5rem'}}>
+          <div style={{width:44,height:44,borderRadius:10,background:'#1e3a5f',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 10px'}}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 8h6M7 16h4M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/></svg>
+          </div>
+          <div style={{fontSize:19,fontWeight:500}}>voTex Platform</div>
+          <div style={{fontSize:13,color:'var(--color-text-secondary)',marginTop:3}}>Submit your handwritten documents</div>
+        </div>
+        <div className="card">
+          <div style={{display:'flex',marginBottom:'1.25rem',gap:8}}>
+            {['login','signup'].map(m=>(
+              <button key={m} onClick={()=>{setMode(m);setErr('');setForm({name:'',email:'',password:''})}} style={{flex:1,padding:'8px',background:mode===m?'#1e3a5f':'transparent',color:mode===m?'#fff':'var(--color-text-secondary)',border:'0.5px solid '+(mode===m?'#1e3a5f':'var(--color-border-tertiary)'),borderRadius:'var(--border-radius-md)',cursor:'pointer',fontSize:13,fontFamily:'inherit',fontWeight:mode===m?500:400}}>
+                {m==='login'?'Sign in':'Create account'}
+              </button>
+            ))}
+          </div>
+          {mode==='signup'&&<div className="field"><label>Full name</label><input name="name" placeholder="Your full name" value={form.name} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>}
+          <div className="field"><label>Email</label><input name="email" type="email" placeholder="you@example.com" value={form.email} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
+          <div className="field"><label>Password</label><input name="password" type="password" placeholder="••••••••" value={form.password} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
+          {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
+          <button className="btn-primary" onClick={submit} disabled={loading} style={{width:'100%'}}>{loading?'Please wait…':(mode==='login'?'Sign in':'Create account')}</button>
+          <div style={{fontSize:13,color:'var(--color-text-secondary)',marginTop:10}}>*Keep your credentials — you'll need them to log in again.</div>
+        </div>
+      </div>
+      </div>
+      <Footer/>
+    </div>
+  );
+}
+
+// ── STUDENT DASHBOARD ─────────────────────────────────────────────────────────
+function StudentDash({user,onLogout}){
+  const [subs,setSubs]=useState([]);
+  const [notes,setNotes]=useState('');
+  const [msg,setMsg]=useState('');
+  const [tab,setTab]=useState('upload');
+  const [pricing,setPricing]=useState({pricePerPage:1000,currency:'CDF'});
+  const fileRef=useRef();
+
+  const [pendingFiles,setPendingFiles]=useState([]);
+  const [proofModal,setProofModal]=useState(null);
+  const [feedbackModal,setFeedbackModal]=useState(null);
+  const [templates,setTemplates]=useState([]);
+  const [selectedTemplate,setSelectedTemplate]=useState('');
+  const [previewTemplate,setPreviewTemplate]=useState(null);
+  const [invoiceModal,setInvoiceModal]=useState(null);
+  const [collapsedBatches,setCollapsedBatches]=useState(new Set());
+  const [docPreviewModal,setDocPreviewModal]=useState(null);
+  const [isMath,setIsMath]=useState(null); // null = not yet chosen — required before upload
+  const prevBatchIdsRef=useRef(new Set());
+  // const vatRate=0.16;
+  const vatRate=0;
+
+  function toggleBatch(batchId){
+    setCollapsedBatches(prev=>{
+      const next=new Set(prev);
+      if(next.has(batchId))next.delete(batchId);else next.add(batchId);
+      return next;
+    });
+  }
+
+  async function refresh(){
+    const[s,p]=await Promise.all([api.get(`/api/submissions?userId=${user.id}`),api.get('/api/pricing')]);
+    setSubs(s);setPricing(p);
+    // Auto-collapse any newly seen batch IDs (batches start collapsed by default)
+    setCollapsedBatches(prev=>{
+      const next=new Set(prev);
+      const bids=new Set([...s].map(x=>x.batchId||x.id));
+      bids.forEach(bid=>{ if(!prevBatchIdsRef.current.has(bid)) next.add(bid); });
+      prevBatchIdsRef.current=bids;
+      return next;
+    });
+  }
+  useEffect(()=>{
+    refresh();
+    api.get('/api/templates').then(t=>setTemplates(t)).catch(()=>{});
+    const t=setInterval(refresh,POLL_MS);
+    return()=>clearInterval(t);
+  },[]);
+
+  async function handleFiles(files){
+    if(!files||!files.length)return;
+    const arr=Array.from(files).filter(f=>f.size<=10*1024*1024);
+    if(arr.length<files.length)setMsg('Some files exceeded 10 MB and were skipped.');
+    setPendingFiles(prev=>[...prev,...arr]);
+  }
+
+  async function uploadPending(){
+    if(!pendingFiles.length)return;
+    if(!selectedTemplate){setMsg('Please select a template before uploading.');return}
+    if(isMath===null){setMsg('Please select a document type (Math or Text) before uploading.');return}
+    setMsg('Uploading...');
+    const batchId='batch_'+Date.now();
+    for(const file of pendingFiles){
+      const fd=new FormData();
+      fd.append('userId',user.id);fd.append('userName',user.name);fd.append('userEmail',user.email);
+      fd.append('notes',notes.trim());fd.append('batchId',batchId);
+      fd.append('uploadFolder',user.uploadFolder||user.id);
+      fd.append('templateName',selectedTemplate);
+      fd.append('isMathDoc',isMath?'true':'false');
+      fd.append('file',file);
+      try{
+        const res=await fetch('/api/upload',{method:'POST',body:fd});
+        const data=await res.json();
+        if(data.error){setMsg(data.error);return}
+      }catch{setMsg('Upload failed. Is the server running?');return}
+    }
+    setPendingFiles([]);setNotes('');setSelectedTemplate('');
+    await refresh();setTab('submissions');setMsg('');
+  }
+
+  const hasUnpaid=subs.some(s=>s.status==='awaiting_payment'&&!s.paid);
+  const totalOwed=subs.filter(s=>s.price&&!s.paid).reduce((a,s)=>a+(s.price||0),0);
+  const totalPaid=subs.filter(s=>s.paid).reduce((a,s)=>a+(s.price||0),0);
+
+  // group subs by batchId, sort batches by newest uploadedAt first
+  const batchMap={};
+  [...subs].sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt)).forEach(s=>{
+    const bid=s.batchId||s.id;
+    if(!batchMap[bid])batchMap[bid]={batchId:bid,subs:[],uploadedAt:s.uploadedAt};
+    batchMap[bid].subs.push(s);
+  });
+  const batches=Object.values(batchMap).sort((a,b)=>new Date(b.uploadedAt)-new Date(a.uploadedAt));
+
+  return(
+    <div className="app-shell">
+      {proofModal&&<PaymentProofModal sub={proofModal} user={user} pricing={pricing} onClose={()=>setProofModal(null)} onDone={()=>{setProofModal(null);refresh();}}/>}
+      {feedbackModal&&<FeedbackModal sub={feedbackModal} onClose={()=>setFeedbackModal(null)} onDone={()=>setFeedbackModal(null)}/>}
+      {previewTemplate&&<TemplatePreviewer templateName={previewTemplate} onClose={()=>setPreviewTemplate(null)}/>}
+      {invoiceModal&&<InvoiceModal sub={invoiceModal.sub} user={user} pricing={pricing} isReceipt={invoiceModal.isReceipt} onClose={()=>setInvoiceModal(null)}/>}
+      {docPreviewModal&&<DocPreviewModal sub={docPreviewModal} onClose={()=>setDocPreviewModal(null)}/>}
+      <div className="app-navbar" style={{padding:'12px 24px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <div style={{width:30,height:30,borderRadius:7,background:'#1e3a5f',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 8h6M7 16h4M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/></svg>
+          </div>
+          <span style={{fontWeight:500,fontSize:14}}>voTex</span>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <Avatar name={user.name} userId={user.id} size={28} editable={true}/>
+          <span style={{fontSize:12,color:'var(--color-text-secondary)'}}>{user.name.split(' ')[0]}</span>
+          <button className="btn-sm" onClick={()=>{const lang=document.documentElement.lang==='fr'?'en':'fr';window.location.href=lang==='fr'?'/index-fr.html':'/index.html';}} style={{fontSize:11}}>🌐 {document.documentElement.lang==='fr'?'EN':'FR'}</button>
+          <button className="btn-sm" onClick={onLogout} style={{fontSize:12}}>Sign out</button>
+        </div>
+      </div>
+      <div className="app-tabbar" style={{paddingLeft:24}}>
+        {[['upload','Upload'],['submissions','My Submissions']].map(([t,l])=>(
+          <button key={t} className={'tab'+(tab===t?' active':'')} onClick={()=>setTab(t)}>{l}</button>
+        ))}
+
+        {/*{[['upload','Upload'],['submissions','My Submissions'],['thesis','Thesis / Report']].map(([t,l])=>(
+          <button key={t} className={'tab'+(tab===t?' active':'')} onClick={()=>setTab(t)}>{l}</button>
+        ))}*/}
+
+      </div>
+      <div className="app-content">
+      <div style={{maxWidth:700,margin:'0 auto',padding:'1.5rem 1rem'}}>
+
+        {tab==='upload'&&(
+          <>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:'1.5rem'}}>
+              <div style={{background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)',padding:'1rem'}}>
+                <div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:4}}>Price per page (HT)</div>
+                <div style={{fontSize:22,fontWeight:500}}>{sym(pricing.currency)}{pricing.pricePerPage}</div>
+                {/*<div style={{fontSize:10,color:'var(--color-text-secondary)',marginTop:4}}>TVA 16%: {sym(pricing.currency)}{(pricing.pricePerPage*0.16).toFixed(0)} · TTC: {sym(pricing.currency)}{(pricing.pricePerPage*1.16).toFixed(0)}</div>*/}
+              </div>
+              <div style={{background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)',padding:'1rem'}}>
+                <div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:2}}>Balance due</div>
+                <div style={{fontSize:20,fontWeight:500,color:totalOwed>0?'#856404':'var(--color-text-primary)'}}>{sym(pricing.currency)}{totalOwed.toFixed(0)} <span style={{fontSize:12,fontWeight:400}}>HT</span></div>
+                {totalOwed>0&&(
+                  <div style={{fontSize:11,color:'#b45309',marginTop:4}}>
+                    {/*TVA (16%): {sym(pricing.currency)}{(totalOwed*0.16).toFixed(0)}<br/>*/}
+                    {/*<span style={{fontWeight:700}}>Total TTC: {sym(pricing.currency)}{(totalOwed*1.16).toFixed(0)}</span>*/}
+                    <span style={{fontWeight:700}}>Total TTC: {sym(pricing.currency)}{(totalOwed).toFixed(0)}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {hasUnpaid&&(
+              <div style={{background:'#fff3cd',border:'1.5px solid #f59e0b',borderRadius:'var(--border-radius-md)',padding:'12px 16px',marginBottom:'1rem',display:'flex',alignItems:'center',gap:10}}>
+                <span style={{fontSize:18}}>🔒</span>
+                <div>
+                  <div style={{fontSize:13,fontWeight:600,color:'#92400e'}}>Upload locked</div>
+                  <div style={{fontSize:12,color:'#b45309',marginTop:2}}>Pay for your pending submissions before uploading new files. Go to <button onClick={()=>setTab('submissions')} style={{background:'none',border:'none',color:'#92400e',fontWeight:600,cursor:'pointer',padding:0,fontFamily:'inherit',fontSize:12,textDecoration:'underline'}}>My Submissions</button> to proceed.</div>
+                </div>
+              </div>
+            )}
+
+            <div className="card" style={{opacity:hasUnpaid?0.5:1,pointerEvents:hasUnpaid?'none':'auto'}}>
+
+              {/* Document type — REQUIRED */}
+              <div style={{marginBottom:'1rem',padding:'10px 12px',background:isMath===null?'#fff3cd':'var(--color-background-secondary)',border:isMath===null?'1px solid #f59e0b':'none',borderRadius:'var(--border-radius-md)'}}>
+                <div style={{fontSize:12,fontWeight:600,color:isMath===null?'#92400e':'var(--color-text-secondary)',marginBottom:6}}>
+                  Document type <span style={{color:'#a32d2d'}}>*</span>{isMath===null&&<span style={{fontWeight:400,marginLeft:4}}>— choose before uploading</span>}
+                </div>
+                <div style={{display:'flex',gap:8}}>
+                  <button onClick={()=>setIsMath(true)} style={{flex:1,padding:'9px 10px',border:'1.5px solid '+(isMath===true?'#1e3a5f':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',background:isMath===true?'#1e3a5f':'transparent',color:isMath===true?'#fff':'var(--color-text-primary)',cursor:'pointer',fontFamily:'inherit',fontSize:12,fontWeight:500}}>
+                    📐 Math / Sciences
+                  </button>
+                  <button onClick={()=>setIsMath(false)} style={{flex:1,padding:'9px 10px',border:'1.5px solid '+(isMath===false?'#0f6e56':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',background:isMath===false?'#0f6e56':'transparent',color:isMath===false?'#fff':'var(--color-text-primary)',cursor:'pointer',fontFamily:'inherit',fontSize:12,fontWeight:500}}>
+                    📝 Text / Languages
+                  </button>
+                </div>
+                {isMath!==null&&<div style={{fontSize:10,color:'var(--color-text-secondary)',marginTop:5}}>{isMath?'→ LaTeX output (Overleaf)':'→ Plain text output (Google Docs)'}</div>}
+              </div>
+
+              <div onDrop={e=>{e.preventDefault();handleFiles(e.dataTransfer.files)}} onDragOver={e=>e.preventDefault()} onClick={()=>fileRef.current.click()}
+                style={{border:'1.5px dashed var(--color-border-secondary)',borderRadius:'var(--border-radius-md)',padding:'2rem',textAlign:'center',cursor:hasUnpaid?'not-allowed':'pointer'}}
+                onMouseEnter={e=>{if(!hasUnpaid)e.currentTarget.style.background='var(--color-background-secondary)'}}
+                onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style={{margin:'0 auto 8px',display:'block'}}><path d="M12 16V8M12 8L9 11M12 8l3 3" stroke="var(--color-text-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M20 16.5A4.5 4.5 0 0 0 15.5 12H14a6 6 0 1 0-5.5 8.5" stroke="var(--color-text-secondary)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                <div style={{fontSize:14,fontWeight:500,marginBottom:3}}>Drop files here or click to browse</div>
+                <div style={{fontSize:12,color:'var(--color-text-secondary)'}}>PDF (pages auto-detected) · JPG/PNG (1 page each) · Max 10 MB</div>
+              </div>
+              <input ref={fileRef} type="file" multiple accept=".pdf,.jpg,.jpeg,.png" style={{display:'none'}} onChange={e=>handleFiles(e.target.files)}/>
+
+              {/* staged files preview */}
+              {pendingFiles.length>0&&(
+                <div style={{marginTop:'1rem',background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)',padding:'10px 12px'}}>
+                  <div style={{fontSize:12,fontWeight:500,marginBottom:8,color:'var(--color-text-secondary)'}}>{pendingFiles.length} file{pendingFiles.length!==1?'s':''} selected — confirm to upload</div>
+                  {pendingFiles.map((f,i)=>(
+                    <div key={i} style={{display:'flex',alignItems:'center',gap:8,padding:'4px 0',borderBottom:'0.5px solid var(--color-border-tertiary)'}}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{flexShrink:0}}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="var(--color-text-secondary)" strokeWidth="1.5"/><path d="M14 2v6h6" stroke="var(--color-text-secondary)" strokeWidth="1.5"/></svg>
+                      <span style={{fontSize:12,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{f.name}</span>
+                      <span style={{fontSize:11,color:'var(--color-text-secondary)',flexShrink:0}}>{(f.size/1024).toFixed(0)} KB</span>
+                      <button onClick={()=>setPendingFiles(prev=>prev.filter((_,j)=>j!==i))} style={{background:'transparent',border:'none',color:'#a32d2d',cursor:'pointer',fontSize:14,lineHeight:1,padding:'0 2px'}}>✕</button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="field" style={{marginTop:'1rem'}}>
+                <label>Template <span style={{color:'#a32d2d'}}>*</span></label>
+                {templates.length===0
+                  ?<div style={{fontSize:12,color:'var(--color-text-secondary)',padding:'8px 0'}}>Loading templates…</div>
+                  :<div style={{display:'flex',flexDirection:'column',gap:6}}>
+                    {templates.map(t=>(
+                      <label key={t} style={{display:'flex',alignItems:'center',gap:8,padding:'8px 10px',border:'0.5px solid '+(selectedTemplate===t?'#1e3a5f':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',cursor:'pointer',background:selectedTemplate===t?'#e6f1fb':'transparent',marginBottom:0}}>
+                        <input type="radio" name="template" value={t} checked={selectedTemplate===t} onChange={()=>setSelectedTemplate(t)} style={{width:'auto',padding:0,margin:0,accentColor:'#1e3a5f'}}/>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontSize:12,fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.replace(/_/g,' ').replace(/\.pdf$/i,'')}</div>
+                        </div>
+                        <button onClick={e=>{e.stopPropagation();setPreviewTemplate(t);}} style={{fontSize:10,color:'#1e3a5f',background:'transparent',border:'0.5px solid #85b7eb77',borderRadius:4,padding:'2px 7px',cursor:'pointer',fontFamily:'inherit',flexShrink:0,whiteSpace:'nowrap'}}>Preview</button>
+                      </label>
+                    ))}
+                  </div>
+                }
+              </div>
+
+              <div className="field" style={{marginTop:'0.75rem',marginBottom:0}}>
+                <label>Notes for the reviewer (optional)</label>
+                <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="e.g. pages 1-3 are maths problems, please use LaTeX" style={{height:64,resize:'vertical'}}/>
+              </div>
+
+              {msg&&<div style={{fontSize:12,marginTop:8,color:msg.includes('failed')||msg.includes('skipped')?'#a32d2d':'var(--color-text-secondary)'}}>{msg}</div>}
+
+              {pendingFiles.length>0&&(
+                <button className="btn-primary" onClick={uploadPending} disabled={!selectedTemplate||isMath===null} style={{width:'100%',marginTop:'1rem',opacity:(selectedTemplate&&isMath!==null)?1:0.5}}>
+                  {!selectedTemplate?'Select a template to upload':isMath===null?'Select document type to upload':`Upload ${pendingFiles.length} file${pendingFiles.length!==1?'s':''}`}
+                </button>
+              )}
+            </div>
+          </>
+        )}
+
+        {tab==='submissions'&&(
+          <>
+            <div style={{fontSize:15,fontWeight:500,marginBottom:'1rem'}}>My submissions <span style={{fontSize:13,fontWeight:400,color:'var(--color-text-secondary)'}}>({subs.length} file{subs.length!==1?'s':''} in {batches.length} batch{batches.length!==1?'es':''})</span></div>
+            {batches.length===0&&<div style={{fontSize:13,color:'var(--color-text-secondary)',background:'var(--color-background-secondary)',padding:'1.5rem',borderRadius:'var(--border-radius-md)',textAlign:'center'}}>No submissions yet.</div>}
+            <div style={{display:'flex',flexDirection:'column',gap:16}}>
+              {batches.map((batch,bi)=>{
+                const batchNum=batches.length-bi; // newest batch gets the highest number
+                const batchTotal=batch.subs.reduce((a,s)=>a+(s.price||0),0);
+                const batchTTC = batchTotal + vatRate*batchTotal;
+                const batchPaid=batch.subs.every(s=>s.paid);
+                const batchProof=batch.subs.find(s=>s.paymentProof);
+                const batchStatus=batchPaid?'paid':batch.subs.some(s=>s.status==='done')?'done':batch.subs.every(s=>s.status==='awaiting_payment')?'awaiting_payment':'in_progress';
+                const allDone=batch.subs.every(s=>s.status==='done');
+                const isCollapsed=collapsedBatches.has(batch.batchId);
+                return(
+                  <div key={batch.batchId} style={{border:'1.5px solid '+(batchPaid?'#5dcaa555':batchStatus==='awaiting_payment'?'#f59e0b':'#85b7eb55'),borderRadius:'var(--border-radius-lg)',overflow:'hidden',background:'var(--color-background-primary)'}}>
+                    {/* batch header — clickable to collapse/expand */}
+                    <div onClick={()=>toggleBatch(batch.batchId)} style={{padding:'10px 16px',background:'var(--color-background-secondary)',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:6,cursor:'pointer',userSelect:'none'}}
+                      onMouseEnter={e=>e.currentTarget.style.background='#e9e9e7'}
+                      onMouseLeave={e=>e.currentTarget.style.background='var(--color-background-secondary)'}>
+                      <div style={{display:'flex',alignItems:'center',gap:8}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{transform:isCollapsed?'rotate(-90deg)':'none',transition:'transform 0.2s',flexShrink:0}}><path d="M6 9l6 6 6-6" stroke="var(--color-text-secondary)" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        <div style={{fontSize:12,fontWeight:600,color:'var(--color-text-secondary)'}}>
+                          Batch {batchNum} · {new Date(batch.uploadedAt).toLocaleString()} · {batch.subs.length} file{batch.subs.length!==1?'s':''}
+                        </div>
+                      </div>
+                      <div style={{display:'flex',gap:6,alignItems:'center'}}>
+                        <span style={{fontSize:13,fontWeight:700,color:batchPaid?'#0f6e56':'#92400e'}}>{sym(pricing.currency)}{Math.round(batchTTC)}</span>
+                        <span className="badge" style={{background:batchPaid?'#e1f5ee':batchStatus==='awaiting_payment'?'#fff3cd':'#e6f1fb',color:batchPaid?'#0f6e56':batchStatus==='awaiting_payment'?'#856404':'#1e3a5f'}}>{batchPaid?'Paid':batchStatus==='awaiting_payment'?'Awaiting Payment':'In Progress'}</span>
+                      </div>
+                    </div>
+
+                    {/* collapsible content */}
+                    {!isCollapsed&&(
+                    <>
+                    {/* individual files in batch — no download per file */}
+                    {batch.subs.map(s=>{
+                      const st=stl(s.status);
+                      return(
+                        <div key={s.id} style={{padding:'10px 16px',borderTop:'0.5px solid var(--color-border-tertiary)',display:'flex',alignItems:'center',gap:10,flexWrap:'wrap'}}>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style={{flexShrink:0}}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="var(--color-text-secondary)" strokeWidth="1.5"/><path d="M14 2v6h6" stroke="var(--color-text-secondary)" strokeWidth="1.5"/></svg>
+                          <div style={{flex:1,minWidth:0}}>
+                            <div style={{fontSize:13,fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.fileName}</div>
+                            <div style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:1}}>{s.pages?`${s.pages} page${s.pages!==1?'s':''}`:'image'}{s.price!=null?` · ${sym(pricing.currency)}${s.price}`:''}{s.templateName? ` · Template: ${s.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ')}`:''}
+                            </div>
+                          </div>
+                          <span className="badge" style={{background:st.bg,color:st.color,flexShrink:0}}>{st.label}</span>
+                          {s.status==='awaiting_payment'&&!s.paid&&(
+                            <button onClick={async()=>{if(confirm(`Delete "${s.fileName}"? This cannot be undone.`)){await api.del(`/api/submissions/${s.id}`);refresh();}}} className="btn-danger" style={{fontSize:11,padding:'3px 8px',flexShrink:0}}>Delete</button>
+                          )}
+                        </div>
+                      );
+                    })}
+
+                    {/* batch-level download + feedback — ONE per batch when done */}
+                    {allDone&&batch.subs[0].finalDoc&&(
+                      <div style={{padding:'10px 16px',background:'#e6f1fb',borderTop:'0.5px solid #85b7eb44',display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,flexWrap:'wrap'}}>
+                        <div style={{fontSize:12,fontWeight:500,color:'#1e3a5f'}}>📄 Your typed document is ready</div>
+                        <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                          {batch.subs[0].feedbackClosed
+                            ?<span style={{fontSize:11,color:'#0f6e56',fontWeight:500}}>✓ Case completed</span>
+                            :<button onClick={()=>setFeedbackModal(batch.subs[0])} style={{background:'transparent',color:'#854f0b',border:'0.5px solid #d4960077',borderRadius:'var(--border-radius-md)',padding:'4px 9px',fontSize:11,cursor:'pointer',fontFamily:'inherit'}}>✏️ Send feedback</button>
+                          }
+                          <a href={`/api/submissions/${batch.subs[0].id}/final`} download style={{fontSize:11,background:'transparent',color:'#1e3a5f',padding:'4px 9px',borderRadius:'var(--border-radius-md)',textDecoration:'none',fontWeight:500,border:'0.5px solid #85b7eb77'}}>⬇ Download</a>
+                          <button onClick={()=>setDocPreviewModal(batch.subs[0])} style={{fontSize:11,background:'#1e3a5f',color:'#fff',padding:'4px 9px',borderRadius:'var(--border-radius-md)',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>👁 Preview</button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* batch payment section */}
+                    {!batchPaid&&batchTotal>0&&(
+                      <div style={{borderTop:'2px solid #f59e0b',background:'#fffbeb',padding:'14px 16px'}}>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
+                          <div>
+                            <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:4}}>⚠️ Payment required for this batch</div>
+                            <div style={{fontSize:20,fontWeight:700,color:'#92400e'}}>{sym(pricing.currency)}{Math.round(batchTTC)}</div>
+                            <div style={{fontSize:11,color:'#b45309',marginTop:2}}>{batch.subs.reduce((a,s)=>a+(s.pages||0),0)} total pages × {sym(pricing.currency)}{pricing.pricePerPage} per page + {sym(pricing.currency)}{vatRate*batchTotal} of TVA</div>
+                          </div>
+                          <div style={{display:'flex',flexDirection:'column',gap:6,alignItems:'flex-end'}}>
+                            {!batchProof?(
+                              <button onClick={()=>setProofModal(batch.subs)} style={{background:'#d97706',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'8px 14px',fontSize:12,fontWeight:600,cursor:'pointer',whiteSpace:'nowrap'}}>
+                                📎 I've paid — upload proof
+                              </button>
+                            ):(
+                              <span style={{fontSize:12,color:'#b45309',fontWeight:500}}>✓ Proof submitted — awaiting confirmation</span>
+                            )}
+                            <a href={`mailto:admin@abc.com?subject=Payment for batch ${batch.batchId}&body=Hi, I paid ${sym(pricing.currency)}${batchTotal} for my batch of ${batch.subs.length} file(s).`}
+                              style={{fontSize:11,color:'#b45309',textDecoration:'none'}}>or email admin@abc.com →</a>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* batch paid strip */}
+                    {batchPaid&&(
+                      <div style={{borderTop:'0.5px solid #5dcaa533',background:'#e1f5ee',padding:'8px 16px',display:'flex',alignItems:'center',gap:8}}>
+                        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}>✓ Payment confirmed</span>
+                        <span style={{fontSize:11,color:'#0f6e56'}}>{sym(pricing.currency)}{batchTTC}</span>
+                        <div style={{marginLeft:'auto',display:'flex',gap:6}}>
+                          <button onClick={()=>setInvoiceModal({sub:{...batch.subs[0],price:batchTotal,pages:batch.subs.reduce((a,s)=>a+(s.pages||0),0),fileName:batch.subs.map(s=>s.fileName).join(', ')},isReceipt:true})}
+                            style={{fontSize:11,padding:'3px 9px',background:'transparent',color:'#0f6e56',border:'0.5px solid #5dcaa577',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit'}}>
+                            🧾 Receipt
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* batch invoice (pre-payment) */}
+                    
+                    {!batchPaid&&batchTotal>0&&(
+                      <div style={{padding:'6px 16px 10px',background:'var(--color-background-primary)',borderTop:'0.5px solid var(--color-border-tertiary)'}}>
+                        
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div style={{ fontSize: 11, color: '#856404', background: '#fff3cd', padding: '8px', borderRadius: '4px', border: '0.5px solid #ffeeba' }}>
+                            <strong>Instruction:</strong> Pay using M-Pesa at <strong>43331</strong>.
+                          </div>
+                          <div>  </div>
+                        </div>
+
+                        <button onClick={()=>setInvoiceModal({sub:{...batch.subs[0],price:batchTotal,pages:batch.subs.reduce((a,s)=>a+(s.pages||0),0),fileName:batch.subs.map(s=>s.fileName).join(', ')},isReceipt:false})}
+                          style={{fontSize:11,padding:'4px 10px',background:'transparent',color:'#1e3a5f',border:'0.5px solid #85b7eb77',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit'}}>
+                          📄 Download invoice
+                        </button>
+                      </div>
+                    )}
+                    </>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )} 
+        {tab==='thesis'&&(
+          <ThesisTab user={user} pricing={pricing} subs={subs} refresh={refresh}/>
+        )}
+      </div>
+      </div>
+      <Footer/>
+      <ChatFloating userId={user.id} userName={user.name} userEmail={user.email}/>
+    </div>
+  );
+}
+
+// ── MATHPIX OCR MODAL (admin + manager) ──────────────────────────────────────
+function MathPixModal({batch,user,onClose,onDone}){
+  const [appId,setAppId]=useState(localStorage.getItem('mp_app_id')||'');
+  const [appKey,setAppKey]=useState(localStorage.getItem('mp_app_key')||'');
+  const [hasServerCreds,setHasServerCreds]=useState(false);
+  const [running,setRunning]=useState(false);
+  const [results,setResults]=useState(null);
+  const [latexText,setLatexText]=useState('');
+  const [editorOpen,setEditorOpen]=useState(false);
+  const [err,setErr]=useState('');
+  const [leaderId,setLeaderId]=useState(null);
+  const [outputType,setOutputType]=useState('latex'); // 'latex' or 'text'
+  const isAdmin=user?.role==='admin';
+
+  useEffect(()=>{
+    fetch('/api/pricing/mathpix').then(r=>r.json()).then(d=>setHasServerCreds(d.hasCredentials)).catch(()=>{});
+    const leader=batch[0];
+    if(leader.mathpixResult){
+      fetch(`/api/submissions/${leader.id}/mathpix-result`)
+        .then(r=>r.json())
+        .then(d=>{if(d.content){setLatexText(d.content);setResults([{file:'Previous result',text:d.content.slice(0,100)}]);setLeaderId(leader.id);setOutputType(leader.mathpixResult.outputType||'latex');}})
+        .catch(()=>{});
+    }
+  },[]);
+
+  async function run(){
+    // Use server creds if available; otherwise use admin's local creds
+    const useLocal = isAdmin && !hasServerCreds;
+    if(useLocal&&(!appId.trim()||!appKey.trim())){setErr('App ID and App Key are required.');return}
+    if(useLocal){localStorage.setItem('mp_app_id',appId.trim());localStorage.setItem('mp_app_key',appKey.trim());}
+    setRunning(true);setErr('');
+    try{
+      const res=await fetch(`/api/batches/${batch[0].batchId}/mathpix`,{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        // Only send local creds if server doesn't have them
+        body:JSON.stringify(useLocal?{appId:appId.trim(),appKey:appKey.trim()}:{})
+      });
+      const data=await res.json();
+      if(data.error){setErr(data.error);setRunning(false);return}
+      setResults(data.results);
+      setLeaderId(data.submissionId||batch[0].id);
+      setOutputType(data.outputType||'latex');
+      const combined=data.results.map(r=>r.error?`=== ${r.file} ===\n[ERROR: ${r.error}]`:`=== ${r.file} ===\n${r.text||''}\n\n--- LaTeX ---\n${r.latex||''}`).join('\n\n');
+      setLatexText(data.outputType==='text'?data.results.map(r=>r.error?`=== ${r.file} ===\n[Error: ${r.error}]`:`=== ${r.file} ===\n${r.text||''}`).join('\n\n---\n\n'):combined);
+      setRunning(false);
+      onDone();
+    }catch(e){setErr('Request failed: '+e.message);setRunning(false)}
+  }
+
+  if(editorOpen) return(
+    <div className="overlay" style={{zIndex:600,padding:0,alignItems:'stretch'}}>
+      <div style={{display:'flex',flexDirection:'column',width:'100%',height:'100%',maxWidth:900,margin:'0 auto',background:'var(--color-background-primary)'}}>
+        <div style={{padding:'10px 16px',background:'#1e3a5f',display:'flex',alignItems:'center',gap:12,flexShrink:0}}>
+          <button onClick={()=>setEditorOpen(false)} style={{background:'rgba(255,255,255,0.15)',border:'none',color:'#fff',padding:'6px 14px',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit',fontSize:13}}>← Back</button>
+          <span style={{color:'#fff',fontSize:13,fontWeight:500}}>LaTeX Editor — Review & correct before sending</span>
+          <button onClick={()=>{navigator.clipboard.writeText(latexText).catch(()=>{});}} style={{marginLeft:'auto',background:'rgba(255,255,255,0.15)',border:'none',color:'#fff',padding:'6px 14px',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit',fontSize:13}}>Copy all</button>
+        </div>
+        <div style={{padding:'8px 12px',background:'#fff3cd',fontSize:11,color:'#92400e',flexShrink:0}}>
+          ✏️ Review the OCR output below, correct any errors, then close this editor and use <strong>Send final doc</strong> on the submission to deliver it to the student.
+        </div>
+        <textarea value={latexText} onChange={e=>setLatexText(e.target.value)}
+          style={{flex:1,padding:'16px',fontFamily:'monospace',fontSize:13,border:'none',outline:'none',resize:'none',background:'#fafafa',color:'#1a1a1a'}}
+          placeholder="LaTeX/text output will appear here…"/>
+      </div>
+    </div>
+  );
+
+  return(
+    <div className="overlay" onClick={e=>e.target===e.currentTarget&&!running&&onClose()}>
+      <div className="modal" style={{maxWidth:500}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem'}}>
+          <div>
+            <div style={{fontSize:15,fontWeight:500}}>MathPix OCR</div>
+            <div style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:2}}>{batch.length} file{batch.length!==1?'s':''} · {batch.map(s=>s.fileName).join(', ').slice(0,60)}</div>
+          </div>
+          {!running&&<button className="btn-sm" onClick={onClose} style={{padding:'4px 10px'}}>✕</button>}
+        </div>
+
+        {/* Info banner */}
+        <div style={{background:'#e6f1fb',border:'0.5px solid #85b7eb',borderRadius:'var(--border-radius-md)',padding:'10px 12px',marginBottom:'1rem',fontSize:12,color:'#1e3a5f'}}>
+          <strong>Staff only:</strong> The OCR result is stored for review. The student will NOT be notified. Use <em>Send final doc</em> when ready to deliver.
+        </div>
+
+        {results?(
+          <div>
+            <div style={{fontSize:14,fontWeight:600,color:'#0f6e56',marginBottom:8}}>
+              {outputType==='text'?'✅ Text OCR complete — plain text ready':'✅ LaTeX OCR complete — result stored for review'}
+            </div>
+            {results.map((r,i)=>(
+              <div key={i} style={{padding:'8px 10px',background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)',marginBottom:6,fontSize:12}}>
+                <div style={{fontWeight:500,marginBottom:2}}>{r.file}</div>
+                {r.error?<div style={{color:'#a32d2d'}}>Error: {r.error}</div>:<div style={{color:'var(--color-text-secondary)',whiteSpace:'pre-line',maxHeight:60,overflow:'hidden'}}>{(r.text||r.latex||'').slice(0,200)||'(no text)'}</div>}
+              </div>
+            ))}
+
+            {outputType==='text'?(
+              editorOpen?(
+                <div style={{marginTop:8}}>
+                  <textarea value={latexText} onChange={e=>setLatexText(e.target.value)}
+                    style={{width:'100%',height:200,fontFamily:'inherit',fontSize:13,padding:'10px',border:'0.5px solid var(--color-border-secondary)',borderRadius:'var(--border-radius-md)',resize:'vertical',outline:'none',boxSizing:'border-box'}}
+                    placeholder="Plain text output…"/>
+                  <div style={{display:'flex',gap:8,marginTop:8,flexWrap:'wrap'}}>
+                    <button onClick={()=>{window.open('https://docs.google.com/document/create', '_blank');navigator.clipboard.writeText(latexText).catch(()=>{});alert('Text copied to clipboard! Paste into the new Google Doc (Ctrl+V / Cmd+V).');}} style={{flex:1,minWidth:140,background:'#1a73e8',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'9px',fontSize:13,cursor:'pointer',fontFamily:'inherit',fontWeight:500,display:'inline-flex',alignItems:'center',justifyContent:'center',gap:6}}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="16" height="20" rx="2" fill="#fff"/><path d="M8 10h8M8 14h5" stroke="#1a73e8" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                      Open in Google Docs
+                    </button>
+                    <button onClick={()=>{navigator.clipboard.writeText(latexText).catch(()=>{});}} className="btn-sm">Copy text</button>
+                    <button onClick={()=>setEditorOpen(false)} className="btn-sm">← Back</button>
+                  </div>
+                </div>
+              ):(
+                <div style={{display:'flex',gap:8,marginTop:'1rem',flexWrap:'wrap'}}>
+                  <button onClick={()=>setEditorOpen(true)} style={{flex:1,minWidth:140,background:'#6d28d9',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'9px',fontSize:13,cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>
+                    ✏️ Review text
+                  </button>
+                  <button onClick={()=>{navigator.clipboard.writeText(latexText).catch(()=>{});alert('Text copied! Paste into a new word Doc (Ctrl+V / Cmd+V).');}} style={{flex:1,minWidth:140,background:'#1a73e8',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'9px',fontSize:13,cursor:'pointer',fontFamily:'inherit',fontWeight:500,display:'inline-flex',alignItems:'center',justifyContent:'center',gap:6}}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="16" height="20" rx="2" fill="#fff"/><path d="M8 10h8M8 14h5" stroke="#1a73e8" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                    Copy text
+                  </button>
+                  <button onClick={onClose} className="btn-sm" style={{flexShrink:0,alignSelf:'center'}}>Close</button>
+                </div>
+              )
+            ):(
+              <div style={{display:'flex',gap:8,marginTop:'1rem',flexWrap:'wrap'}}>
+                <button onClick={()=>setEditorOpen(true)} style={{flex:1,minWidth:140,background:'#6d28d9',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'9px',fontSize:13,cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>
+                  ✏️ Open LaTeX editor
+                </button>
+                <button onClick={()=>{
+                  const form=document.createElement('form');
+                  form.method='POST';form.action='https://www.overleaf.com/docs';form.target='_blank';
+                  const snip=document.createElement('input');snip.type='hidden';snip.name='snip';snip.value=latexText;
+                  const type=document.createElement('input');type.type='hidden';type.name='snip_type';type.value='latex';
+                  form.appendChild(snip);form.appendChild(type);
+                  document.body.appendChild(form);form.submit();document.body.removeChild(form);
+                }} style={{flex:1,minWidth:140,background:'#4f9a4f',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'9px',fontSize:13,cursor:'pointer',fontFamily:'inherit',fontWeight:500,display:'inline-flex',alignItems:'center',justifyContent:'center',gap:6}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  Open in Overleaf
+                </button>
+                <button onClick={onClose} className="btn-sm" style={{flexShrink:0,alignSelf:'center'}}>Close</button>
+              </div>
+            )}
+            {outputType==='latex'&&(
+              <div style={{marginTop:8,fontSize:10,color:'var(--color-text-secondary)'}}>
+                💡 After compiling in Overleaf, share with admin at <strong>abc@gmail.com</strong> via the Share button (top-right in Overleaf).
+              </div>
+            )}
+          </div>
+        ):(
+          <>
+            {hasServerCreds?(
+              <div style={{background:'#e1f5ee',border:'0.5px solid #5dcaa5',borderRadius:'var(--border-radius-md)',padding:'10px 12px',marginBottom:'1rem',fontSize:12,color:'#0f6e56'}}>
+                ✅ API credentials are configured by admin. Ready to process.
+              </div>
+            ):(
+              isAdmin?(
+                <>
+                  <div style={{background:'#fff3cd',border:'0.5px solid #f59e0b',borderRadius:'var(--border-radius-md)',padding:'10px 12px',marginBottom:'1rem',fontSize:12,color:'#92400e'}}>
+                    No server credentials found. Enter yours below, or save them permanently in the Pricing tab.
+                  </div>
+                  <div className="field"><label>App ID</label><input value={appId} onChange={e=>setAppId(e.target.value)} placeholder="your_app_id"/></div>
+                  <div className="field"><label>App Key</label><input value={appKey} onChange={e=>setAppKey(e.target.value)} placeholder="your_app_key" type="password"/></div>
+                </>
+              ):(
+                <div style={{background:'#fff3cd',border:'0.5px solid #f59e0b',borderRadius:'var(--border-radius-md)',padding:'10px 12px',marginBottom:'1rem',fontSize:12,color:'#92400e'}}>
+                  ⚠️ API credentials not yet configured. Please contact the admin.
+                </div>
+              )
+            )}
+            {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
+            <button className="btn-primary" onClick={run} disabled={running||(!hasServerCreds&&(!appId.trim()||!appKey.trim()))} style={{width:'100%'}}>
+              {running?'Processing…':'Generate latex'}
+            </button>
+            {running&&<div style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:8,textAlign:'center'}}>Sending {batch.length} file{batch.length!==1?'s':''} to MathPix… this may take a moment</div>}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── STAFF CHAT PANEL (admin + managers) ──────────────────────────────────────
+function StaffChatPanel({user}){
+  const [open,setOpen]=useState(false);
+  const [msgs,setMsgs]=useState([]);
+  const [text,setText]=useState('');
+  const [sending,setSending]=useState(false);
+  const [newCount,setNewCount]=useState(0);
+  const prevOtherCountRef=useRef(-1);
+  const suppressRef=useRef(false);
+  const bottomRef=useRef();
+  const justOpenedRef=useRef(false); // scroll only on open/send, not polls
+
+  async function load(scrollToBottom=false){
+    try{
+      const m=await api.get('/api/staff-chat');
+      const others=m.filter(x=>x.fromId!==user.id).length;
+      if(prevOtherCountRef.current>=0&&others>prevOtherCountRef.current){
+        const added=others-prevOtherCountRef.current;
+        if(!suppressRef.current) playNotifSound();
+        if(!open) setNewCount(prev=>prev+added);
+      }
+      suppressRef.current=false;
+      prevOtherCountRef.current=others;
+      setMsgs(m);
+      if(scrollToBottom&&bottomRef.current) bottomRef.current.scrollIntoView({behavior:'smooth'});
+    }catch{}
+  }
+  useEffect(()=>{load();const t=setInterval(load,CHAT_MS);return()=>clearInterval(t)},[]);
+  // Scroll only when panel is first opened
+  useEffect(()=>{
+    if(open){
+      setNewCount(0);
+      setTimeout(()=>bottomRef.current&&bottomRef.current.scrollIntoView({behavior:'auto'}),50);
+    }
+  },[open]);
+
+  async function send(){
+    if(!text.trim()||sending)return;
+    setSending(true);
+    suppressRef.current=true;
+    await api.post('/api/staff-chat',{fromId:user.id,fromName:user.name,role:user.role,tagName:user.tagName||user.name,text:text.trim()});
+    setText('');await load(true);setSending(false); // scroll after sending
+  }
+
+  // Name display: admin sees [tagName] RealName, managers see tagName
+  function displayName(m){
+    if(m.fromId===user.id)return 'You';
+    if(user.role==='admin') return m.tagName?`[${m.tagName}] ${m.fromName}`:m.fromName;
+    return m.tagName||m.fromName;
+  }
+
+  return(
+    <>
+      {open&&(
+        <div className="staff-panel">
+          <div style={{padding:'12px 14px',background:'#0f6e56',display:'flex',alignItems:'center',justifyContent:'space-between',flexShrink:0,borderRadius:'var(--border-radius-lg) var(--border-radius-lg) 0 0'}}>
+            <div style={{fontSize:13,fontWeight:500,color:'#fff'}}>Staff Discussion</div>
+            <button onClick={()=>setOpen(false)} style={{background:'transparent',border:'none',color:'rgba(255,255,255,0.7)',cursor:'pointer',fontSize:18,padding:'2px 4px'}}>✕</button>
+          </div>
+          <div style={{flex:1,overflowY:'auto',padding:'8px',display:'flex',flexDirection:'column',gap:6}}>
+            {msgs.length===0&&<div style={{textAlign:'center',padding:'1.5rem',fontSize:12,color:'var(--color-text-secondary)'}}>No messages yet. Start the discussion!</div>}
+            {msgs.map(m=>{
+              const isMe=m.fromId===user.id;
+              return(
+                <div key={m.id} style={{display:'flex',flexDirection:'column',alignItems:isMe?'flex-end':'flex-start'}}>
+                  {!isMe&&<div style={{fontSize:9,color:'var(--color-text-secondary)',marginBottom:2,paddingLeft:4}}>{displayName(m)}</div>}
+                  <div style={{maxWidth:'85%',padding:'7px 10px',borderRadius:10,fontSize:12,lineHeight:1.5,background:isMe?'#0f6e56':'var(--color-background-secondary)',color:isMe?'#fff':'var(--color-text-primary)',borderBottomRightRadius:isMe?2:10,borderBottomLeftRadius:isMe?10:2}}>
+                    {m.text}
+                  </div>
+                  <div style={{fontSize:9,color:'var(--color-text-secondary)',marginTop:2,paddingRight:4,paddingLeft:4}}>{new Date(m.sentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+                </div>
+              );
+            })}
+            <div ref={bottomRef}/>
+          </div>
+          <div style={{padding:'8px',borderTop:'0.5px solid var(--color-border-tertiary)',display:'flex',gap:6,flexShrink:0}}>
+            <textarea value={text} onChange={e=>setText(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}} placeholder="Message staff… (Enter to send)" style={{flex:1,height:40,resize:'none',fontSize:12,padding:'6px 8px'}}/>
+            <button onClick={send} disabled={sending||!text.trim()} style={{background:'#0f6e56',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'6px 10px',cursor:'pointer',fontSize:13,alignSelf:'flex-end'}}>{sending?'…':'↑'}</button>
+          </div>
+        </div>
+      )}
+      <button className="staff-fab" onClick={()=>setOpen(o=>!o)} title="Staff discussion" style={{position:'fixed',bottom:24,left:24}}>
+        {open
+          ?<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg>
+          :<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M17 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2v4l-4-4H9a2 2 0 0 1-2-2v-1M3 7a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H8l-4 4V7z" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        }
+        {newCount>0&&!open&&<span className="chat-fab-badge">{newCount}</span>}
+      </button>
+    </>
+  );
+}
+
+// ── ADMIN FLOATING CHAT (inline — no new window) ─────────────────────────────
+function AdminChatFloating({subs,onOpenConv,filterUserId}){
+  const [open,setOpen]=useState(false);
+  const [msgs,setMsgs]=useState([]);
+  const [fbs,setFbs]=useState([]);
+  const [selSub,setSelSub]=useState(null);   // selected submission for inline thread
+  const [convMsgs,setConvMsgs]=useState([]);
+  const [convFbs,setConvFbs]=useState([]);
+  const [reply,setReply]=useState('');
+  const [sending,setSending]=useState(false);
+  const prevUnreadRef=useRef(0);
+  const bottomRef=useRef();
+
+  async function load(){
+    try{
+      const [m,f]=await Promise.all([api.get('/api/messages'),api.get('/api/feedbacks')]);
+      const unreadNow=m.filter(x=>x.toId==='admin'&&!(x.readBy||[]).includes('admin')).length+f.filter(x=>!x.read).length;
+      if(unreadNow>prevUnreadRef.current&&prevUnreadRef.current>=0) playNotifSound();
+      prevUnreadRef.current=unreadNow;
+      setMsgs(m);setFbs(f);
+    }catch{}
+  }
+
+  async function loadConv(sub){
+    const [m,f]=await Promise.all([api.get('/api/messages'),api.get(`/api/submissions/${sub.id}/feedbacks`)]);
+    const related=m.filter(x=>x.submissionId===sub.id||(x.fromId===sub.userId&&x.toId==='admin'&&!x.submissionId)||(x.toId===sub.userId&&x.fromId==='admin'&&!x.submissionId));
+    setConvMsgs(related);setConvFbs(f);
+    // mark as read server-side
+    related.filter(x=>x.toId==='admin'&&!(x.readBy||[]).includes('admin')).forEach(x=>api.patch(`/api/messages/${x.id}`,{readerId:'admin'}));
+    f.filter(x=>!x.read).forEach(x=>api.patch(`/api/feedbacks/${x.id}`,{read:true}));
+    // update local list counts — add 'admin' to readBy for locally tracked msgs
+    setMsgs(prev=>prev.map(x=>related.find(r=>r.id===x.id)?{...x,readBy:[...((x.readBy||[])),'admin']}:x));
+    setFbs(prev=>prev.map(x=>f.find(r=>r.id===x.id&&!r.read)?{...x,read:true}:x));
+  }
+
+  useEffect(()=>{load();const t=setInterval(load,POLL_MS);return()=>clearInterval(t)},[]);
+  useEffect(()=>{if(selSub)loadConv(selSub)},[selSub?.id]);
+  useEffect(()=>{bottomRef.current&&bottomRef.current.scrollIntoView({behavior:'smooth'})},[convMsgs,convFbs]);
+
+  // Build conversation list
+  const convMap={};
+  msgs.forEach(m=>{
+    if(!m.submissionId)return;
+    const sid=m.submissionId;
+    if(!convMap[sid])convMap[sid]={sid,unread:0,lastAt:m.sentAt,preview:'',isFeedback:false};
+    if(new Date(m.sentAt)>=new Date(convMap[sid].lastAt)){convMap[sid].lastAt=m.sentAt;convMap[sid].preview=(m.body||'').split('\n')[0];convMap[sid].isFeedback=false;}
+    if(m.toId==='admin'&&!(m.readBy||[]).includes('admin')) convMap[sid].unread++;
+  });
+  fbs.forEach(f=>{
+    const sid=f.submissionId;
+    if(!convMap[sid])convMap[sid]={sid,unread:0,lastAt:f.sentAt,preview:'',isFeedback:true};
+    if(new Date(f.sentAt)>=new Date(convMap[sid].lastAt)){convMap[sid].lastAt=f.sentAt;convMap[sid].isFeedback=true;convMap[sid].preview=f.text||(f.file?(f.file.mimeType&&f.file.mimeType.startsWith('audio')?'🎙 Voice note':'🖼 Screenshot'):'');}
+    if(!f.read) convMap[sid].unread++;
+  });
+  const convList=Object.values(convMap).map(c=>({...c,sub:subs.find(s=>s.id===c.sid)})).filter(c=>{
+    if(!c.sub) return false;
+    // Managers only see conversations for their assigned batches
+    if(filterUserId) return c.sub.assignedTo?.id===filterUserId;
+    return true;
+  }).sort((a,b)=>new Date(b.lastAt)-new Date(a.lastAt));
+  const totalUnread=convList.reduce((a,c)=>a+c.unread,0);
+
+  function openConv(c){
+    setSelSub(c.sub);
+    setReply('');
+    // optimistic local clear
+    setMsgs(prev=>prev.map(m=>m.submissionId===c.sid&&m.toId==='admin'?{...m,readBy:[...((m.readBy||[])),'admin']}:m));
+    setFbs(prev=>prev.map(f=>f.submissionId===c.sid?{...f,read:true}:f));
+  }
+  function backToList(){setSelSub(null);setConvMsgs([]);setConvFbs([]);}
+
+  async function sendReply(){
+    if(!reply.trim()||!selSub)return;
+    setSending(true);
+    const res=await api.post('/api/messages',{fromId:'admin',fromName:'Admin',toId:selSub.userId,toName:selSub.userName,toEmail:selSub.userEmail,subject:`Re: ${selSub.fileName}`,body:reply.trim(),submissionId:selSub.id,submissionFileName:selSub.fileName});
+    if(!res.error){setReply('');await loadConv(selSub);}
+    setSending(false);
+  }
+
+  // thread for selected conv
+  const proofItem=selSub&&selSub.paymentProof?[{id:'proof_'+selSub.id,_type:'proof',sentAt:selSub.uploadedAt,userName:selSub.userName,fromName:selSub.userName}]:[];
+  const thread=[...convMsgs.map(m=>({...m,_type:'message'})),...convFbs.map(f=>({...f,_type:'feedback'})),...proofItem].sort((a,b)=>new Date(a.sentAt)-new Date(b.sentAt));
+
+  return(
+    <>
+      {open&&(
+        <div className="chat-panel" style={{maxHeight:selSub?'72vh':'520px'}}>
+          <div className="chat-panel-head">
+            <div style={{display:'flex',alignItems:'center',gap:8,flex:1,minWidth:0}}>
+              {selSub&&<button onClick={backToList} style={{background:'transparent',border:'none',color:'rgba(255,255,255,0.7)',cursor:'pointer',fontSize:18,lineHeight:1,padding:'0 4px',flexShrink:0}}>←</button>}
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:13,fontWeight:500,color:'#fff',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{selSub?selSub.userName:'Joe'}</div>
+                {selSub&&<div style={{fontSize:10,color:'rgba(255,255,255,0.6)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{selSub.fileName}</div>}
+              </div>
+            </div>
+            <div style={{display:'flex',gap:4,flexShrink:0}}>
+              {selSub&&<button title="Open full view" onClick={()=>{onOpenConv(selSub);setOpen(false);}} style={{background:'transparent',border:'none',color:'rgba(255,255,255,0.6)',cursor:'pointer',fontSize:14,padding:'2px 4px'}}>⤢</button>}
+              <button onClick={()=>{setOpen(false);if(selSub)backToList();}} style={{background:'transparent',border:'none',color:'rgba(255,255,255,0.7)',cursor:'pointer',fontSize:18,lineHeight:1,padding:'2px 4px'}}>✕</button>
+            </div>
+          </div>
+
+          {!selSub?(
+            <div className="chat-panel-body">
+              {convList.length===0&&<div style={{textAlign:'center',padding:'2rem 1rem',color:'var(--color-text-secondary)'}}><svg width="32" height="32" viewBox="0 0 24 24" fill="none" style={{margin:'0 auto 8px',display:'block',opacity:0.4}}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg><div style={{fontSize:13}}>No conversations yet</div></div>}
+              {convList.map(c=>(
+                <div key={c.sid} className={'chat-msg-row'+(c.unread>0?' unread':'')} onClick={()=>openConv(c)}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:6}}>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:12,fontWeight:c.unread>0?600:400,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{c.sub.userName}</div>
+                      <div style={{fontSize:11,color:'var(--color-text-secondary)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginTop:1}}>{c.sub.fileName}</div>
+                    </div>
+                    {c.unread>0&&<span style={{background:'#1e3a5f',color:'#fff',fontSize:10,fontWeight:700,minWidth:18,height:18,borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 4px',flexShrink:0}}>{c.unread}</span>}
+                  </div>
+                  <div style={{display:'flex',alignItems:'center',gap:6,marginTop:4}}>
+                    {c.isFeedback&&<span style={{fontSize:9,background:'#fff3cd',color:'#856404',padding:'1px 5px',borderRadius:8,fontWeight:600,flexShrink:0}}>FEEDBACK</span>}
+                    <div style={{fontSize:11,color:'var(--color-text-secondary)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{c.preview||'…'}</div>
+                  </div>
+                  <div style={{fontSize:10,color:'var(--color-text-secondary)',marginTop:3}}>{new Date(c.lastAt).toLocaleString()}</div>
+                </div>
+              ))}
+            </div>
+          ):(
+            <>
+              {/* inline thread */}
+              <div style={{flex:1,overflowY:'auto',padding:'8px'}}>
+                {thread.length===0&&<div style={{textAlign:'center',padding:'1.5rem',color:'var(--color-text-secondary)',fontSize:12}}>No messages yet.</div>}
+                <div className="conv-wrap">
+                  {thread.map(item=>{
+                    const isAdmin=item._type==='message'&&item.fromId==='admin';
+                    const isFeedback=item._type==='feedback';
+                    const isProof=item._type==='proof';
+                    const cls=isAdmin?'admin':isFeedback?'feedback':'student';
+                    return(
+                      <div key={item.id} style={{display:'flex',flexDirection:'column',alignItems:isAdmin?'flex-end':'flex-start'}}>
+                        <div style={{fontSize:9,color:'var(--color-text-secondary)',marginBottom:2,paddingLeft:3}}>
+                          {isAdmin?'Admin':item.userName||item.fromName} · {new Date(item.sentAt).toLocaleString()}
+                          {isFeedback&&<span style={{marginLeft:4,background:'#f59e0b',color:'#fff',padding:'1px 4px',borderRadius:6,fontSize:8}}>FEEDBACK</span>}
+                          {isProof&&<span style={{marginLeft:4,background:'#d97706',color:'#fff',padding:'1px 4px',borderRadius:6,fontSize:8}}>PROOF</span>}
+                        </div>
+                        {isProof?(
+                          <div style={{background:'#fffbeb',border:'1px solid #f59e0b55',borderRadius:10,padding:'6px',maxWidth:'85%',borderBottomLeftRadius:2}}>
+                            <div style={{fontSize:10,color:'#92400e',marginBottom:4,fontWeight:500}}>📎 Payment proof</div>
+                            <img src={`/api/submissions/${selSub.id}/payment-proof/view`} alt="proof" style={{maxWidth:'100%',maxHeight:160,borderRadius:4,display:'block',cursor:'pointer'}} onClick={()=>window.open(`/api/submissions/${selSub.id}/payment-proof/view`,'_blank')}/>
+                          </div>
+                        ):(
+                          <div className={`conv-bubble ${cls}`} style={{fontSize:12,padding:'7px 10px'}}>
+                            {(item.body||item.text)&&<div style={{whiteSpace:'pre-line'}}>{item.body||item.text}</div>}
+                            {isFeedback&&item.file&&(
+                              <div style={{marginTop:item.text?6:0}}>
+                                {item.file.mimeType&&item.file.mimeType.startsWith('audio')
+                                  ?<audio src={`/api/feedback/${item.submissionId}/${item.file.storedName}`} controls style={{width:'100%',height:28}}/>
+                                  :item.file.mimeType&&item.file.mimeType.startsWith('image')
+                                  ?<img src={`/api/feedback/${item.submissionId}/${item.file.storedName}`} alt="screenshot" style={{maxWidth:'100%',borderRadius:4,marginTop:3,display:'block'}}/>
+                                  :<a href={`/api/feedback/${item.submissionId}/${item.file.storedName}`} target="_blank" rel="noreferrer" style={{color:'#856404',fontSize:11}}>📎 {item.file.fileName}</a>
+                                }
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                  <div ref={bottomRef}/>
+                </div>
+              </div>
+              {/* reply box */}
+              <div style={{padding:'8px',borderTop:'0.5px solid var(--color-border-tertiary)',flexShrink:0}}>
+                <div style={{display:'flex',gap:6}}>
+                  <textarea value={reply} onChange={e=>setReply(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendReply()}}} placeholder="Reply… (Enter to send)" style={{flex:1,height:44,resize:'none',fontSize:12,padding:'6px 8px'}}/>
+                  <button onClick={sendReply} disabled={sending||!reply.trim()} className="btn-primary" style={{alignSelf:'flex-end',padding:'8px 10px',fontSize:12}}>{sending?'…':'Send'}</button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+      <button className="chat-fab" onClick={()=>{setOpen(o=>!o);if(open&&selSub)backToList();}}>
+        {open?<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg>:<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+        {totalUnread>0&&!open&&<span className="chat-fab-badge">{totalUnread}</span>}
+      </button>
+    </>
+  );
+}
+// ── THESIS / REPORT TAB ──────────────────────────────────────────────────────
+function ThesisTab({user,pricing,subs,refresh}){
+  const [thesisSubs]=useState(()=>subs.filter(s=>s.submissionType==='thesis'));
+  const [pendingFiles,setPendingFiles]=useState([]);
+  const [notes,setNotes]=useState('');
+  const [msg,setMsg]=useState('');
+  const [templates,setTemplates]=useState([]);
+  const [selectedTemplate,setSelectedTemplate]=useState('');
+  const [isMath,setIsMath]=useState(null);
+  const [uploading,setUploading]=useState(false);
+  const [convSub,setConvSub]=useState(null); // thesis sub to chat with
+  const fileRef=useRef();
+  const thesisList=subs.filter(s=>s.submissionType==='thesis');
+
+  useEffect(()=>{api.get('/api/templates').then(setTemplates).catch(()=>{});},[]);
+
+  async function handleFiles(files){
+    const arr=Array.from(files||[]).filter(f=>f.size<=50*1024*1024); // 50MB for thesis
+    if(arr.length<(files||[]).length)setMsg('Some files exceeded 50 MB and were skipped.');
+    setPendingFiles(prev=>[...prev,...arr]);
+  }
+
+  async function uploadThesis(){
+    if(!pendingFiles.length){setMsg('Please add files.');return}
+    if(isMath===null){setMsg('Please select a document type.');return}
+    setUploading(true);setMsg('Uploading thesis…');
+    const batchId='batch_'+Date.now();
+    for(const file of pendingFiles){
+      const fd=new FormData();
+      fd.append('userId',user.id);fd.append('userName',user.name);fd.append('userEmail',user.email);
+      fd.append('notes',notes.trim());fd.append('batchId',batchId);
+      fd.append('uploadFolder',user.uploadFolder||user.id);
+      fd.append('templateName',selectedTemplate||'none');
+      fd.append('isMathDoc',isMath?'true':'false');
+      fd.append('submissionType','thesis');
+      fd.append('file',file);
+      try{
+        const res=await fetch('/api/upload',{method:'POST',body:fd});
+        const data=await res.json();
+        if(data.error){setMsg(data.error);setUploading(false);return}
+      }catch{setMsg('Upload failed.');setUploading(false);return}
+    }
+    setPendingFiles([]);setNotes('');setMsg('Thesis submitted!');
+    setUploading(false);await refresh();
+  }
+
+  return(
+    <div>
+      {convSub&&<ConversationModal doc={convSub} adminUser={user} pricing={pricing} onClose={()=>setConvSub(null)}/>}
+      <div style={{fontSize:15,fontWeight:500,marginBottom:4}}>Thesis / Report submission</div>
+      <div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:'1.25rem'}}>Long-term document project with direct chat with your assigned manager.</div>
+
+      {/* Previous theses */}
+      {thesisList.length>0&&(
+        <div style={{marginBottom:'1.5rem'}}>
+          <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>My thesis submissions ({thesisList.length})</div>
+          {thesisList.map(s=>{
+            const st=stl(s.status);
+            return(
+              <div key={s.id} style={{border:'0.5px solid var(--color-border-tertiary)',borderRadius:'var(--border-radius-md)',padding:'10px 14px',marginBottom:8,display:'flex',alignItems:'center',gap:10,flexWrap:'wrap',background:'var(--color-background-primary)'}}>
+                <div style={{flex:1,minWidth:120}}>
+                  <div style={{fontSize:13,fontWeight:500}}>{s.fileName}</div>
+                  <div style={{fontSize:11,color:'var(--color-text-secondary)'}}>{new Date(s.uploadedAt).toLocaleDateString()}{s.templateName&&s.templateName!=='none'?` · Template: ${s.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ')}`:''}
+                  </div>
+                </div>
+                <span className="badge" style={{background:st.bg,color:st.color}}>{st.label}</span>
+                {s.assignedTo&&<span style={{fontSize:11,color:'#0f6e56',background:'#e1f5ee',padding:'2px 8px',borderRadius:8}}>Managed by {s.assignedTo.name}</span>}
+                <button onClick={()=>setConvSub(s)} style={{background:'#1e3a5f',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'5px 12px',fontSize:12,cursor:'pointer',fontFamily:'inherit',display:'inline-flex',alignItems:'center',gap:4}}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#fff" strokeWidth="1.5"/></svg>
+                  Chat with manager
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* New thesis upload */}
+      <div className="card">
+        <div style={{fontSize:13,fontWeight:500,marginBottom:'1rem'}}>Submit new thesis / report</div>
+
+        {/* Document type */}
+        <div style={{marginBottom:'1rem',padding:'10px 12px',background:isMath===null?'#fff3cd':'var(--color-background-secondary)',border:isMath===null?'1px solid #f59e0b':'none',borderRadius:'var(--border-radius-md)'}}>
+          <div style={{fontSize:12,fontWeight:600,color:isMath===null?'#92400e':'var(--color-text-secondary)',marginBottom:6}}>
+            Document type <span style={{color:'#a32d2d'}}>*</span>
+          </div>
+          <div style={{display:'flex',gap:8}}>
+            <button onClick={()=>setIsMath(true)} style={{flex:1,padding:'8px',border:'1.5px solid '+(isMath===true?'#1e3a5f':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',background:isMath===true?'#1e3a5f':'transparent',color:isMath===true?'#fff':'var(--color-text-primary)',cursor:'pointer',fontFamily:'inherit',fontSize:12,fontWeight:500}}>
+              📐 Math / Sciences
+            </button>
+            <button onClick={()=>setIsMath(false)} style={{flex:1,padding:'8px',border:'1.5px solid '+(isMath===false?'#0f6e56':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',background:isMath===false?'#0f6e56':'transparent',color:isMath===false?'#fff':'var(--color-text-primary)',cursor:'pointer',fontFamily:'inherit',fontSize:12,fontWeight:500}}>
+              📝 Text / Languages
+            </button>
+          </div>
+        </div>
+
+        {/* File drop */}
+        <div onDrop={e=>{e.preventDefault();handleFiles(e.dataTransfer.files)}} onDragOver={e=>e.preventDefault()} onClick={()=>fileRef.current.click()}
+          style={{border:'1.5px dashed var(--color-border-secondary)',borderRadius:'var(--border-radius-md)',padding:'1.5rem',textAlign:'center',cursor:'pointer',marginBottom:'0.75rem'}}
+          onMouseEnter={e=>e.currentTarget.style.background='var(--color-background-secondary)'}
+          onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+          <div style={{fontSize:13,fontWeight:500,marginBottom:3}}>Drop thesis files or click to browse</div>
+          <div style={{fontSize:11,color:'var(--color-text-secondary)'}}>PDF, images · Max 50 MB each</div>
+        </div>
+        <input ref={fileRef} type="file" multiple accept=".pdf,.jpg,.jpeg,.png" style={{display:'none'}} onChange={e=>handleFiles(e.target.files)}/>
+
+        {pendingFiles.length>0&&(
+          <div style={{background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)',padding:'8px 10px',marginBottom:'0.75rem'}}>
+            {pendingFiles.map((f,i)=>(
+              <div key={i} style={{display:'flex',alignItems:'center',gap:6,fontSize:12,padding:'2px 0'}}>
+                <span style={{flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{f.name}</span>
+                <button onClick={()=>setPendingFiles(p=>p.filter((_,j)=>j!==i))} style={{background:'transparent',border:'none',color:'#a32d2d',cursor:'pointer',fontSize:14,padding:'0 2px'}}>✕</button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Template (optional for thesis) */}
+        {templates.length>0&&(
+          <div className="field" style={{marginBottom:'0.75rem'}}>
+            <label>Template (optional)</label>
+            <select value={selectedTemplate} onChange={e=>setSelectedTemplate(e.target.value)} style={{width:'100%'}}>
+              <option value="">None / Use default</option>
+              {templates.map(t=><option key={t} value={t}>{t.replace(/_/g,' ').replace(/\.pdf$/i,'')}</option>)}
+            </select>
+          </div>
+        )}
+
+        <div className="field" style={{marginBottom:'0.75rem'}}>
+          <label>Description / notes for manager</label>
+          <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="e.g. Chapter 1-3, approximately 80 pages, includes equations and figures" style={{height:72,resize:'vertical'}}/>
+        </div>
+
+        {msg&&<div style={{fontSize:12,marginBottom:8,color:msg.includes('fail')||msg.includes('skip')?'#a32d2d':msg.includes('submitted')?'#0f6e56':'var(--color-text-secondary)'}}>{msg}</div>}
+
+        <button className="btn-primary" onClick={uploadThesis} disabled={uploading||!pendingFiles.length||isMath===null} style={{width:'100%',opacity:(pendingFiles.length&&isMath!==null)?1:0.5}}>
+          {uploading?'Uploading…':pendingFiles.length?'Submit thesis':'Add files to submit'}
+        </button>
+      </div>
+    </div>
+  );
+}
+// ── MATHPIX CREDENTIALS FORM (admin only, in pricing tab) ────────────────────
+function MathPixCredsForm(){
+  const [appId,setAppId]=useState('');
+  const [appKey,setAppKey]=useState('');
+  const [has,setHas]=useState(false);
+  const [saved,setSaved]=useState(false);
+  useEffect(()=>{fetch('/api/pricing/mathpix').then(r=>r.json()).then(d=>setHas(d.hasCredentials)).catch(()=>{});},[]);
+  async function save(){
+    if(!appId.trim()&&!appKey.trim())return;
+    await fetch('/api/pricing/mathpix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mpAppId:appId.trim()||undefined,mpAppKey:appKey.trim()||undefined})});
+    setHas(true);setSaved(true);setAppId('');setAppKey('');setTimeout(()=>setSaved(false),2000);
+  }
+  async function clear(){
+    await fetch('/api/pricing/mathpix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mpAppId:'',mpAppKey:''})});
+    setHas(false);
+  }
+  return(
+    <div>
+      {has&&<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8,padding:'6px 10px',background:'#e1f5ee',borderRadius:'var(--border-radius-md)'}}>
+        <span style={{fontSize:12,color:'#0f6e56',flex:1}}>✅ Credentials saved on server</span>
+        <button onClick={clear} className="btn-danger" style={{fontSize:11,padding:'3px 8px'}}>Clear</button>
+      </div>}
+      <div className="field" style={{marginBottom:8}}><label>App ID {has&&<span style={{color:'var(--color-text-secondary)',fontWeight:400}}>(leave blank to keep existing)</span>}</label><input value={appId} onChange={e=>setAppId(e.target.value)} placeholder={has?'••••••••••':'your_app_id'}/></div>
+      <div className="field"><label>App Key</label><input value={appKey} onChange={e=>setAppKey(e.target.value)} placeholder={has?'••••••••••':'your_app_key'} type="password"/></div>
+      {saved?<div style={{color:'#0f6e56',fontSize:12,fontWeight:500}}>✅ Saved!</div>:<button className="btn-primary" onClick={save} disabled={!appId.trim()&&!appKey.trim()} style={{width:'100%'}}>Save credentials</button>}
+    </div>
+  );
+}
+// ── OVERLEAF CREDENTIALS FORM (admin only) ───────────────────────────────────
+function OverleafCredsForm(){
+  const [token,setToken]=useState('');
+  const [has,setHas]=useState(false);
+  const [saved,setSaved]=useState(false);
+  useEffect(()=>{fetch('/api/pricing/overleaf').then(r=>r.json()).then(d=>setHas(d.hasToken)).catch(()=>{});},[]);
+  async function save(){
+    if(!token.trim())return;
+    await fetch('/api/pricing/overleaf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({overleafToken:token.trim()})});
+    setHas(true);setSaved(true);setToken('');setTimeout(()=>setSaved(false),2000);
+  }
+  async function clear(){
+    await fetch('/api/pricing/overleaf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({overleafToken:''})});
+    setHas(false);
+  }
+  return(
+    <div>
+      {has&&<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8,padding:'6px 10px',background:'#e1f5ee',borderRadius:'var(--border-radius-md)'}}>
+        <span style={{fontSize:12,color:'#0f6e56',flex:1}}>✅ Overleaf token saved on server</span>
+        <button onClick={clear} className="btn-danger" style={{fontSize:11,padding:'3px 8px'}}>Clear</button>
+      </div>}
+      <div className="field" style={{marginBottom:8}}>
+        <label>Overleaf account email {has&&<span style={{color:'var(--color-text-secondary)',fontWeight:400}}>(leave blank to keep)</span>}</label>
+        <input value={token} onChange={e=>setToken(e.target.value)} placeholder={has?'••••••••••':'your@email.com or API token'} type="password"/>
+      </div>
+      <div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:8}}>Managers will use this to open Overleaf without seeing the credentials. Supports API token from overleaf.com/user/settings.</div>
+      {saved?<div style={{color:'#0f6e56',fontSize:12,fontWeight:500}}>✅ Saved!</div>:<button className="btn-primary" onClick={save} disabled={!token.trim()} style={{width:'100%'}}>Save Overleaf credentials</button>}
+    </div>
+  );
+}
+
+// ── ADMIN DASHBOARD ───────────────────────────────────────────────────────────
+function AdminDash({user,onLogout}){
+  const [tab,setTab]=useState('submissions');
+  const [subs,setSubs]=useState([]);
+  const [notifs,setNotifs]=useState([]);
+  const [pricing,setPricing]=useState({pricePerPage:1000,currency:'CDF'});
+  const [search,setSearch]=useState('');
+  const [openFolder,setOpenFolder]=useState(null);
+  const [priceForm,setPriceForm]=useState({pricePerPage:1000,currency:'CDF',managerRate:10});
+  const [compose,setCompose]=useState(null);
+  const [sendFinal,setSendFinal]=useState(null);
+  const [convModal,setConvModal]=useState(null);
+  const [mathPixModal,setMathPixModal]=useState(null);
+  const [openBatches,setOpenBatches]=useState(new Set());
+  const [managers,setManagers]=useState([]);
+  const [newManager,setNewManager]=useState({name:'',tagName:'',email:'',password:''});
+  const [staffMsgsCache,setStaffMsgsCache]=useState([]);
+  const [withdrawals,setWithdrawals]=useState([]);
+  // const vatRate = 0.16;
+  const vatRate = 0;
+
+  useEffect(()=>{
+    api.get('/api/managers').then(setManagers).catch(()=>{});
+    api.get('/api/staff-chat').then(setStaffMsgsCache).catch(()=>{});
+    const t=setInterval(()=>api.get('/api/staff-chat').then(setStaffMsgsCache).catch(()=>{}),30000);
+    return()=>clearInterval(t);
+  },[]);
+
+
+  //   async function markCompleted(){
+  //   if(!confirm('Mark this case as completed? The student will no longer be able to send feedback.'))return;
+  //   await fetch(`/api/submissions/${doc.id}/close-feedback`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:'{}'});
+  //   onClose();
+  // }
+  // Compute active managers (posted in last 10 min)
+  const staffActivity=new Set(staffMsgsCache.filter(m=>Date.now()-new Date(m.sentAt)<10*60*1000).map(m=>m.fromId));
+
+  function toggleAdminBatch(batchId){
+    setOpenBatches(prev=>{
+      const next=new Set(prev);
+      if(next.has(batchId))next.delete(batchId);else next.add(batchId);
+      return next;
+    });
+  }
+
+  const prevNotifRef=useRef(-1);
+  async function refresh(){
+    const[s,n,p]=await Promise.all([api.get('/api/submissions'),api.get('/api/notifications'),api.get('/api/pricing')]);
+    // Only count notifications addressed to admin and unread by admin
+    const myNotifs=n.filter(x=>x.to==='admin@abc.com'||x.to==='admin');
+    const unreadNow=myNotifs.filter(x=>!(x.readBy||[]).includes('admin')).length;
+    if(prevNotifRef.current>=0&&unreadNow>prevNotifRef.current) playNotifSound();
+    prevNotifRef.current=unreadNow;
+    
+    setSubs(s);setNotifs(myNotifs);setPricing(p);setPriceForm(p);
+    api.get('/api/withdrawals').then(setWithdrawals).catch(()=>{});
+    api.get('/api/managers').then(setManagers).catch(()=>{});
+  }
+  useEffect(()=>{refresh();const t=setInterval(refresh,POLL_MS);return()=>clearInterval(t)},[]);
+
+  async function updateStatus(id,status){
+    await api.patch(`/api/submissions/${id}`,{status});
+    refresh();
+  }
+
+  async function confirmPayment(doc){
+    // confirm entire batch at once
+    if(doc.batchId){
+      await fetch(`/api/batches/${doc.batchId}/confirm-payment`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});
+    } else {
+      await api.patch(`/api/submissions/${doc.id}`,{paid:true,status:'in_progress'});
+    }
+    refresh();
+  }
+
+  async function deleteDoc(id){
+    if(!confirm('Delete this submission and its files?'))return;
+    await api.del(`/api/submissions/${id}`);
+    refresh();
+  }
+
+  function downloadFile(doc){window.open(`/api/files/${doc.uploadFolder||doc.userId}/${doc.storedName}`,'_blank')}
+
+  async function savePricingSettings(){
+    const p={pricePerPage:parseFloat(priceForm.pricePerPage)||1000,currency:priceForm.currency,managerRate:parseFloat(priceForm.managerRate)||10};
+    await api.post('/api/pricing',p);setPricing(p);alert('Pricing saved.');
+  }
+
+  function exportManagerCSV(managerId){
+    const managerSubs=subs.filter(s=>s.assignedTo?.id===managerId);
+    const mgr=managers.find(m=>m.id===managerId);
+    const rows=[['ID','Student','Email','File','Uploaded','Status','Pages','Price HT','TVA (16%)','Total TTC','Paid','Notes']];
+    managerSubs.forEach(s=>{
+      const ht=s.price!=null?s.price:'';
+      // const tva=s.price!=null?(s.price*0.16).toFixed(2):'';
+      // const ttc=s.price!=null?(s.price*1.16).toFixed(2):'';
+       const tva=s.price!=null?(s.price*0).toFixed(2):'';
+      const ttc=s.price!=null?(s.price*1).toFixed(2):'';
+      rows.push([s.id,s.userName,s.userEmail,s.fileName,new Date(s.uploadedAt).toLocaleString(),s.status,s.pages||'',ht,tva,ttc,s.paid?'Yes':'No',s.notes||'']);
+    });
+    const totalHT=managerSubs.filter(s=>s.price).reduce((a,s)=>a+(s.price||0),0);
+    const totalPaid=managerSubs.filter(s=>s.paid).reduce((a,s)=>a+(s.price||0),0);
+    rows.push(['','',''])
+    rows.push(['TOTAL','','','','','',managerSubs.reduce((a,s)=>a+(s.pages||0),0),totalHT.toFixed(2),(totalHT*vatRate).toFixed(2),(totalHT*(1 + vatRate)).toFixed(2),`${(totalHT*(1 + vatRate)).toFixed(2)}`,`${totalPaid.toFixed(2)} paid`,'']);
+    const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+    const safeName=(mgr?.name||'manager').replace(/[^a-z0-9]/gi,'_');
+    a.download=`votex_manager_${safeName}_${new Date().toISOString().slice(0,10)}.csv`;a.click();
+  }
+
+  async function markRead(id){
+    await api.patch(`/api/notifications/${id}`,{readerId:'admin'});
+    setNotifs(prev=>prev.map(n=>n.id===id?{...n,readBy:[...((n.readBy||[])),'admin']}:n));
+  }
+
+  function exportCSV(userId){
+    const rows=[['ID','Student','Email','File','Uploaded','Status','Pages','Price HT','TVA (16%)','Total TTC','Paid','Notes']];
+    const subset=subs.filter(s=>!userId||s.userId===userId);
+    subset.forEach(s=>{
+      const ht=s.price!=null?s.price:'';
+      // const tva=s.price!=null?(s.price*0.16).toFixed(2):'';
+      // const ttc=s.price!=null?(s.price*1.16).toFixed(2):'';
+      const tva=s.price!=null?(s.price*0).toFixed(2):'';
+      const ttc=s.price!=null?(s.price*1).toFixed(2):'';
+      rows.push([s.id,s.userName,s.userEmail,s.fileName,new Date(s.uploadedAt).toLocaleString(),s.status,s.pages||'',ht,tva,ttc,s.paid?'Yes':'No',s.notes||'']);
+    });
+    // Totals row
+    const totalHT=subset.filter(s=>s.price).reduce((a,s)=>a+(s.price||0),0);
+    const totalPaid=subset.filter(s=>s.paid).reduce((a,s)=>a+(s.price||0),0);
+    rows.push(['TOTAL','','','','','',
+      subset.reduce((a,s)=>a+(s.pages||0),0),
+      totalHT.toFixed(2),
+      (totalHT*vatRate).toFixed(2),
+      (totalHT*(1 + vatRate)).toFixed(2),
+      `${totalPaid.toFixed(2)} paid`,
+      ''
+    ]);
+    const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='votex_'+(userId?'student_':'')+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  }
+
+  const unread=notifs.filter(n=>!(n.readBy||[]).includes("admin")).length;
+  const filtered=subs.filter(s=>!search||(s.userName+s.userEmail+s.fileName).toLowerCase().includes(search.toLowerCase()));
+  const byUser={};
+  filtered.forEach(s=>{
+    if(!byUser[s.userId])byUser[s.userId]={userId:s.userId,userName:s.userName,userEmail:s.userEmail,docs:[]};
+    byUser[s.userId].docs.push(s);
+  });
+  const folders=Object.values(byUser).sort((a,b)=>{
+    const aMax=Math.max(...a.docs.map(d=>new Date(d.uploadedAt)));
+    const bMax=Math.max(...b.docs.map(d=>new Date(d.uploadedAt)));
+    return bMax-aMax; // newest activity first
+  });
+
+ return(
+    <div className="app-shell">
+      {compose&&<ComposeModal target={compose} pricing={pricing} onClose={()=>setCompose(null)}/>}
+      {sendFinal&&<SendFinalModal doc={sendFinal} onClose={()=>setSendFinal(null)} onDone={refresh}/>}
+      {convModal&&<ConversationModal doc={convModal} adminUser={user} pricing={pricing} onClose={()=>{setConvModal(null);refresh();}}/>}
+      {mathPixModal&&<MathPixModal batch={mathPixModal} user={user} onClose={()=>setMathPixModal(null)} onDone={()=>{setMathPixModal(null);refresh();}}/>}
+
+      <div className="app-navbar" style={{padding:'12px 24px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <div style={{width:30,height:30,borderRadius:7,background:'#1e3a5f',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 8h6M7 16h4M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/></svg></div>
+          <span style={{fontWeight:500,fontSize:14}}>voTex</span>
+          <span className="badge" style={{background:'#e6f1fb',color:'#1e3a5f',fontSize:10}}>Admin</span>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <Avatar name={user.name} userId={user.id} size={28} editable={true}/>
+          <button className="btn-sm" onClick={()=>{window.location.href=document.documentElement.lang==='fr'?'/index.html':'/index-fr.html';}} style={{fontSize:11}}>🌐 {document.documentElement.lang==='fr'?'EN':'FR'}</button>
+          <button className="btn-sm" onClick={onLogout}>Sign out</button>
+        </div>
+      </div>
+
+      <div className="app-tabbar" style={{paddingLeft:16,display:'flex',alignItems:'center',justifyContent:'space-between',paddingRight:16}}>
+        <div>{[['submissions','Submissions'],['notifications','Notifications'+(unread>0?` (${unread})`:'')],['pricing','Pricing'],['export','Export'],['staff','Staff'],['withdraw','Withdraw']].map(([t,l])=><button key={t} className={'tab'+(tab===t?' active':'')} onClick={()=>setTab(t)}>{l}</button>)}</div>
+        <button className="btn-sm" onClick={refresh} style={{fontSize:11}}>Refresh</button>
+      </div>
+
+      <div className="app-content">
+      {(()=>{
+        const totalPaidHT=subs.filter(s=>s.paid).reduce((a,s)=>a+(s.price||0),0);
+        const totalTTC=Math.round(totalPaidHT*(1+vatRate));
+        const totalTVA=Math.round(totalPaidHT*vatRate);
+        const totalManagersEarned=managers.reduce((acc,m)=>{
+          const cs=subs.filter(s=>s.assignedTo?.id===m.id&&s.paid&&s.status==='done');
+          return acc+Math.round(cs.reduce((a,s)=>a+(s.price||0),0)*(pricing.managerRate||10)/100);
+        },0);
+        // Net enterprise = TTC collected minus manager commissions (enterprise keeps revenue after paying agents)
+        const netEnterprise=totalTTC-totalManagersEarned-totalTVA;
+        const totalManagersDue=managers.reduce((acc,m)=>{
+          const cs=subs.filter(s=>s.assignedTo?.id===m.id&&s.paid&&s.status==='done');
+          const earn=Math.round(cs.reduce((a,s)=>a+(s.price||0),0)*(pricing.managerRate||10)/100);
+          return acc+Math.max(0,earn-(m.totalPaid||0));
+        },0);
+        return totalPaidHT>0?(
+          <div style={{background:'#e1f5ee',borderBottom:'0.5px solid #5dcaa533',padding:'8px 24px',display:'flex',alignItems:'center',gap:16,flexWrap:'wrap',flexShrink:0}}>
+            <span style={{fontSize:12,color:'#0f6e56',fontWeight:600}}>🏢 Enterprise</span>
+            <span style={{fontSize:12,color:'#0f6e56'}}>Net (HT − Earnings): <strong>{sym(pricing.currency)}{netEnterprise}</strong></span>
+            <span style={{fontSize:12,color:'#1e3a5f'}}>TVA collected: <strong>{sym(pricing.currency)}{totalTVA}</strong></span>
+            <span style={{fontSize:11,color:'#6b6b6b'}}>Commissions earned: {sym(pricing.currency)}{totalManagersEarned} · Still owed: {sym(pricing.currency)}{totalManagersDue}</span>
+          </div>
+        ):null;
+      })()}
+      <div style={{maxWidth:860,margin:'0 auto',padding:'1.5rem 1rem'}}>
+
+        {tab==='submissions'&&(
+          <>
+            <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:'1rem'}}>
+              <input placeholder="Search students or files…" value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1}}/>
+              <span style={{fontSize:12,color:'var(--color-text-secondary)',whiteSpace:'nowrap'}}>{subs.length} docs · {folders.length} students</span>
+            </div>
+            {folders.length===0&&<div style={{fontSize:13,color:'var(--color-text-secondary)',textAlign:'center',padding:'2rem',background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)'}}>No submissions yet.</div>}
+            <div style={{display:'flex',flexDirection:'column',gap:10}}>
+              {folders.map(f=>{
+                const open=openFolder===f.userId;
+                const awaitingPay=f.docs.filter(d=>d.status==='awaiting_payment').length;
+                const owed = Math.round(f.docs.filter(d => d.price && !d.paid).reduce((a, d) => a + (d.price || 0), 0) * (1 + vatRate));
+                
+                return(
+                  <div key={f.userId} style={{background:'var(--color-background-primary)',border:'0.5px solid var(--color-border-tertiary)',borderRadius:'var(--border-radius-lg)',overflow:'hidden'}}>
+                    {/* folder header */}
+                    <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 1.25rem'}}>
+                      <div style={{display:'flex',alignItems:'center',gap:10,flex:1,cursor:'pointer',minWidth:0}} onClick={()=>setOpenFolder(open?null:f.userId)}>
+                        <Avatar name={f.userName}/>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontSize:13,fontWeight:500}}>{f.userName} [{f.userId}]</div>
+                          <div style={{fontSize:11,color:'var(--color-text-secondary)'}}>{f.userEmail}</div>
+                        </div>
+                        <div style={{display:'flex',gap:6,alignItems:'center',flexShrink:0}}>
+                          <span className="badge" style={{background:'#e6f1fb',color:'#1e3a5f'}}>{f.docs.length} doc{f.docs.length!==1?'s':''}</span>
+                          {awaitingPay>0&&<span className="badge" style={{background:'#fff3cd',color:'#856404'}}>{awaitingPay} awaiting payment</span>}
+                          {owed>0&&<span className="badge" style={{background:'#fcebeb',color:'#a32d2d'}}>{sym(pricing.currency)}{owed} due</span>}
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{transform:open?'rotate(180deg)':'none',transition:'transform 0.2s'}}><path d="M6 9l6 6 6-6" stroke="var(--color-text-secondary)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                        </div>
+                      </div>
+                      <button className="btn-blue" onClick={()=>setCompose({toId:f.userId,toName:f.userName,toEmail:f.userEmail})} style={{flexShrink:0}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Message
+                      </button>
+                    </div>
+
+                    {/* document rows — grouped by batch */}
+                    {open&&(
+                      <div style={{borderTop:'0.5px solid var(--color-border-tertiary)'}}>
+                        {(()=>{
+                          // Group docs into batches
+                          const bMap={};
+                          [...f.docs].sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt)).forEach(doc=>{
+                            const bid=doc.batchId||doc.id;
+                            if(!bMap[bid])bMap[bid]={batchId:bid,docs:[],uploadedAt:doc.uploadedAt};
+                            bMap[bid].docs.push(doc);
+                          });
+                          const adminBatches=Object.values(bMap).sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt));
+
+                          return adminBatches.map((abatch,abi)=>{
+                            const leader=abatch.docs[0];
+                            const batchOpen=openBatches.has(abatch.batchId);
+                            const batchTotal=abatch.docs.reduce((a,d)=>a+(d.price||0),0);
+                            const batchTTC=Math.round(batchTotal*(1+vatRate));
+                            const batchPaid=abatch.docs.every(d=>d.paid);
+                            const batchStatus=leader.status;
+                            const bst=stl(batchStatus);
+                            const hasMathpix=!!leader.mathpixResult;
+
+                            return(
+                              <div key={abatch.batchId} style={{borderBottom:'0.5px solid var(--color-border-secondary)'}}>
+                                {/* Batch sub-header */}
+                                <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 1.25rem',background:'#f8f8f6',cursor:'pointer',flexWrap:'wrap'}}
+                                  onClick={()=>toggleAdminBatch(abatch.batchId)}
+                                  onMouseEnter={e=>e.currentTarget.style.background='#efefed'}
+                                  onMouseLeave={e=>e.currentTarget.style.background='#f8f8f6'}>
+                                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{transform:batchOpen?'none':'rotate(-90deg)',transition:'transform 0.2s',flexShrink:0}}><path d="M6 9l6 6 6-6" stroke="var(--color-text-secondary)" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                                  <div style={{flex:1,minWidth:0}}>
+                                    <div style={{fontSize:11,fontWeight:600,color:'var(--color-text-secondary)'}}>
+                                      Batch {abi+1} · {new Date(abatch.uploadedAt).toLocaleDateString()} · {abatch.docs.length} file{abatch.docs.length!==1?'s':''}
+                                      {leader.templateName&&leader.templateName!=='none'&&<span style={{marginLeft:6,background:'#f3e8ff',color:'#1e3af',padding:'1px 6px',borderRadius:6,fontSize:10,fontWeight:400}}>📄 {leader.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ')}</span>}
+                                    {leader.isMathDoc===false&&<span style={{marginLeft:4,background:'#e1f5ee',color:'#0f6e56',padding:'1px 5px',borderRadius:6,fontSize:10,fontWeight:400}}>📝 Text</span>}
+                                    {leader.isMathDoc===true&&<span style={{marginLeft:4,background:'#e6f1fb',color:'#1e3a5f',padding:'1px 5px',borderRadius:6,fontSize:10,fontWeight:400}}>📐 Math</span>}
+                                  
+                                      </div>
+                                  </div>
+                                  <span style={{fontSize:11,fontWeight:500,color:batchPaid?'#0f6e56':'#92400e'}}>{sym(pricing.currency)}{batchTTC} TTC</span>
+                                  <span className="badge" style={{background:bst.bg,color:bst.color,fontSize:10}}>{bst.label}</span>
+
+                                  {/* Batch action buttons — stop propagation */}
+                                  <div style={{display:'flex',gap:4,flexWrap:'wrap'}} onClick={e=>e.stopPropagation()}>
+                                    {leader.status==='awaiting_payment'&&!batchPaid&&(
+                                      <button className="btn-amber" onClick={()=>confirmPayment(leader)} style={{fontSize:11,padding:'4px 8px'}}>
+                                        Confirm payment
+                                      </button>
+                                    )}
+                                    {leader.paymentProof&&(
+                                      <a href={`/api/submissions/${leader.id}/payment-proof`} target="_blank" rel="noreferrer"
+                                        style={{background:'transparent',color:'#856404',padding:'4px 8px',border:'0.5px solid #d4960077',borderRadius:'var(--border-radius-md)',fontSize:11,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:3}}>
+                                        View proof
+                                      </a>
+                                    )}
+                                   
+                                    {leader.status==='in_progress'&&leader.batchId&&(
+                                      <button onClick={()=>setMathPixModal(subs.filter(s=>s.batchId===leader.batchId).sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt)))} style={{background:'transparent',color:'#6d28d9',border:'0.5px solid #a78bfa77',padding:'4px 8px',borderRadius:'var(--border-radius-md)',fontSize:11,cursor:'pointer',fontFamily:'inherit',display:'inline-flex',alignItems:'center',gap:3}}>
+                                        MathPix OCR
+                                      </button>
+                                    )}
+                                    {hasMathpix&&(
+                                      <button onClick={()=>setMathPixModal(subs.filter(s=>s.batchId===leader.batchId).sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt)))} style={{background:'#6d28d9',color:'#fff',border:'none',padding:'4px 8px',borderRadius:'var(--border-radius-md)',fontSize:11,cursor:'pointer',fontFamily:'inherit',display:'inline-flex',alignItems:'center',gap:3}}>
+                                        ✏️ Open Text
+                                      </button>
+                                    )}
+                                     {(leader.status==='in_progress'||leader.status==='done')&&(
+                                      <button className="btn-green" onClick={()=>setSendFinal(leader)} style={{fontSize:11,padding:'4px 8px',display:'inline-flex',alignItems:'center',gap:3}}>
+                                        {leader.finalDoc?'Resend doc':'Send final doc'}
+                                      </button>
+                                      
+                                    )}
+                                    
+
+
+                                    {/* Assign to manager */}
+                                    {managers.length>0&&(
+                                      <select defaultValue={leader.assignedTo?.id||''} onChange={async e=>{
+                                        const mgr=managers.find(m=>m.id===e.target.value);
+                                        await fetch(`/api/batches/${leader.batchId}/assign`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({managerId:mgr?.id||null,managerName:mgr?.name||null})});
+                                        refresh();
+                                      }} style={{fontSize:11,padding:'3px 6px',border:'0.5px solid #85b7eb77',borderRadius:'var(--border-radius-md)',background:'transparent',cursor:'pointer', maxWidth:'100px'}}>
+                                        <option value="">Assign…</option>
+                                        {managers.map(m=><option key={m.id} value={m.id}>{m.tagName?`${m.name}`:m.name}</option>)}
+                                      </select>
+                                    )}
+                                    
+                                  </div>
+                                
+                                </div>
+                                  <tab>
+                                    {leader.assignedTo&&<span style={{fontSize:10,background:'#e1f5ee',color:'#0f6e56',padding:'2px 6px',borderRadius:8}}>→ {leader.assignedTo.name}</span>}
+                                  </tab>
+
+                                {/* Individual doc rows — shown when batch is open */}
+                                {batchOpen&&abatch.docs.map(doc=>{
+                                  const st=stl(doc.status);
+                                  return(
+                                    <div key={doc.id} style={{borderTop:'0.5px solid var(--color-border-tertiary)',background:'var(--color-background-primary)'}}>
+                                      <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 1.25rem 8px 2.5rem',flexWrap:'wrap'}}>
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{flexShrink:0}}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="var(--color-text-secondary)" strokeWidth="1.5"/><path d="M14 2v6h6" stroke="var(--color-text-secondary)" strokeWidth="1.5"/></svg>
+                                        <div style={{flex:1,minWidth:120}}>
+                                          <div style={{fontSize:12,fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{doc.fileName}</div>
+                                          <div style={{fontSize:11,color:'var(--color-text-secondary)'}}>{new Date(doc.uploadedAt).toLocaleDateString()}{doc.pages?` · ${doc.pages}pp`:''}{doc.price!=null?` · ${sym(pricing.currency)}${doc.price}`:''}{doc.paid?' · ✓ Paid':''}</div>
+                                        </div>
+                                        <span className="badge" style={{background:st.bg,color:st.color,fontSize:10}}>{st.label}</span>
+                                        <button className="btn-blue" title="Conversation" onClick={()=>setConvModal(doc)} style={{fontSize:11,padding:'4px 8px',display:'inline-flex',alignItems:'center',gap:3}}>
+                                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                          Chat
+                                        </button>
+                                        {<a href={`/api/files/${doc.uploadFolder||doc.userId}/${doc.storedName}/preview`} target="_blank" rel="noreferrer" style={{background:'transparent',color:'#1e3a5f',padding:'4px 8px',border:'0.5px solid #85b7eb77',borderRadius:'var(--border-radius-md)',fontSize:11,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:3}}>
+                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/></svg>
+                                        Preview
+                                      </a>}
+                                        <button className="btn-sm" style={{fontSize:11,padding:'4px 8px'}} onClick={()=>downloadFile(doc)}>Download</button>
+                                        <button className="btn-danger" style={{fontSize:11,padding:'4px 8px'}} onClick={()=>deleteDoc(doc.id)}>Delete</button>
+                                      </div>
+                                      {doc.finalDoc&&(
+                                        <div style={{padding:'4px 1.25rem 6px 2.5rem',background:'#e6f1fb',fontSize:11,color:'#1e3a5f'}}>
+                                          📄 Final doc sent: <strong>{doc.finalDoc.fileName}</strong>
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            );
+                          });
+                        })()}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+
+        {tab==='notifications'&&(
+          <>
+            <div style={{fontSize:15,fontWeight:500,marginBottom:'1rem'}}>System notifications <span style={{fontSize:13,fontWeight:400,color:'var(--color-text-secondary)'}}>({notifs.length})</span></div>
+            <div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:'1rem',background:'var(--color-background-secondary)',padding:'10px 14px',borderRadius:'var(--border-radius-md)'}}>Auto-generated events. To message a student personally, use the Message button on their folder.</div>
+            {notifs.length===0&&<div style={{fontSize:13,color:'var(--color-text-secondary)',textAlign:'center',padding:'2rem',background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)'}}>No notifications yet.</div>}
+            <div style={{display:'flex',flexDirection:'column',gap:8}}>
+              {(()=>{
+                let lastDate='';
+                // Always sort newest first so new notifications bubble to top
+                const sorted=[...notifs]
+                  .filter(n=>n.type!=='assignment'&&n.type!=='new_submission_manager')
+                  .sort((a,b)=>new Date(b.sentAt)-new Date(a.sentAt));
+                return sorted.map(n=>{
+                  const isRead=(n.readBy||[]).includes('admin');
+                  const d=new Date(n.sentAt).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+                  const showSep=d!==lastDate;
+                  lastDate=d;
+                  return(
+                    <React.Fragment key={n.id}>
+                      {showSep&&<div className="date-sep">{d}</div>}
+                      <div onClick={()=>{
+                        markRead(n.id);
+                        if(n.type==='feedback'&&n.submissionId){const doc=subs.find(s=>s.id===n.submissionId);if(doc)setConvModal(doc);}
+                      }} className="card" style={{cursor:'pointer',borderLeft:isRead?'0.5px solid var(--color-border-tertiary)':'3px solid #1e3a5f',paddingLeft:isRead?'1.25rem':'calc(1.25rem - 2px)'}}>
+                        <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
+                          <div style={{display:'flex',alignItems:'center',gap:8}}>
+                            <span className="badge" style={{background:n.type==='new_submission'?'#e6f1fb':n.type==='payment_ready'?'#fff3cd':n.type==='feedback'?'#faeeda':n.type==='manager_submitted'||n.type==='manager_done'?'#e1f5ee':n.type==='assignment_request'?'#f3e8ff':'#faeeda',color:n.type==='new_submission'?'#1e3a5f':n.type==='payment_ready'?'#856404':n.type==='feedback'?'#854f0b':n.type==='manager_submitted'||n.type==='manager_done'?'#0f6e56':n.type==='assignment_request'?'#6d28d9':'#854f0b',fontSize:10}}>{n.type==='new_submission'?'New upload':n.type==='payment_ready'?'💰 Payment ready':n.type==='feedback'?'✏️ Feedback':n.type==='manager_submitted'||n.type==='manager_done'?'✅ Manager done':n.type==='assignment_request'?'🙋 Assignment request':'Status update'}</span>
+                            <span style={{fontSize:13,fontWeight:isRead?400:500}}>{n.subject}</span>
+                          </div>
+                          <span style={{fontSize:11,color:'var(--color-text-secondary)',flexShrink:0}}>{new Date(n.sentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
+                        </div>
+                        <div style={{fontSize:12,color:'var(--color-text-secondary)'}}>To: {n.toName} &lt;{n.to}&gt;</div>
+                        <div style={{fontSize:12,color:'var(--color-text-secondary)',marginTop:4,whiteSpace:'pre-line',maxHeight:60,overflow:'hidden'}}>{n.body}</div>
+                        {n.type==='feedback'&&n.submissionId&&<div style={{fontSize:11,color:'#854f0b',marginTop:6,fontWeight:500}}>👆 Click to open conversation thread</div>}
+                        {n.type!=='feedback'&&<a href={`mailto:${n.to}?subject=${encodeURIComponent(n.subject)}&body=${encodeURIComponent(n.body)}`} onClick={e=>e.stopPropagation()} style={{fontSize:11,textDecoration:'none',marginTop:6,display:'inline-block'}}>Open in email client →</a>}
+                      </div>
+                    </React.Fragment>
+                  );
+                });
+              })()}
+            </div>
+          </>
+        )}
+
+        {tab==='pricing'&&(
+          <div style={{maxWidth:900}}>
+            <div style={{fontSize:15,fontWeight:500,marginBottom:'1rem'}}>Pricing settings</div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24,alignItems:'start'}}>
+              {/* Left column — rates + summary */}
+              <div>
+                <div className="card" style={{marginBottom:'1rem'}}>
+                  <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Rates</div>
+                  <div className="field"><label>Price per page (HT)</label><input type="number" min="0" step="50" value={priceForm.pricePerPage} onChange={e=>setPriceForm(f=>({...f,pricePerPage:e.target.value}))} style={{width:'100%'}}/></div>
+                  <div className="field"><label>Currency</label><select value={priceForm.currency} onChange={e=>setPriceForm(f=>({...f,currency:e.target.value}))} style={{width:'100%'}}><option value="USD">USD ($)</option><option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option><option value="CDF">CDF (FC) — Congolese franc</option><option value="XAF">XAF (FCFA) — Central African CFA</option></select></div>
+                  <div className="field"><label>Manager commission (%)</label><input type="number" min="0" max="100" step="1" value={priceForm.managerRate??10} onChange={e=>setPriceForm(f=>({...f,managerRate:e.target.value}))} style={{width:'100%'}}/></div>
+                  <div className="field"><label>Minimum payout ({sym(pricing.currency)}) <span style={{fontSize:11,fontWeight:400,color:'var(--color-text-secondary)'}}>— threshold before manager can request payment</span></label><input type="number" min="0" step="500" value={priceForm.minPayout??5000} onChange={e=>setPriceForm(f=>({...f,minPayout:e.target.value}))} style={{width:'100%'}}/></div>
+                  {/*<div className="field"><label>VAT rate (%) <span style={{fontSize:11,fontWeight:400,color:'var(--color-text-secondary)'}}>— VAT rate ajustment</span></label><input type="number" min="0" step="500" value={priceForm.minPayout??5000} onChange={e=>setPriceForm(f=>({...f,minPayout:e.target.value}))} style={{width:'100%'}}/></div>*/}
+                  <button className="btn-primary" onClick={savePricingSettings} style={{width:'100%'}}>Save pricing</button>
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+                  {(()=>{
+                    const totalPaidHT=subs.filter(s=>s.paid).reduce((a,s)=>a+(s.price||0),0);
+                    const totalTTC=totalPaidHT*(1+vatRate);
+                    const outstanding=subs.filter(s=>s.price&&!s.paid).reduce((a,s)=>a+(s.price||0),0);
+                    return [
+                      ['Total collected (TTC)',`${sym(pricing.currency)}${Math.round(totalTTC)}`,'#e1f5ee','#0f6e56'],
+                      ['Total collected (HT)',`${sym(pricing.currency)}${totalPaidHT}`,'#e6f1fb','#1e3a5f'],
+                      ['Outstanding (HT)',`${sym(pricing.currency)}${outstanding}`,'#fff3cd','#856404'],
+                      ['In progress',subs.filter(s=>s.status==='in_progress').length,'#e6f1fb','#1e3a5f'],
+                    ].map(([label,val,bg,col])=>(
+                      <div key={label} style={{background:bg,borderRadius:'var(--border-radius-md)',padding:'0.75rem 1rem'}}>
+                        <div style={{fontSize:11,color:col,marginBottom:3}}>{label}</div>
+                        <div style={{fontSize:18,fontWeight:500,color:col}}>{val}</div>
+                      </div>
+                    ));
+                  })()}
+                </div>
+              </div>
+              {/* Right column — manager earnings */}
+              {managers.length>0&&(
+                <div className="card">
+                  <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Manager earnings ({pricing.managerRate||10}% of HT)</div>
+                    <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
+                      <thead><tr style={{borderBottom:'1px solid var(--color-border-secondary)'}}>
+                        <th style={{textAlign:'left',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>Tag</th>
+                        <th style={{textAlign:'left',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>Name</th>
+                        <th style={{textAlign:'right',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>Earned</th>
+                        <th style={{textAlign:'right',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>Paid</th>
+                        <th style={{textAlign:'right',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>Owed</th>
+                      </tr></thead>
+                      <tbody>
+                        {managers.map(m=>{
+                          const cs=subs.filter(s=>s.assignedTo?.id===m.id&&s.paid&&s.status==='done');
+                          const ht=cs.reduce((a,s)=>a+(s.price||0),0);
+                          const earn=Math.round(ht*(pricing.managerRate||10)/100);
+                          const paid=m.totalPaid||0;
+                          const owed=Math.max(0,earn-paid);
+                          const hasPending=m.paymentRequests?.some(r=>r.status==='pending');
+                          return(
+                            <tr key={m.id} style={{borderBottom:'0.5px solid var(--color-border-tertiary)',background:hasPending?'#fffbea':'transparent'}}>
+                              <td style={{padding:'6px 4px'}}><span style={{background:'#f3e8ff',color:'#6d28d9',padding:'2px 6px',borderRadius:8,fontSize:10,fontWeight:500}}>{m.tagName||'—'}</span></td>
+                              <td style={{padding:'6px 4px',fontWeight:500,fontSize:12}}>{m.name}{hasPending&&<span style={{marginLeft:4,fontSize:9,background:'#fff3cd',color:'#856404',padding:'1px 4px',borderRadius:4}}>💸 req</span>}</td>
+                              <td style={{padding:'6px 4px',textAlign:'right',fontSize:12}}>{sym(pricing.currency)}{earn}</td>
+                              <td style={{padding:'6px 4px',textAlign:'right',fontSize:12,color:'#0f6e56'}}>{sym(pricing.currency)}{paid}</td>
+                              <td style={{padding:'6px 4px',textAlign:'right',fontSize:12}}>
+                                {owed>0?<span style={{fontWeight:600,color:hasPending?'#856404':'inherit'}}>{sym(pricing.currency)}{owed}</span>:<span style={{color:'#0f6e56'}}>✓</span>}
+                                {owed>0&&<button onClick={async()=>{
+                                  const amt=prompt(`Pay ${m.name} — owed: ${sym(pricing.currency)}${owed}\nEnter amount:`,owed);
+                                  if(!amt||isNaN(amt)||Number(amt)<=0)return;
+                                  const r=await fetch(`/api/managers/${m.id}/pay`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:Number(amt)})});
+                                  const d=await r.json();
+                                  if(d.ok){alert('Payment recorded!');refresh();}else alert(d.error||'Error');
+                                }} style={{marginLeft:5,background:'#0f6e56',color:'#fff',border:'none',borderRadius:4,padding:'1px 6px',fontSize:10,cursor:'pointer',fontFamily:'inherit'}}>Pay</button>}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  <div style={{fontSize:13,fontWeight:500,marginTop:'2.75rem'}}>MathPix OCR credentials</div>
+                  <div style={{fontSize:11,color:'var(--color-text-secondary)',marginBottom:'0.75rem'}}>Stored securely on server. Managers can use MathPix without seeing the keys.</div>
+                  
+                  
+                  
+                   <MathPixCredsForm/>
+
+                  <div style={{fontSize:13,fontWeight:500,marginTop:'2.75rem'}}>Overleaf credentials</div>
+                  <div style={{fontSize:11,color:'var(--color-text-secondary)',marginBottom:'0.75rem'}}>Managers open Overleaf documents using this token without seeing the credentials.</div>
+                  
+                  
+                   <OverleafCredsForm/>
+
+                </div> 
+                      
+              )}
+              </div>
+              
+            </div>
+
+        )}
+
+        {tab==='export'&&(
+          <div style={{maxWidth:480}}>
+            <div style={{fontSize:15,fontWeight:500,marginBottom:'1rem'}}>Export data</div>
+            <div className="card" style={{marginBottom:'1rem'}}><div style={{fontSize:13,fontWeight:500,marginBottom:4}}>All submissions — CSV</div><div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:'1rem'}}>All documents with student, file, date, status, pages, price, paid.</div><button className="btn-primary" onClick={()=>exportCSV(null)} style={{width:'100%'}}>Download CSV</button></div>
+            <div className="card" style={{marginBottom:'1rem'}}><div style={{fontSize:13,fontWeight:500,marginBottom:4}}>Per-student CSV</div><div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:'1rem'}}>Export one specific student's submissions.</div>
+              <select id="exportUser" style={{marginBottom:'0.75rem'}}><option value="">Select a student…</option>{folders.map(f=><option key={f.userId} value={f.userId}>{f.userName} ({f.userEmail})</option>)}</select>
+              <button className="btn-primary" onClick={()=>{const uid=document.getElementById('exportUser').value;if(!uid){alert('Select a student.');return}exportCSV(uid)}} style={{width:'100%'}}>Download student CSV</button>
+            </div>
+            {managers.length>0&&(
+              <div className="card"><div style={{fontSize:13,fontWeight:500,marginBottom:4}}>Per-manager CSV</div><div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:'1rem'}}>Export all submissions assigned to a specific manager.</div>
+                <select id="exportManager" style={{marginBottom:'0.75rem'}}>
+                  <option value="">Select a manager…</option>
+                  {managers.map(m=><option key={m.id} value={m.id}>{m.tagName?`[${m.tagName}] ${m.name}`:m.name} ({m.email})</option>)}
+                </select>
+                <button className="btn-primary" onClick={()=>{const mid=document.getElementById('exportManager').value;if(!mid){alert('Select a manager.');return}exportManagerCSV(mid)}} style={{width:'100%'}}>Download manager CSV</button>
+              </div>
+            )}
+          </div>
+        )}
+          {tab==='staff'&&(
+            <div style={{maxWidth:860}}>
+            <div style={{fontSize:15,fontWeight:500,marginBottom:'1rem'}}>Withdraw history</div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24,alignItems:'start'}}>
+              {/* Left*/}
+
+            {/* Active managers — based on staff chat activity in last 10 min */}
+            {managers.length>0&&(
+              <div className="card" style={{marginBottom:'1rem'}}>
+                <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Managers ({managers.length})</div>
+                {managers.map(m=>{
+                  const isActive=staffActivity.has(m.id);
+                  const lastMsg=[...staffMsgsCache].reverse().find(x=>x.fromId===m.id);
+                  const mCompletedSubs=subs.filter(s=>s.assignedTo?.id===m.id&&s.paid&&s.status==='done');
+                  const mEarned=Math.round(mCompletedSubs.reduce((a,s)=>a+(s.price||0),0)*(pricing.managerRate||10)/100);
+                  const mPaid=m.totalPaid||0;
+                  // totalPaidToManagers+=mPaid;
+                  const mOwed=Math.max(0,mEarned-mPaid);
+                  const hasPending=m.paymentRequests?.some(r=>r.status==='pending');
+
+                  return(
+                    <div key={m.id} style={{display:'flex',alignItems:'center',gap:10,padding:'8px 0',borderBottom:'0.5px solid var(--color-border-tertiary)',flexWrap:'wrap',background:hasPending?'#fffbea':'transparent'}}>
+                      <div style={{position:'relative',flexShrink:0}}>
+                        <Avatar name={m.name} userId={m.id} size={32}/>
+                        <span style={{position:'absolute',bottom:0,right:0,width:9,height:9,borderRadius:'50%',background:isActive?'#22c55e':'#d1d5db',border:'1.5px solid #fff'}}/>
+                      </div>
+                      <div style={{flex:1,minWidth:100}}>
+                        <div style={{fontSize:13,fontWeight:500}}>{m.tagName?`[${m.tagName}] `:''}{m.name}</div>
+                        <div style={{fontSize:10,color:'var(--color-text-secondary)'}}>{lastMsg?`Last active: ${new Date(lastMsg.sentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`:m.email}</div>
+                      </div>
+                      <span style={{fontSize:10,background:isActive?'#dcfce7':'#f5f5f3',color:isActive?'#166534':'#6b6b6b',padding:'2px 6px',borderRadius:8,fontWeight:500,whiteSpace:'nowrap'}}>{isActive?'● Active':'○ Away'}</span>
+                      <div style={{fontSize:11,textAlign:'right',lineHeight:1.4}}>
+                        <div style={{color:'#0f6e56',fontWeight:600}}>{sym(pricing.currency)}{mEarned} earned</div>
+                        {mOwed>0&&<div style={{color:hasPending?'#856404':'#a32d2d',fontSize:10}}>owed: {sym(pricing.currency)}{mOwed}{hasPending?'  💸 req':''}</div>}
+                      </div>
+                      {mOwed>0&&(
+                        <button onClick={async()=>{
+                          const amt=prompt(`Pay ${m.name}\nOwed: ${sym(pricing.currency)}${mOwed}\nEnter amount to pay:`,mOwed);
+                          if(!amt||isNaN(amt)||Number(amt)<=0)return;
+                          const r=await fetch(`/api/managers/${m.id}/pay`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:Number(amt)})});
+                          const d=await r.json();
+                          if(d.ok){alert(`Payment of ${sym(pricing.currency)}${Number(amt)} recorded for ${m.name}.`);refresh();}else alert(d.error||'Error');
+                        }} style={{background:'#0f6e56',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'5px 10px',fontSize:11,cursor:'pointer',fontFamily:'inherit',fontWeight:500,whiteSpace:'nowrap'}}>
+                          💸 Pay
+                        </button>
+                        
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            
+            {/* Right — */}
+            <div>
+            <div className="card" style={{marginBottom:'1rem'}}>
+              <div style={{fontSize:13,fontWeight:500,marginBottom:'1rem'}}>Create manager account</div>
+              <div className="field"><label>Full name</label><input value={newManager.name} onChange={e=>setNewManager(p=>({...p,name:e.target.value}))} placeholder="Manager real name"/></div>
+              <div className="field"><label>Tag name <span style={{fontSize:11,fontWeight:400,color:'var(--color-text-secondary)'}}>— shown to other managers (e.g. Alpha, @mak)</span></label><input value={newManager.tagName||''} onChange={e=>setNewManager(p=>({...p,tagName:e.target.value}))} placeholder="e.g. Alpha"/></div>
+              <div className="field"><label>Email</label><input type="email" value={newManager.email} onChange={e=>setNewManager(p=>({...p,email:e.target.value}))} placeholder="manager@company.com"/></div>
+              <div className="field"><label>Password</label><input type="password" value={newManager.password} onChange={e=>setNewManager(p=>({...p,password:e.target.value}))} placeholder="Temporary password"/></div>
+              <button className="btn-primary" style={{width:'100%'}} onClick={async()=>{
+                if(!newManager.name||!newManager.email||!newManager.password){alert('Name, email and password are required.');return}
+                const res=await api.post('/api/managers',newManager);
+                if(res.error){alert(res.error);return}
+                setManagers(prev=>[...prev,res.user]);
+                setNewManager({name:'',tagName:'',email:'',password:''});
+                alert('Manager account created.');
+              }}>Create manager</button>
+            </div>
+            </div>
+          </div>
+          </div>
+        )}
+
+        {tab==='withdraw'&&(
+          <div style={{maxWidth:860}}>
+            <div style={{fontSize:15,fontWeight:500,marginBottom:'1rem'}}>Withdraw history</div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24,alignItems:'start'}}>
+              {/* Left — daily revenue history */}
+              <div>
+                <div className="card">
+                  <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Daily revenue (paid batches)</div>
+                  {(()=>{
+                    // Group paid subs by day
+                    const paidSubs=subs.filter(s=>s.paid&&s.price);
+                    const dayMap={};
+                    paidSubs.forEach(s=>{
+                      const day=new Date(s.uploadedAt).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});
+                      if(!dayMap[day])dayMap[day]={day,ht:0,count:0};
+                      dayMap[day].ht+=s.price||0;dayMap[day].count++;
+                    });
+                    const days=Object.values(dayMap).sort((a,b)=>new Date(b.day.split('/').reverse().join('-'))-new Date(a.day.split('/').reverse().join('-')));
+                    if(!days.length)return<div style={{fontSize:12,color:'var(--color-text-secondary)',padding:'1rem',textAlign:'center'}}>No paid batches yet.</div>;
+                    return(
+                      <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
+                        <thead><tr style={{borderBottom:'1px solid var(--color-border-secondary)'}}>
+                          <th style={{textAlign:'left',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>Date</th>
+                          <th style={{textAlign:'right',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>Batches</th>
+                          <th style={{textAlign:'right',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>HT</th>
+                          <th style={{textAlign:'right',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>TVA</th>
+                          <th style={{textAlign:'right',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>TTC</th>
+                        </tr></thead>
+                        <tbody>
+                          {days.map(d=>(
+                            <tr key={d.day} style={{borderBottom:'0.5px solid var(--color-border-tertiary)'}}>
+                              <td style={{padding:'7px 4px',fontWeight:500}}>{d.day}</td>
+                              <td style={{padding:'7px 4px',textAlign:'right',color:'var(--color-text-secondary)'}}>{d.count}</td>
+                              <td style={{padding:'7px 4px',textAlign:'right'}}>{sym(pricing.currency)}{d.ht}</td>
+                              <td style={{padding:'7px 4px',textAlign:'right',color:'#856404'}}>{sym(pricing.currency)}{Math.round(d.ht*vatRate)}</td>
+                              <td style={{padding:'7px 4px',textAlign:'right',fontWeight:600,color:'#0f6e56'}}>{sym(pricing.currency)}{Math.round(d.ht*(1+vatRate))}</td>
+                            </tr>
+                          ))}
+                          <tr style={{borderTop:'1.5px solid var(--color-border-secondary)',fontWeight:700}}>
+                            <td style={{padding:'7px 4px'}}>TOTAL</td>
+                            <td style={{padding:'7px 4px',textAlign:'right'}}>{days.reduce((a,d)=>a+d.count,0)}</td>
+                            <td style={{padding:'7px 4px',textAlign:'right'}}>{sym(pricing.currency)}{days.reduce((a,d)=>a+d.ht,0)}</td>
+                            <td style={{padding:'7px 4px',textAlign:'right',color:'#856404'}}>{sym(pricing.currency)}{Math.round(days.reduce((a,d)=>a+d.ht,0)*vatRate)}</td>
+                            <td style={{padding:'7px 4px',textAlign:'right',color:'#0f6e56'}}>{sym(pricing.currency)}{Math.round(days.reduce((a,d)=>a+d.ht,0)*(1+vatRate))}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    );
+                  })()}
+                </div>
+              </div>
+
+             {/* Right — withdrawal log */}
+              <div>
+                <div className="card">
+                  <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Manager withdrawals</div>
+                  {withdrawals.length===0?(
+                    <div style={{fontSize:12,color:'var(--color-text-secondary)',padding:'1rem',textAlign:'center'}}>No withdrawals yet.</div>
+                  ):(
+                    <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
+                      <thead><tr style={{borderBottom:'1px solid var(--color-border-secondary)'}}>
+                        <th style={{textAlign:'left',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>Date</th>
+                        <th style={{textAlign:'left',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>Manager</th>
+                        <th style={{textAlign:'right',padding:'6px 4px',color:'var(--color-text-secondary)',fontWeight:500}}>Amount</th>
+                      </tr></thead>
+                      <tbody>
+                        {withdrawals.map(w=>(
+                          <tr key={w.id} style={{borderBottom:'0.5px solid var(--color-border-tertiary)'}}>
+                            <td style={{padding:'6px 4px',color:'var(--color-text-secondary)'}}>{new Date(w.paidAt).toLocaleDateString('fr-FR')}</td>
+                            <td style={{padding:'6px 4px'}}><span style={{background:'#f3e8ff',color:'#6d28d9',padding:'1px 6px',borderRadius:6,fontSize:11,fontWeight:500}}>[{w.tagName}] {w.managerName}</span></td>
+                            <td style={{padding:'6px 4px',textAlign:'right',fontWeight:600,color:'#a32d2d'}}>−{sym(w.currency)}{w.amount}</td>
+                          </tr>
+                        ))}
+                        <tr style={{borderTop:'1.5px solid var(--color-border-secondary)',fontWeight:700}}>
+                          <td colSpan={2} style={{padding:'6px 4px'}}>Total withdrawn</td>
+                          <td style={{padding:'6px 4px',textAlign:'right',color:'#a32d2d'}}>−{sym(pricing.currency)}{withdrawals.reduce((a,w)=>a+w.amount,0)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      </div>
+      <Footer/>
+      <StaffChatPanel user={user}/>
+      <AdminChatFloating subs={subs} onOpenConv={setConvModal}/>
+    </div>
+  );
+}
+
+// ── MANAGER DASHBOARD ─────────────────────────────────────────────────────────
+function ManagerDash({user,onLogout}){
+  const [tab,setTab]=useState('submissions');
+  const [subs,setSubs]=useState([]);
+  const [notifs,setNotifs]=useState([]);
+  const [totalPaidToManager,setTotalPaidToManager]=useState(0);
+  const [pricing,setPricing]=useState({pricePerPage:1000,currency:'CDF'});
+  const [search,setSearch]=useState('');
+  const [openFolder,setOpenFolder]=useState(null);
+  const [openBatches,setOpenBatches]=useState(new Set());
+  const [sendFinal,setSendFinal]=useState(null);
+  const [convModal,setConvModal]=useState(null);
+  const [mathPixModal,setMathPixModal]=useState(null);
+  // const vatRate=0.16;
+  const vatRate=0;
+
+
+
+
+  function toggleAdminBatch(batchId){setOpenBatches(prev=>{const n=new Set(prev);n.has(batchId)?n.delete(batchId):n.add(batchId);return n;});}
+
+  const prevNotifRef=useRef(-1);
+  async function refresh(){
+    const[s,n,p]=await Promise.all([api.get('/api/submissions'),api.get('/api/notifications'),api.get('/api/pricing')]);
+    const myNotifs=n.filter(x=>x.to===user.id||x.to===user.email);
+    const unreadNow=myNotifs.filter(x=>!(x.readBy||[]).includes(user.id)).length;
+    if(prevNotifRef.current>=0&&unreadNow>prevNotifRef.current) playNotifSound();
+    prevNotifRef.current=unreadNow;
+    setSubs(s);setNotifs(myNotifs);setPricing(p);
+  }
+  useEffect(()=>{refresh();const t=setInterval(refresh,POLL_MS);return()=>clearInterval(t)},[]);
+
+  async function confirmPayment(doc){
+    if(doc.batchId) await fetch(`/api/batches/${doc.batchId}/confirm-payment`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});
+    else await api.patch(`/api/submissions/${doc.id}`,{paid:true,status:'in_progress'});
+    refresh();
+  }
+
+  async function deleteDoc(id){if(!confirm('Delete?'))return;await api.del(`/api/submissions/${id}`);refresh();}
+  function downloadFile(doc){window.open(`/api/files/${doc.uploadFolder||doc.userId}/${doc.storedName}`,'_blank');}
+  async function markRead(id){
+    await api.patch(`/api/notifications/${id}`,{readerId:user.id});
+    setNotifs(prev=>prev.map(n=>n.id===id?{...n,readBy:[...((n.readBy||[])),user.id]}:n));
+  }
+
+  async function markBatchDone(batchId){
+    if(!confirm('Mark this batch as done? The admin will be notified to review and send the final document.'))return;
+    await fetch(`/api/batches/${batchId}/mark-done`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({managerName:user.name,tagName:user.tagName||user.name})});
+    refresh();
+  }
+
+  async function requestAssignment(batchId){
+    await fetch(`/api/batches/${batchId}/request-assignment`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({managerId:user.id,managerName:user.name,tagName:user.tagName||user.name})});
+    alert('Request sent to admin.');
+  }
+
+  async function requestUserTotalPaid(userId) {
+  // 1. Await the response from the server
+  // refresh();
+  const response = await fetch(`/api/users/${userId}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  });
+
+  // 2. Parse the JSON body
+  const data = await response.json();
+
+  // 3. Return the specific property from the result
+  // (Assuming your API returns { totalPaid: 100 })
+  return data.totalPaid;
+}
+
+async function calculateFinalBalance(userId) {
+  // ✅ This works
+  const paidAmount = await requestUserTotalPaid(userId);
+  
+  setTotalPaidToManager(paidAmount);
+  
+  console.log(`Total paid to manager (from API): ${totalPaidToManager}`);
+  return 0;
+}
+
+
+  const unread=notifs.filter(n=>!(n.readBy||[]).includes(user.id)).length;
+  const filtered=subs.filter(s=>!search||(s.userName+s.userEmail+s.fileName).toLowerCase().includes(search.toLowerCase()));
+  const byUser={};
+  filtered.forEach(s=>{if(!byUser[s.userId])byUser[s.userId]={userId:s.userId,userName:s.userName,userEmail:s.userEmail,docs:[]};byUser[s.userId].docs.push(s);});
+  const folders=Object.values(byUser).sort((a,b)=>Math.max(...b.docs.map(d=>new Date(d.uploadedAt)))-Math.max(...a.docs.map(d=>new Date(d.uploadedAt))));
+
+  // Compute my earnings
+  const myCompletedSubs=subs.filter(s=>s.assignedTo?.id===user.id&&s.paid&&s.status==='done');
+ 
+  const myRevenueHT=myCompletedSubs.reduce((a,s)=>a+(s.price||0),0);
+  const myEarnings=Math.round(myRevenueHT*(pricing.managerRate||10)/100);
+  // setUser(u);
+
+  
+  // const totalPaidToManager=user.totalPaid||0;
+  // paidAmount = await calculateFinalBalance(user.id);
+  // setTotalPaidToManager(paid);
+
+  if(1!==0){
+    calculateFinalBalance(user.id);
+  }
+
+
+  return(
+    <div className="app-shell">
+      {sendFinal&&<SendFinalModal doc={sendFinal} onClose={()=>setSendFinal(null)} onDone={refresh}/>}
+      {convModal&&<ConversationModal doc={convModal} adminUser={user} pricing={pricing} onClose={()=>{setConvModal(null);refresh();}}/>}
+      {mathPixModal&&<MathPixModal batch={mathPixModal} user={user} onClose={()=>setMathPixModal(null)} onDone={()=>{setMathPixModal(null);refresh();}}/>}
+
+      <div className="app-navbar" style={{padding:'12px 24px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <div style={{width:30,height:30,borderRadius:7,background:'#0f6e56',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 8h6M7 16h4M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/></svg></div>
+          <span style={{fontWeight:500,fontSize:14}}>voTex</span>
+          <span className="badge" style={{background:'#e1f5ee',color:'#0f6e56',fontSize:10}}>Manager</span>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <Avatar name={user.name} userId={user.id} size={28} editable={true}/>
+          <span style={{fontSize:12,color:'var(--color-text-secondary)'}}>{user.name.split(' ')[0]}</span>
+          <button className="btn-sm" onClick={()=>{window.location.href=document.documentElement.lang==='fr'?'/index.html':'/index-fr.html';}} style={{fontSize:11}}>🌐 FR</button>
+          <button className="btn-sm" onClick={onLogout}>Sign out</button>
+        </div>
+      </div>
+
+      <div className="app-tabbar" style={{paddingLeft:16,display:'flex',alignItems:'center',justifyContent:'space-between',paddingRight:16}}>
+        <div>{[['submissions','Submissions'],['notifications','Notifications'+(unread>0?` (${unread})`:'')]].map(([t,l])=><button key={t} className={'tab'+(tab===t?' active':'')} onClick={()=>setTab(t)}>{l}</button>)}</div>
+        <button className="btn-sm" onClick={refresh} style={{fontSize:11}}>Refresh</button>
+      </div>
+      
+    
+
+      <div className="app-content">
+      {myEarnings>0&&<div style={{background:'#e1f5ee',borderBottom:'0.5px solid #5dcaa533',padding:'8px 24px',display:'flex',alignItems:'center',gap:12,flexShrink:0,flexWrap:'wrap'}}>
+        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}>💼 Earnings: {sym(pricing.currency)}{myEarnings} </span>
+        <span style={{fontSize:11,color:'#0f6e56'}}>({pricing.managerRate||10}% of {sym(pricing.currency)}{myRevenueHT} HT · {myCompletedSubs.length} completed)</span>
+        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}> Withdrawn: {sym(pricing.currency)}{totalPaidToManager||0}</span>
+        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}> Available: {sym(pricing.currency)}{myEarnings-totalPaidToManager||0}</span>
+        
+        {(pricing.alreadyPaid?.[user.id]||0)>0&&<span style={{fontSize:11,color:'#6b6b6b'}}>· Paid out: {sym(pricing.currency)}{pricing.alreadyPaid?.[user.id]||0}</span>}
+        <button onClick={async()=>{
+          if(!confirm(`Request payout of ${sym(pricing.currency)}${myEarnings-totalPaidToManager}?`))return;
+          const res=await fetch(`/api/managers/${user.id}/payment-request`,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+          const data=await res.json(); 
+          if(data.error)alert(data.error);else alert('Payment request sent to admin!');refresh();
+        }} style={{marginLeft:'auto',background:'#0f6e56',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'5px 12px',fontSize:12,cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>
+          💸 Request payout
+        </button>
+      </div>}
+      <div style={{maxWidth:860,margin:'0 auto',padding:'1.5rem 1rem'}}>
+
+        {tab==='submissions'&&(
+          <>
+            <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:'1rem'}}>
+              <input placeholder="Search students or files…" value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1}}/>
+              <span style={{fontSize:12,color:'var(--color-text-secondary)',whiteSpace:'nowrap'}}>{subs.length} docs</span>
+            </div>
+            {folders.length===0&&<div style={{fontSize:13,color:'var(--color-text-secondary)',textAlign:'center',padding:'2rem',background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)'}}>No submissions yet.</div>}
+            <div style={{display:'flex',flexDirection:'column',gap:10}}>
+              {folders.map(f=>{
+                const open=openFolder===f.userId;
+                const awaitingPay=f.docs.filter(d=>d.status==='awaiting_payment').length;
+                return(
+                  <div key={f.userId} style={{background:'var(--color-background-primary)',border:'0.5px solid var(--color-border-tertiary)',borderRadius:'var(--border-radius-lg)',overflow:'hidden'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 1.25rem',cursor:'pointer'}} onClick={()=>setOpenFolder(open?null:f.userId)}>
+                      <Avatar name={f.userName}/>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:13,fontWeight:500}}>{f.userName}</div>
+                        <div style={{fontSize:11,color:'var(--color-text-secondary)'}}>{f.userEmail}</div>
+                      </div>
+                      <span className="badge" style={{background:'#e6f1fb',color:'#1e3a5f'}}>{f.docs.length} doc{f.docs.length!==1?'s':''}</span>
+                      {awaitingPay>0&&<span className="badge" style={{background:'#fff3cd',color:'#856404'}}>{awaitingPay} awaiting payment</span>}
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{transform:open?'rotate(180deg)':'none',transition:'transform 0.2s'}}><path d="M6 9l6 6 6-6" stroke="var(--color-text-secondary)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                    </div>
+                    {open&&(
+                      <div style={{borderTop:'0.5px solid var(--color-border-tertiary)'}}>
+                        {(()=>{
+                          const bMap={};
+                          [...f.docs].sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt)).forEach(doc=>{const bid=doc.batchId||doc.id;if(!bMap[bid])bMap[bid]={batchId:bid,docs:[],uploadedAt:doc.uploadedAt};bMap[bid].docs.push(doc);});
+                          return Object.values(bMap).sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt)).map((abatch,abi)=>{
+                            const leader=abatch.docs[0];
+                            const batchOpen=openBatches.has(abatch.batchId);
+                            const batchTotal=abatch.docs.reduce((a,d)=>a+(d.price||0),0);
+                            const batchTTC=Math.round(batchTotal*(1+vatRate));
+                            const batchPaid=abatch.docs.every(d=>d.paid);
+                            const bst=stl(leader.status);
+                            const isAssignedToMe=leader.assignedTo?.id===user.id;
+                            return(
+                              <div key={abatch.batchId} style={{borderBottom:'0.5px solid var(--color-border-secondary)',opacity:isAssignedToMe?1:0.6}}>
+                                <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 1.25rem',background:isAssignedToMe?'#f8f8f6':'#f3f3f3',cursor:'pointer',flexWrap:'wrap'}}
+                                  onClick={()=>toggleAdminBatch(abatch.batchId)}>
+                                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{transform:batchOpen?'none':'rotate(-90deg)',transition:'transform 0.2s'}}><path d="M6 9l6 6 6-6" stroke="var(--color-text-secondary)" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                                  <div style={{flex:1,fontSize:11,fontWeight:600,color:'var(--color-text-secondary)'}}>
+                                    Batch {abi+1} · {new Date(abatch.uploadedAt).toLocaleDateString()} · {abatch.docs.length} file{abatch.docs.length!==1?'s':''}
+                                    {leader.templateName&&leader.templateName!=='none'&&<span style={{marginLeft:6,background:'#f3e8ff',color:'#6d28d9',padding:'1px 6px',borderRadius:6,fontSize:10,fontWeight:400}}>📄 {leader.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ')}</span>}
+                                    {leader.isMathDoc===false&&<span style={{marginLeft:4,background:'#e1f5ee',color:'#0f6e56',padding:'1px 5px',borderRadius:6,fontSize:10,fontWeight:400}}>📝 Text</span>}
+                                    {leader.isMathDoc===true&&<span style={{marginLeft:4,background:'#e6f1fb',color:'#1e3a5f',padding:'1px 5px',borderRadius:6,fontSize:10,fontWeight:400}}>📐 Math</span>}
+                                  </div>
+                                  <span style={{fontSize:11,fontWeight:500,color:batchPaid?'#0f6e56':'#92400e'}}>{sym(pricing.currency)}{batchTTC} TTC</span>
+                                  <span style={{fontSize:10,color:'var(--color-text-secondary)'}}>(HT: {sym(pricing.currency)}{batchTotal})</span>
+                                  <span className="badge" style={{background:bst.bg,color:bst.color,fontSize:10}}>{bst.label}</span>
+                                  {isAssignedToMe
+                                    ?<span style={{fontSize:10,background:'#e1f5ee',color:'#0f6e56',padding:'2px 6px',borderRadius:8,fontWeight:600}}>✓ Assigned to you</span>
+                                    :<span style={{display:'flex',alignItems:'center',gap:4}}>
+                                      <span style={{fontSize:10,background:'#f5f5f3',color:'#6b6b6b',padding:'2px 6px',borderRadius:8}}>👁 View only</span>
+                                      {!leader.assignedTo&&<button onClick={e=>{e.stopPropagation();requestAssignment(leader.batchId);}} style={{fontSize:10,background:'#f3e8ff',color:'#6d28d9',border:'0.5px solid #a78bfa77',borderRadius:8,padding:'2px 6px',cursor:'pointer',fontFamily:'inherit',whiteSpace:'nowrap'}}>🙋 Request</button>}
+                                    </span>
+                                  }
+                                    {isAssignedToMe&&<div style={{display:'flex',gap:4}} onClick={e=>e.stopPropagation()}>
+                                    {leader.status==='awaiting_payment'&&!batchPaid&&<button className="btn-amber" onClick={()=>confirmPayment(leader)} style={{fontSize:11,padding:'4px 8px'}}>Confirm payment</button>}
+                                    {/*{leader.paymentProof&&<a href={`/api/submissions/${leader.id}/payment-proof`} target="_blank" rel="noreferrer" style={{background:'transparent',color:'#856404',padding:'4px 8px',border:'0.5px solid #d4960077',borderRadius:'var(--border-radius-md)',fontSize:11,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:3,cursor:'pointer'}}>View proof</a>}*/}
+                                    {leader.status==='in_progress'&&leader.batchId&&<button onClick={()=>setMathPixModal(subs.filter(s=>s.batchId===leader.batchId).sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt)))} style={{background:'transparent',color:'#6d28d9',border:'0.5px solid #a78bfa77',padding:'4px 8px',borderRadius:'var(--border-radius-md)',fontSize:11,cursor:'pointer',fontFamily:'inherit'}}>Latex</button>}
+                                    {!!leader.mathpixResult&&<button onClick={()=>setMathPixModal(subs.filter(s=>s.batchId===leader.batchId).sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt)))} style={{background:'#6d28d9',color:'#fff',border:'none',padding:'4px 8px',borderRadius:'var(--border-radius-md)',fontSize:11,cursor:'pointer',fontFamily:'inherit'}}>✏️ Open Text</button>}
+                                    {(leader.status==='in_progress'||leader.status==='done')&&<button className="btn-green" onClick={()=>setSendFinal(leader)} style={{fontSize:11,padding:'4px 8px'}}>{leader.finalDoc?'Resend doc':'Send final doc'}</button>}
+                                    {leader.status==='in_progress'&&!leader.managerDone&&<button onClick={()=>markBatchDone(leader.batchId)} style={{background:'#0f6e56',color:'#fff',border:'none',padding:'4px 8px',borderRadius:'var(--border-radius-md)',fontSize:11,cursor:'pointer',fontFamily:'inherit'}}>✅ Mark done</button>}
+                                    {leader.managerDone&&<span style={{fontSize:10,background:'#e1f5ee',color:'#0f6e56',padding:'2px 6px',borderRadius:8,fontWeight:600}}>✓ Marked done</span>}
+                                     </div>}
+                                </div>
+                                {batchOpen&&abatch.docs.map(doc=>{
+                                  const st=stl(doc.status);
+                                  return(
+                                    <div key={doc.id} style={{borderTop:'0.5px solid var(--color-border-tertiary)',display:'flex',alignItems:'center',gap:8,padding:'8px 1.25rem 8px 2.5rem',flexWrap:'wrap'}}>
+                                      <div style={{flex:1,minWidth:120}}>
+                                        <div style={{fontSize:12,fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{doc.fileName}</div>
+                                        <div style={{fontSize:11,color:'var(--color-text-secondary)'}}>{doc.pages||'?'}pp · {sym(pricing.currency)}{doc.price||'?'}</div>
+                                      </div>
+                                      <span className="badge" style={{background:st.bg,color:st.color,fontSize:10}}>{st.label}</span>
+                                       {isAssignedToMe&&<button className="btn-blue" onClick={()=>setConvModal(doc)} style={{fontSize:11,padding:'4px 8px'}}>Chat</button>}
+                                      {<a href={`/api/files/${doc.uploadFolder||doc.userId}/${doc.storedName}/preview`} target="_blank" rel="noreferrer" style={{background:'transparent',color:'#1e3a5f',padding:'4px 8px',border:'0.5px solid #85b7eb77',borderRadius:'var(--border-radius-md)',fontSize:11,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:3}}>
+                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/></svg>
+                                        Preview
+                                      </a>}
+                                      {isAssignedToMe&&<button className="btn-sm" style={{fontSize:11,padding:'4px 8px'}} onClick={()=>downloadFile(doc)}>Download</button>}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            );
+                          });
+                        })()}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+
+        {tab==='notifications'&&(
+          <>
+            <div style={{fontSize:15,fontWeight:500,marginBottom:'1rem'}}>Notifications</div>
+            {notifs.length===0&&<div style={{fontSize:13,color:'var(--color-text-secondary)',textAlign:'center',padding:'2rem',background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)'}}>No notifications.</div>}
+            <div style={{display:'flex',flexDirection:'column',gap:8}}>
+              {[...notifs].sort((a,b)=>new Date(b.sentAt)-new Date(a.sentAt)).map(n=>{
+                const isRead=(n.readBy||[]).includes(user.id);
+                // Find the batch to check if finalDoc already submitted
+                const batchLeader=n.batchId?subs.find(s=>s.batchId===n.batchId&&s.finalDoc):null;
+                return(
+                <div key={n.id} onClick={()=>markRead(n.id)} className="card" style={{cursor:'pointer',borderLeft:isRead?'0.5px solid var(--color-border-tertiary)':'3px solid #0f6e56',paddingLeft:isRead?'1.25rem':'calc(1.25rem - 2px)'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',marginBottom:4,flexWrap:'wrap',gap:6}}>
+                    <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+                      <span className="badge" style={{background:n.type==='assignment'?'#e1f5ee':n.type==='feedback'?'#fff3cd':n.type==='new_submission_manager'?'#e6f1fb':'#f5f5f3',color:n.type==='assignment'?'#0f6e56':n.type==='feedback'?'#856404':n.type==='new_submission_manager'?'#1e3a5f':'#6b6b6b',fontSize:10}}>
+                        {n.type==='assignment'?'🎯 Assigned to you':n.type==='feedback'?'✏️ Feedback':n.type==='new_submission_manager'?'📋 New submission':n.type==='manager_done'?'✅ Done':'Notification'}
+                      </span>
+                      <span style={{fontSize:13,fontWeight:isRead?400:500}}>{n.subject}</span>
+                    </div>
+                    <span style={{fontSize:11,color:'var(--color-text-secondary)'}}>{new Date(n.sentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
+                  </div>
+                  <div style={{fontSize:12,color:'var(--color-text-secondary)',whiteSpace:'pre-line',maxHeight:60,overflow:'hidden'}}>{n.body}</div>
+                  {n.type==='new_submission_manager'&&n.batchId&&!batchLeader&&(
+                    <button onClick={e=>{e.stopPropagation();requestAssignment(n.batchId);}} style={{marginTop:8,fontSize:11,background:'#f3e8ff',color:'#6d28d9',border:'0.5px solid #a78bfa77',borderRadius:'var(--border-radius-md)',padding:'4px 10px',cursor:'pointer',fontFamily:'inherit'}}>
+                      🙋 Request assignment from admin
+                    </button>
+                  )}
+                  {n.type==='new_submission_manager'&&batchLeader&&(
+                    <div style={{marginTop:6,fontSize:11,color:'#0f6e56',fontStyle:'italic'}}>✅ Document already sent to student</div>
+                  )}
+                  {n.type==='feedback'&&n.submissionId&&(
+                    <button onClick={async e=>{e.stopPropagation();if(!confirm('Mark this batch as complete?'))return;await fetch(`/api/submissions/${n.submissionId}/close-feedback`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:'{}'});refresh();}} style={{marginTop:8,fontSize:11,background:'#e1f5ee',color:'#0f6e56',border:'0.5px solid #5dcaa577',borderRadius:'var(--border-radius-md)',padding:'4px 10px',cursor:'pointer',fontFamily:'inherit'}}>
+                      ✓ Mark batch complete
+                    </button>
+                  )}
+                </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+      </div>
+      </div>
+      <Footer/>
+      <StaffChatPanel user={user}/>
+      <AdminChatFloating subs={subs} onOpenConv={setConvModal} filterUserId={user.id}/>
+    </div>
+  );
+}
+
+function App(){
+  const [user,setUser]=useState(()=>getSession());
+  function login(u){setUser(u)}
+  function logout(){clearSession();setUser(null)}
+  if(!user)return <AuthScreen onLogin={login}/>;
+  if(user.role==='admin')return <AdminDash user={user} onLogout={logout}/>;
+  if(user.role==='manager')return <ManagerDash user={user} onLogout={logout}/>;
+  return <StudentDash user={user} onLogout={logout}/>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
+
+return <ManagerDash user={user} onLogout={logout}/>;

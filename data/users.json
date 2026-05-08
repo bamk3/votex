@@ -1,0 +1,154 @@
+[
+  {
+    "id": "admin",
+    "name": "Admin",
+    "email": "admin@maktech.co.uk",
+    "password": "Admin@maktech",
+    "role": "admin",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "u_1777758616327",
+    "name": "Sam Tab",
+    "email": "sq,2ex:cd",
+    "password": "&é\"",
+    "role": "student",
+    "uploadFolder": "u_Sam_Tab_2026-05-02",
+    "createdAt": "2026-05-02T21:50:16.327Z"
+  },
+  {
+    "id": "m_1777807659235",
+    "name": "Chad Boseman",
+    "email": "chad@votex.co.uk",
+    "password": "123456",
+    "role": "manager",
+    "tagName": "Panth",
+    "createdAt": "2026-05-03T11:27:39.235Z",
+    "paymentRequests": [
+      {
+        "id": "pr_1778245864989",
+        "amount": 18183,
+        "requestedAt": "2026-05-08T13:11:04.989Z",
+        "status": "paid",
+        "paidAt": "2026-05-08T13:11:38.655Z",
+        "paidAmount": 18000
+      },
+      {
+        "id": "pr_1778245434766",
+        "amount": 18183,
+        "requestedAt": "2026-05-08T13:03:54.766Z",
+        "status": "paid",
+        "paidAt": "2026-05-08T13:11:38.655Z",
+        "paidAmount": 18000
+      },
+      {
+        "id": "pr_1778245263618",
+        "amount": 18183,
+        "requestedAt": "2026-05-08T13:01:03.618Z",
+        "status": "paid",
+        "paidAt": "2026-05-08T13:11:38.655Z",
+        "paidAmount": 18000
+      },
+      {
+        "id": "pr_1778237810861",
+        "amount": 13183,
+        "requestedAt": "2026-05-08T10:56:50.861Z",
+        "status": "paid",
+        "paidAt": "2026-05-08T10:57:26.511Z",
+        "paidAmount": 8184
+      },
+      {
+        "id": "pr_1778190435592",
+        "amount": 5194,
+        "requestedAt": "2026-05-07T21:47:15.592Z",
+        "status": "paid",
+        "paidAt": "2026-05-07T21:47:49.905Z",
+        "paidAmount": 993
+      }
+    ],
+    "totalPaid": 32360
+  },
+  {
+    "id": "m_1777807857799",
+    "name": "JP Mak",
+    "email": "jp@votex.co.uk",
+    "password": "123456",
+    "role": "manager",
+    "tagName": "Alpha",
+    "createdAt": "2026-05-03T11:30:57.799Z",
+    "paymentRequests": [],
+    "totalPaid": 0
+  },
+  {
+    "id": "u_1777833082862",
+    "name": "Samy Tab",
+    "email": "samy@ex.cd",
+    "password": "123",
+    "role": "student",
+    "uploadFolder": "u_Samy_Tab_2026-05-03",
+    "createdAt": "2026-05-03T18:31:22.862Z"
+  },
+  {
+    "id": "u_1777836211550",
+    "name": "Biko",
+    "email": "kiaki@gmail.com",
+    "password": "123456789@@",
+    "role": "student",
+    "uploadFolder": "u_Biko_2026-05-03",
+    "createdAt": "2026-05-03T19:23:31.550Z"
+  },
+  {
+    "id": "m_1777837521542",
+    "name": "BV Kiakisolako",
+    "email": "bvkiaki13@gmail.com",
+    "password": "123",
+    "role": "manager",
+    "tagName": "BV",
+    "createdAt": "2026-05-03T19:45:21.542Z"
+  },
+  {
+    "id": "u_1777895252734",
+    "name": "zeth",
+    "email": "zethgloria9@gmail.com",
+    "password": "1234",
+    "role": "student",
+    "uploadFolder": "u_zeth_2026-05-04",
+    "createdAt": "2026-05-04T11:47:32.734Z"
+  },
+  {
+    "id": "m_1777897618513",
+    "name": "Bien-Aimée",
+    "email": "zeth@votex.co.uk",
+    "password": "123",
+    "role": "manager",
+    "tagName": "Glo",
+    "createdAt": "2026-05-04T12:26:58.513Z"
+  },
+  {
+    "id": "u_1778004811254",
+    "name": "Félix Edjobola",
+    "email": "felixedjobola@gmail.com",
+    "password": "123456",
+    "role": "student",
+    "uploadFolder": "u_Flix_Edjobola_2026-05-05",
+    "createdAt": "2026-05-05T18:13:31.254Z"
+  },
+  {
+    "id": "u_1778004811655",
+    "name": "Joseline Doriane",
+    "email": "tekeudoriane521@gmail.com",
+    "password": "simotek",
+    "role": "student",
+    "uploadFolder": "u_Joseline_Doriane_2026-05-05",
+    "createdAt": "2026-05-05T18:13:31.655Z"
+  },
+  {
+    "id": "u_1778011261898",
+    "name": "Yadibere Clemie",
+    "email": "clemieyadibere04@gmail.com",
+    "password": "FoRtune@1",
+    "role": "student",
+    "uploadFolder": "u_Yadibere_Clemie_2026-05-05",
+    "createdAt": "2026-05-05T20:01:01.898Z"
+  }
+]

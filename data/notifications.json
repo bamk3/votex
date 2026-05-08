@@ -1,0 +1,768 @@
+[
+  {
+    "id": "n_1778249115368",
+    "type": "manager_submitted",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "Manager Chad Boseman submitted typed doc for Samy Tab",
+    "body": "Chad Boseman has sent the typed document for:\n• Practical-1.pdf\n\nStudent: Samy Tab (samy@ex.cd)",
+    "sentAt": "2026-05-08T14:05:15.368Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778249072512",
+    "type": "assignment",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "Batch assigned to you — Samy Tab",
+    "body": "You have been assigned to handle 1 file(s) from Samy Tab:\n• Practical-1.pdf",
+    "sentAt": "2026-05-08T14:04:32.512Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778249040633_m_1777897618513",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778249040548",
+    "to": "m_1777897618513",
+    "toName": "Bien-Aimée",
+    "subject": "New batch from Samy Tab",
+    "body": "Samy Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778249040632_l1jvuz7eav",
+    "sentAt": "2026-05-08T14:04:00.633Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778249040633_m_1777837521542",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778249040548",
+    "to": "m_1777837521542",
+    "toName": "BV Kiakisolako",
+    "subject": "New batch from Samy Tab",
+    "body": "Samy Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778249040632_l1jvuz7eav",
+    "sentAt": "2026-05-08T14:04:00.633Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778249040633_m_1777807857799",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778249040548",
+    "to": "m_1777807857799",
+    "toName": "JP Mak",
+    "subject": "New batch from Samy Tab",
+    "body": "Samy Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778249040632_l1jvuz7eav",
+    "sentAt": "2026-05-08T14:04:00.633Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778249040633_m_1777807659235",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778249040548",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "New batch from Samy Tab",
+    "body": "Samy Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778249040632_l1jvuz7eav",
+    "sentAt": "2026-05-08T14:04:00.633Z",
+    "read": false
+  },
+  {
+    "id": "n_1778249040633",
+    "type": "payment_ready",
+    "batchId": "batch_1778249040548",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💰 Payment proof — Samy Tab (1 files)",
+    "body": "Samy Tab submitted payment proof for 1 file. Total TTC: CDF 1854",
+    "sentAt": "2026-05-08T14:04:00.633Z",
+    "read": false,
+    "submissionId": "s_1778249040632_l1jvuz7eav",
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778248529927_a",
+    "type": "withdrawal",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment of CDF 183 to Panth",
+    "body": "You paid CDF 183 to Chad Boseman (Panth).\nTotal paid to this manager: CDF 32360.",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "amount": 183,
+    "sentAt": "2026-05-08T13:55:29.927Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778248529927",
+    "type": "payment_paid",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "✅ Payment of CDF 183 received",
+    "body": "Admin has paid you CDF 183.\nTotal paid to date: CDF 32360.\nThank you for your work!",
+    "sentAt": "2026-05-08T13:55:29.927Z",
+    "read": false
+  },
+  {
+    "id": "n_1778245898657_a",
+    "type": "withdrawal",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment of CDF 18000 to Panth",
+    "body": "You paid CDF 18000 to Chad Boseman (Panth).\nTotal paid to this manager: CDF 32177.",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "amount": 18000,
+    "sentAt": "2026-05-08T13:11:38.657Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778245898657",
+    "type": "payment_paid",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "✅ Payment of CDF 18000 received",
+    "body": "Admin has paid you CDF 18000.\nTotal paid to date: CDF 32177.\nThank you for your work!",
+    "sentAt": "2026-05-08T13:11:38.657Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778245864990",
+    "type": "payment_request",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment request from Chad Boseman",
+    "body": "Panth is requesting payment of CDF 18183.\n\nEarned: CDF 32360 · Already paid: CDF 14177",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "sentAt": "2026-05-08T13:11:04.990Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778245434767",
+    "type": "payment_request",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment request from Chad Boseman",
+    "body": "Panth is requesting payment of CDF 18183.\n\nEarned: CDF 32360 · Already paid: CDF 14177",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "sentAt": "2026-05-08T13:03:54.767Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778245263622",
+    "type": "payment_request",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment request from Chad Boseman",
+    "body": "Panth is requesting payment of CDF 18183.\n\nEarned: CDF 32360 · Already paid: CDF 14177",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "sentAt": "2026-05-08T13:01:03.622Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778245249163",
+    "type": "manager_submitted",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "Manager Chad Boseman submitted typed doc for Sam Tab",
+    "body": "Chad Boseman has sent the typed document for:\n• Example_Sheet_3_M2_JuliaLagunaSolutions.pdf\n\nStudent: Sam Tab (sq,2ex:cd)",
+    "sentAt": "2026-05-08T13:00:49.163Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778245214329",
+    "type": "assignment",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "Batch assigned to you — Sam Tab",
+    "body": "You have been assigned to handle 1 file(s) from Sam Tab:\n• Example_Sheet_3_M2_JuliaLagunaSolutions.pdf",
+    "sentAt": "2026-05-08T13:00:14.329Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "nm_1778245190682_m_1777897618513",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778245190473",
+    "to": "m_1777897618513",
+    "toName": "Bien-Aimée",
+    "subject": "New batch from Sam Tab",
+    "body": "Sam Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778245190681_hlkjvaesynj",
+    "sentAt": "2026-05-08T12:59:50.682Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778245190682_m_1777837521542",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778245190473",
+    "to": "m_1777837521542",
+    "toName": "BV Kiakisolako",
+    "subject": "New batch from Sam Tab",
+    "body": "Sam Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778245190681_hlkjvaesynj",
+    "sentAt": "2026-05-08T12:59:50.682Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778245190682_m_1777807857799",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778245190473",
+    "to": "m_1777807857799",
+    "toName": "JP Mak",
+    "subject": "New batch from Sam Tab",
+    "body": "Sam Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778245190681_hlkjvaesynj",
+    "sentAt": "2026-05-08T12:59:50.682Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778245190682_m_1777807659235",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778245190473",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "New batch from Sam Tab",
+    "body": "Sam Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778245190681_hlkjvaesynj",
+    "sentAt": "2026-05-08T12:59:50.682Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778245190682",
+    "type": "new_submission",
+    "batchId": "batch_1778245190473",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "New batch from Sam Tab",
+    "body": "Sam Tab (sq,2ex:cd) started a new batch.\n• Example_Sheet_3_M2_JuliaLagunaSolutions.pdf — 33 pages · CDF 26367\n📄 Template: Mémoire (Thèse) I",
+    "sentAt": "2026-05-08T12:59:50.682Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778237846512_a",
+    "type": "withdrawal",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment of CDF 8184 to Panther",
+    "body": "You paid CDF 8184 to Chad Boseman (Panther).\nTotal paid to this manager: CDF 14177.",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "amount": 8184,
+    "sentAt": "2026-05-08T10:57:26.512Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778237846512",
+    "type": "payment_paid",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "✅ Payment of CDF 8184 received",
+    "body": "Admin has paid you CDF 8184.\nTotal paid to date: CDF 14177.\nThank you for your work!",
+    "sentAt": "2026-05-08T10:57:26.512Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778237810864",
+    "type": "payment_request",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment request from Chad Boseman",
+    "body": "Panther is requesting payment of CDF 13183.\n\nEarned: CDF 19176 · Already paid: CDF 5993",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "sentAt": "2026-05-08T10:56:50.864Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778237509201",
+    "type": "manager_submitted",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "Manager Chad Boseman submitted typed doc for Sam Tab",
+    "body": "Chad Boseman has sent the typed document for:\n• Example_Sheet_3_M2_JuliaLagunaSolutions.pdf\n\nStudent: Sam Tab (sq,2ex:cd)",
+    "sentAt": "2026-05-08T10:51:49.201Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778237362813",
+    "type": "assignment",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "Batch assigned to you — Sam Tab",
+    "body": "You have been assigned to handle 1 file(s) from Sam Tab:\n• Example_Sheet_3_M2_JuliaLagunaSolutions.pdf",
+    "sentAt": "2026-05-08T10:49:22.813Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "nm_1778237286159_m_1777897618513",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778237285834",
+    "to": "m_1777897618513",
+    "toName": "Bien-Aimée",
+    "subject": "New batch from Sam Tab",
+    "body": "Sam Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778237286158_qgh3c8v8bqm",
+    "sentAt": "2026-05-08T10:48:06.159Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778237286159_m_1777837521542",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778237285834",
+    "to": "m_1777837521542",
+    "toName": "BV Kiakisolako",
+    "subject": "New batch from Sam Tab",
+    "body": "Sam Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778237286158_qgh3c8v8bqm",
+    "sentAt": "2026-05-08T10:48:06.159Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778237286159_m_1777807857799",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778237285834",
+    "to": "m_1777807857799",
+    "toName": "JP Mak",
+    "subject": "New batch from Sam Tab",
+    "body": "Sam Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778237286158_qgh3c8v8bqm",
+    "sentAt": "2026-05-08T10:48:06.159Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778237286159_m_1777807659235",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778237285834",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "New batch from Sam Tab",
+    "body": "Sam Tab uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778237286158_qgh3c8v8bqm",
+    "sentAt": "2026-05-08T10:48:06.159Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778237286159",
+    "type": "payment_ready",
+    "batchId": "batch_1778237285834",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💰 Payment proof — Sam Tab (1 files)",
+    "body": "Sam Tab submitted payment proof for 1 file. Total TTC: CDF 30586",
+    "sentAt": "2026-05-08T10:48:06.159Z",
+    "read": false,
+    "submissionId": "s_1778237286158_qgh3c8v8bqm",
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778190708254_a",
+    "type": "withdrawal",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment of CDF 4201 to Panther",
+    "body": "You paid CDF 4201 to Chad Boseman (Panther).\nTotal paid to this manager: CDF 5993.",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "amount": 4201,
+    "sentAt": "2026-05-07T21:51:48.254Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778190708253",
+    "type": "payment_paid",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "✅ Payment of CDF 4201 received",
+    "body": "Admin has paid you CDF 4201.\nTotal paid to date: CDF 5993.\nThank you for your work!",
+    "sentAt": "2026-05-07T21:51:48.254Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778190469907_a",
+    "type": "withdrawal",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment of CDF 993 to Panther",
+    "body": "You paid CDF 993 to Chad Boseman (Panther).\nTotal paid to this manager: CDF 1792.",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "amount": 993,
+    "sentAt": "2026-05-07T21:47:49.907Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778190469907",
+    "type": "payment_paid",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "✅ Payment of CDF 993 received",
+    "body": "Admin has paid you CDF 993.\nTotal paid to date: CDF 1792.\nThank you for your work!",
+    "sentAt": "2026-05-07T21:47:49.907Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778190435594",
+    "type": "payment_request",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment request from Chad Boseman",
+    "body": "Panther is requesting payment of CDF 5194.\n\nEarned: CDF 5993 · Already paid: CDF 799",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "sentAt": "2026-05-07T21:47:15.594Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778190415234",
+    "type": "manager_submitted",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "Manager Chad Boseman submitted typed doc for Jack Ma",
+    "body": "Chad Boseman has sent the typed document for:\n• Article Guy.pdf\n\nStudent: Jack Ma (you@ex.ed)",
+    "sentAt": "2026-05-07T21:46:55.234Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778190390304",
+    "type": "assignment",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "Batch assigned to you — Jack Ma",
+    "body": "You have been assigned to handle 1 file(s) from Jack Ma:\n• Article Guy.pdf",
+    "sentAt": "2026-05-07T21:46:30.304Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "nm_1778190373287_m_1777897618513",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778190372955",
+    "to": "m_1777897618513",
+    "toName": "Bien-Aimée",
+    "subject": "New batch from Jack Ma",
+    "body": "Jack Ma uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778190373283_qz1r6k8o5po",
+    "sentAt": "2026-05-07T21:46:13.287Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778190373287_m_1777837521542",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778190372955",
+    "to": "m_1777837521542",
+    "toName": "BV Kiakisolako",
+    "subject": "New batch from Jack Ma",
+    "body": "Jack Ma uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778190373283_qz1r6k8o5po",
+    "sentAt": "2026-05-07T21:46:13.287Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778190373287_m_1777807857799",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778190372955",
+    "to": "m_1777807857799",
+    "toName": "JP Mak",
+    "subject": "New batch from Jack Ma",
+    "body": "Jack Ma uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778190373283_qz1r6k8o5po",
+    "sentAt": "2026-05-07T21:46:13.287Z",
+    "read": false,
+    "readBy": [
+      "m_1777807857799"
+    ]
+  },
+  {
+    "id": "nm_1778190373287_m_1777807659235",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778190372955",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "New batch from Jack Ma",
+    "body": "Jack Ma uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778190373283_qz1r6k8o5po",
+    "sentAt": "2026-05-07T21:46:13.287Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778190373287",
+    "type": "new_submission",
+    "batchId": "batch_1778190372955",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "New batch from Jack Ma",
+    "body": "Jack Ma (you@ex.ed) started a new batch.\n• Article Guy.pdf — 13 pages · CDF 10387\n📄 Template: Mémoire (Thèse) I",
+    "sentAt": "2026-05-07T21:46:13.287Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778190153223_a",
+    "type": "withdrawal",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💸 Payment of CDF 799 to Panther",
+    "body": "You paid CDF 799 to Chad Boseman (Panther).\nTotal paid to this manager: CDF 799.",
+    "managerId": "m_1777807659235",
+    "managerName": "Chad Boseman",
+    "amount": 799,
+    "sentAt": "2026-05-07T21:42:33.223Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778190153223",
+    "type": "payment_paid",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "✅ Payment of CDF 799 received",
+    "body": "Admin has paid you CDF 799.\nTotal paid to date: CDF 799.\nThank you for your work!",
+    "sentAt": "2026-05-07T21:42:33.223Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778185889767_mgr",
+    "type": "feedback",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "Feedback on \"Practical-1.pdf\" from Jack Ma",
+    "body": "Ok",
+    "submissionId": "s_1778184531791_f3rn64pd1dq",
+    "userId": "u_1777758541558",
+    "userName": "Jack Ma",
+    "sentAt": "2026-05-07T20:31:29.767Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778185889767",
+    "type": "feedback",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "Feedback on \"Practical-1.pdf\" from Jack Ma",
+    "body": "Ok",
+    "submissionId": "s_1778184531791_f3rn64pd1dq",
+    "userId": "u_1777758541558",
+    "userName": "Jack Ma",
+    "sentAt": "2026-05-07T20:31:29.767Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778185744854",
+    "type": "manager_submitted",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "Manager Chad Boseman submitted typed doc for Jack Ma",
+    "body": "Chad Boseman has sent the typed document for:\n• Practical-1.pdf\n\nStudent: Jack Ma (you@ex.ed)",
+    "sentAt": "2026-05-07T20:29:04.854Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778185510541_mgr",
+    "type": "mathpix_done",
+    "batchId": "batch_1778184531572",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "MathPix OCR complete — 1 file processed",
+    "body": "OCR complete for batch from Jack Ma. Output ready to review.",
+    "submissionId": "s_1778184531791_f3rn64pd1dq",
+    "sentAt": "2026-05-07T20:25:10.523Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778185510541",
+    "type": "mathpix_done",
+    "batchId": "batch_1778184531572",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "MathPix OCR complete — 1 file processed (LaTeX)",
+    "body": "OCR complete for batch from Jack Ma.\nMode: Math (LaTeX)\nFiles: Practical-1.pdf\nOutput: Jack_Ma_2026-05-07_20-25.tex",
+    "submissionId": "s_1778184531791_f3rn64pd1dq",
+    "sentAt": "2026-05-07T20:25:10.523Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "n_1778184567454",
+    "type": "assignment",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "Batch assigned to you — Jack Ma",
+    "body": "You have been assigned to handle 1 file(s) from Jack Ma:\n• Practical-1.pdf",
+    "sentAt": "2026-05-07T20:09:27.454Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "nm_1778184531792_m_1777897618513",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778184531572",
+    "to": "m_1777897618513",
+    "toName": "Bien-Aimée",
+    "subject": "New batch from Jack Ma",
+    "body": "Jack Ma uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778184531791_f3rn64pd1dq",
+    "sentAt": "2026-05-07T20:08:51.792Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778184531792_m_1777837521542",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778184531572",
+    "to": "m_1777837521542",
+    "toName": "BV Kiakisolako",
+    "subject": "New batch from Jack Ma",
+    "body": "Jack Ma uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778184531791_f3rn64pd1dq",
+    "sentAt": "2026-05-07T20:08:51.792Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778184531792_m_1777807857799",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778184531572",
+    "to": "m_1777807857799",
+    "toName": "JP Mak",
+    "subject": "New batch from Jack Ma",
+    "body": "Jack Ma uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778184531791_f3rn64pd1dq",
+    "sentAt": "2026-05-07T20:08:51.792Z",
+    "read": false,
+    "readBy": [
+      "m_1777807857799"
+    ]
+  },
+  {
+    "id": "nm_1778184531792_m_1777807659235",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778184531572",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "New batch from Jack Ma",
+    "body": "Jack Ma uploaded a new batch. You may request assignment from the admin.\n📄 Template: Mémoire (Thèse) I",
+    "submissionId": "s_1778184531791_f3rn64pd1dq",
+    "sentAt": "2026-05-07T20:08:51.792Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778184531792",
+    "type": "payment_ready",
+    "batchId": "batch_1778184531572",
+    "to": "admin@abc.com",
+    "toName": "Admin",
+    "subject": "💰 Payment proof — Jack Ma (1 files)",
+    "body": "Jack Ma submitted payment proof for 1 file. Total TTC: CDF 1854",
+    "sentAt": "2026-05-07T20:08:51.792Z",
+    "read": false,
+    "submissionId": "s_1778184531791_f3rn64pd1dq",
+    "readBy": [
+      "admin"
+    ]
+  }
+]

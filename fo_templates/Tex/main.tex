@@ -1,0 +1,18 @@
+ \input{preambule}
+ \usepackage[final]{pdfpages}
+% \usepackage[angle=0]{background}
+ % on peut charger ce paquet avec les options suivantes suivantes: pages=some, placement=bottom
+ %\backgroundsetup{contents={CONFIDENTIAL}}
+ 
+\begin{document}
+
+%	\input{page_de_garde.pdf}
+\begin{titlepage}
+	\includepdf[pages=1]{page_de_garde.pdf}
+\end{titlepage}
+\input{introduction}
+\input{chap1}
+\input{Conclusion}
+
+
+\end{document}

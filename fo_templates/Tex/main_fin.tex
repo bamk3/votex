@@ -1,0 +1,296 @@
+\documentclass[a4,11pt, oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+%\frenchbsetup{StandardLists=true}
+\usepackage[usenames]{color}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{textcomp}
+\usepackage{multirow}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{enumitem}
+\usepackage{mathrsfs}% \mathscr{C}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[french, english]{babel}
+\usepackage{graphicx}
+%\usepackage{slashbox}
+\usepackage{a4wide}
+\usepackage{lscape}
+\addtocounter{chapter}{0}
+\usepackage{rotating}
+\usepackage{fancyhdr}
+\usepackage[a4paper]{geometry}
+% \usepackage{titlesec}
+\usepackage[colorlinks=false,urlcolor=black]{hyperref} % Actionner les liens hypertextes
+%%%%%%%%%% Mise en forme de la table des matieres %%%%%%%
+\newcommand{\chaptertoccolor}{black} %couleur des chapitres
+\newcommand{\sectiontoccolor}{blue} % couleur des sections
+\newcommand{\subsectiontoccolor}{black} % couleur des sous-sections {green}
+\newcommand{\subsubsectiontoccolor}{red}
+\setcounter{tocdepth}{2} % definit la profonduer de la table des matieres
+\makeatletter
+% On redéfinit la façon dont doit être écrit le titre des chapitres
+\renewcommand*\l@chapter[2]{
+	\ifnum \c@tocdepth >\m@ne
+	\addpenalty{-\@highpenalty}
+	\vskip 1.0em \@plus\p@
+	\setlength\@tempdima{1.5em}
+	\begingroup
+	\parindent \z@ \rightskip \@pnumwidth
+	\parfillskip -\@pnumwidth
+	\leavevmode \bfseries
+	\advance\leftskip\@tempdima
+	\hskip -\leftskip
+	\def\@linkcolor{\chaptertoccolor}
+	\color{\chaptertoccolor}{\mathversion{bold} #1}\nobreak\
+	\leaders\hbox{$\m@th
+		\mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+		mu$}\hfil\nobreak\hb@xt@\@pnumwidth{\hss
+		\def\@linkcolor{\chaptertoccolor}
+		\color{\chaptertoccolor}#2}\par
+	\penalty\@highpenalty
+	\endgroup
+	\fi}
+% Définition des couleurs des différents niveaux dans la table des matières
+\renewcommand*\l@section{\color{\sectiontoccolor}
+	\def\@linkcolor{\sectiontoccolor}
+	\@dottedtocline{1}{1.5em}{2.3em}}
+\renewcommand*\l@subsection{\color{\subsectiontoccolor}
+	\def\@linkcolor{\subsectiontoccolor}
+	\@dottedtocline{2}{2.5em}{3.3em}}
+\renewcommand*\l@subsubsection{\color{\subsubsectiontoccolor}
+	\def\@linkcolor{\subsubsectiontoccolor}
+	\@dottedtocline{3}{3.5em}{4.3em}}
+
+\makeatother
+%%%%% fin de la mise en forme de la table des matieres %%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{hyperref}
+
+
+
+\usepackage{pxfonts}
+%%%diagrams packages xy$
+\usepackage{xy}
+% \input{./texinputs/xy.sty}
+% \input xy
+\xyoption{all}
+%%%%%%%%%%%%%%%
+\usepackage{color}
+%%%%%%%%%%%%%%%%%%%%%%%% This show the scale of a page%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\geometry{hscale=0.70,vscale=0.80}
+%%%%%%%%% This numbers equations by sections %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \oddsidemargin -.3cm \evensidemargin 0 cm
+%\setlength{\textheight}{22cm}
+\textheight 25cm
+\textwidth 16cm
+%\hoffset -1.7 cm
+\voffset -1.5 cm
+
+
+\makeatletter
+\@addtoreset{equation}{section}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\makeatother
+%%%%%%%%% Other definitions and commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\def\captionof#1#2{{\def\@captype{#1}#2}}
+\makeatother
+\newcommand{\subs}[1]{{\vspace*{0.5cm}}%
+	{\noindent\underline{#1}}{\addcontentsline{toc}{subsection}{#1}}%
+	{\vspace*{0.3cm}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\newtheorem{examples}[subsection]{Exemples}
+%\newtheorem{counterexamples}[subsection]{Countre-exemples}
+%\newtheorem{counterexample}[subsection]{Countre-examples}
+%\newtheorem{properties}[subsection]{Propriétés}
+\newtheorem{exercise}{Exercise}[section]
+%\newtheorem{remarks}[theorem]{Remarks}
+%\newtheorem{definitions}[subsection]{Définitions}
+%\newtheorem{proof}{Preuve}[section]
+%\newtheorem{prooft}{Proof of theorem}[section]
+\usepackage{tikz}
+
+\newcommand{\cqfd}{\hfill $\blacksquare$}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%Notations used in Hopf Algebra %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\p}{\frac{p^{\mu-1}}{q^{\nu}}}
+\newcommand{\q}{\frac{p^{\mu}}{q^{\nu-1}}}
+\newcommand{\f}{\Phi}
+\newcommand{\lf}{\left(}
+\newcommand{\rg}{\right)}
+\newcommand{\da}{\dagger}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\bibname}{References}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% voici les note de bas de page %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frenchspacing  \linespread{1.1}%1.5avant
+%moi%\usepackage{fancyhdr}
+%moi%\pagestyle{fancy}
+%moi%\usepackage{graphicx}
+%\usepackage{t1enc}
+\makeatletter
+\newcommand{\thechapterwords}{\thechapter}
+%{ \ifcase \thechapter\or 1\or 2\or 3\or 4\or 5\or  6\or 7\or 8\or 9\or 10\or 11\fi}
+\def\thickhrulefill{\leavevmode \leaders \hrule height 1ex \hfill \kern \z@}
+\def\@makechapterhead#1{%
+	%\vspace*{50\p@}%
+	% \vspace*{15\p@}%
+	{\parindent \z@ \centering \reset@font
+		\thickhrulefill\quad
+		\scshape \@chapapp{} \thechapterwords
+		\quad \thickhrulefill
+		\par\nobreak
+		\vspace*{10\p@}%
+		\interlinepenalty\@M
+		\hrule
+		\vspace*{10\p@}%
+		\Huge \bfseries #1\par\nobreak
+		\par %\nouppercase{name}
+		% m %       \vspace*{15\p@}%
+		\hrule
+		% m %   \vskip 60\p@
+		%\vskip 100\p@
+}}
+\def\@makeschapterhead#1{%
+	%\vspace*{50\p@}%
+	% m %  \vspace*{15\p@}%
+	{\parindent \z@ \centering \reset@font
+		\thickhrulefill
+		\par\nobreak
+		\vspace*{10\p@}%
+		\interlinepenalty\@M
+		\hrule
+		\vspace*{10\p@}%
+		\Huge \bfseries #1\par\nobreak
+		\par %\nouppercase{name}
+		\vspace*{10\p@}%
+		\hrule
+		\vskip 40\p@
+		%\vskip 100\p@
+}}
+\def\@makechapterhead#1{%
+	%\vspace*{50\p@}%
+	\vspace*{15\p@}%
+	{\parindent \z@ \centering \reset@font
+		\thickhrulefill\quad
+		\scshape \@chapapp{} \thechapterwords
+		\quad \thickhrulefill
+		\par\nobreak
+		\vspace*{10\p@}%
+		\interlinepenalty\@M
+		\hrule
+		\vspace*{10\p@}%
+		\Huge \bfseries #1\par\nobreak
+		\par %\nouppercase{name}
+		\vspace*{10\p@}%
+		\hrule
+		\vskip 40\p@
+		%\vskip 100\p@
+}}
+\frenchspacing \pagestyle{headings}
+%%avant c etait \frenchspacing  \linespread{1.1}%1.5avant
+%%d\'efinition des ent\^etes
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\fancyhf{} % supprime les en-t\^etes et pieds pr\'ed\'efinis
+\fancyhead[L,R]{\bfseries\thepage}% Left Even, Right Odd
+\fancyhead[L]{\bfseries\rightmark} % Left Odd
+\fancyhead[R]{\bfseries\leftmark} % Right Even
+\renewcommand{\headrulewidth}{1pt}% filet en haut de page
+\addtolength{\headheight}{1pt} % espace pour le filet
+\renewcommand{\footrulewidth}{0.5pt}% filet en bas de page
+%\addtolength{\footheight}{0.5pt} % espace pour le filet en bas
+\fancypagestyle{plain}{ % pages de tetes de chapitre
+	\fancyhead{} % supprime l'entete
+	%\fancyfoot{} %supprime le pied de page
+	\renewcommand{\headrulewidth}{0pt}
+}
+\newcommand{\clearemptydoublepage}{%
+	\newpage{\pagestyle{plain}\cleardoublepage}}
+
+\rhead{{\thepage}} 
+\lhead{\textsl{\leftmark}}
+
+%\fancyfoot[RE]{\tiny \textsl{ Domaine(orientation) }}
+
+%  \rhead{\textbf{\thepage}}
+% \lhead{\textsl{\leftmark}}
+
+
+\lhead{\nouppercase{\rightmark}}
+% \rhead{\nouppercase{\leftmark}}
+
+% \newcommand{\clearemptydoublepage}{\newpage{\pagestyle{plain}\cleardoublepage}}
+% \newcommand{\chapitre}[1]{\chapter{#1}}
+
+%%%%%%% Mise en forme Page de garde
+ %%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\newcommand\@cclxvipt{23}
+\newcommand\HUGE{\@setfontsize\HUGE\@cclxvipt{50}}
+\makeatother
+\usepackage{fancybox}
+
+%
+\newsavebox{\auteurbm}
+\newenvironment{Bonmot}[1]%
+{\small\slshape%
+	\savebox{\auteurbm}{\upshape\sffamily#1}%
+	\begin{flushright}}
+	{\\[4pt]\usebox{\auteurbm}
+	\end{flushright}\normalsize\upshape}
+%
+
+%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%
+\newcommand{\Filetdouble}[1]{%
+	\newlength{\ecart}
+	\settowidth{\ecart}{#1}
+	\begin{center}
+		\noindent
+		\rule[0ex]{\ecart}{1pt} \par
+		#1 \par
+		\rule[1ex]{\ecart}{1pt}
+\end{center}}
+
+ 
+\everymath{\displaystyle}
+
+\newcommand{\ie}{c'est-à-dire \  }
+\newcommand{\ssi}{si et seulement si\  }
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\K}{\ensuremath{\mathbb{K}}}
+\newcommand{\ep}{{1\leq i \leq p,1\leq j \leq q}}
+\newcommand{\eq}{{1\leq i \leq q,1\leq j \leq p}}
+\newcommand{\en}{{1\leq i \leq n,1\leq j \leq m}}
+\newcommand{\eij}{{1\leq i,j \leq p}}
+\newcommand{\eik}{{1\leq i,k \leq q}}
+\newcommand{\Degre}{\ensuremath{^\circ}}
+\DeclareMathOperator{\sh}{sh}
+\DeclareMathOperator{\e}{e}

@@ -1,0 +1,287 @@
+\documentclass[11pt]{report}
+%\usepackage{fourier}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+%--------------------------
+\usepackage{comment}
+\usepackage[top=2cm,bottom=2cm,left=2cm,right=2cm,
+                marginparwidth=1.1cm,marginparsep=2mm]{geometry}
+%\usepackage{geometry}
+\usepackage{tikz}
+%\usepackage[]{kpfonts}
+\usepackage{amsmath,amssymb,amsfonts,mathtools,mathptmx, amsthm,amsrefs}
+\renewcommand{\qedsymbol}{$\mid \mid \mid $}
+\usepackage{enumerate}
+\usepackage{enumitem,pifont}
+%\usepackage{kpfonts}
+% Couleurs
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\definecolor{bleueLeger}{RGB}{70,130,180}
+\definecolor{orange}{RGB}{255,138,88}
+\definecolor{blue}{RGB}{23,74,117}
+\definecolor{vert}{RGB}{21,122,81}
+\definecolor{jaune}{RGB}{255,185,88}
+\definecolor{grise}{RGB}{200,200,200}
+
+%autres paquets
+\usepackage{blindtext}
+\usepackage{color}
+\usepackage{titlesec}
+\usepackage{tocloft}
+%Les fontes
+\usepackage{anyfontsize}
+
+%les graphiques
+\usepackage{graphicx}
+
+
+%la couleur de fon de la page
+\usepackage[angle=45]{background}
+\backgroundsetup{contents={voTex}}
+
+
+% on peut charger ce paquet avec les options suivantes suivantes: pages=some, placement=bottom
+
+%styles des éléments de sectionnement
+\usepackage{sectsty}
+\sectionfont{\bf\color{black}\sectionrule{3pt}{0pt}{-1ex}{2pt}}
+%couleurs
+\definecolor{bleue}{RGB}{70,130,180}
+
+
+%style des chapitres
+\renewcommand{\thechapter}{\Roman{chapter}}
+\titleformat{\chapter}[display]
+            {\bfseries\Large}
+            {\filcenter\normalfont\textbf{\chaptertitlename} \large
+             \textbf{ \thechapter}}
+            {4ex}
+            {\color{bleue}%\titlerule[5pt]
+              \color{black}\Huge
+            % \vspace{2ex}
+             \filcenter}
+            [\vspace{3ex}
+              \color{bleue}\thispagestyle{plain}]
+              
+%style des sections
+     
+     
+\makeatletter
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+ \fancyfoot{ }
+%\footrule{1pt}
+%\footrulewidth{1}
+\fancyhead[RO]{ }
+%\fancyfoot[LO,LE]{\bsc{Nom}}
+\fancyfoot[C,C]{\thepage}
+
+\definecolor{beaublue}{rgb}{0.74, 0.83, 0.9}
+
+%\renewcommand{footrulewidth}{1pt} 
+%les théorèmes encadrés
+
+\usepackage[most]{tcolorbox}
+
+\newenvironment{boxtheorem}
+{\begin{tcolorbox}
+[enhanced jigsaw,breakable,pad at break*=2mm,
+ colback=black!5,colframe=bleueLeger]}
+{\end{tcolorbox}}
+\newenvironment{boxdefinition}
+{\begin{tcolorbox}
+		[enhanced jigsaw,breakable,pad at break*=1mm,
+		colback=black!5!white,boxrule=0pt,frame hidden,
+		borderline west={1.5mm}{-2mm}{blue}]}
+	{\end{tcolorbox}}
+\newenvironment{boxcorollaire}
+{\begin{tcolorbox}
+		[enhanced jigsaw,breakable,pad at break*=1mm,
+		colback=black!5!white,boxrule=0pt,frame hidden,
+		borderline east={1.5mm}{-2mm}{blue}]}
+	{\end{tcolorbox}}
+
+
+\swapnumbers
+\newtheoremstyle{styletheorem}
+{0pt}{0pt}{\itshape}{2pt}{\bf\sffamily\color{bleueLeger}}{\;}{0.25em}
+{\small\sffamily\color{orange}\thmname{#1}
+ \nobreakspace\thmnumber{\@ifnotempty{#1}{}\@upn{#2}}
+ \thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries\color{black} (#3)}}
+%%%%styles définitions, remarques,notes, conclusions, etc...
+\newtheoremstyle{styledef}
+{0pt}{0pt}{\fontshape{it}}{2pt}{\bf\sffamily\color{bleueLeger}}{\;}{0.25em}
+{\small\sffamily\color{orange}\thmname{#1}
+ \nobreakspace\thmnumber{\@ifnotempty{#1}{}\@upn{#2}}
+ \thmnote{\nobreakspace\the\thm@notefont\sffamily\bfseries\color{black} (#3)}}
+
+
+\theoremstyle{styletheorem}
+\newtheorem{theoreme}{Théorème}[section]
+%\newtheorem{theorem}{Théorème}[chapter]
+\newtheorem{corollary}[theoreme]{Corollaire}
+\newtheorem{lemma}[theoreme]{Lemme}
+\newtheorem{lm}[theoreme]{Lemme}
+%\newtheorem{corollaire}[theoreme]{Corollaire}
+\newtheorem{algo}[theoreme]{Algorithme}
+\newtheorem{co}[theoreme]{Corollaire}
+\newtheorem{conj}[theoreme]{Conjecture}
+\newtheorem{proposition}[theoreme]{Proposition}
+\newtheorem{remarque}[theoreme]{\textbf{Remarque}}
+\newtheorem{rema}[theoreme]{\textbf{Remarques et Notations}}
+\newenvironment{theorem}
+{\vspace*{0.3cm}\begin{boxtheorem}\begin{theoreme}}{\end{theoreme}\end{boxtheorem}\vspace*{0.3cm}}
+\newenvironment{tho}
+{\vspace*{0.3cm}\begin{boxtheorem}\begin{theoreme}}{\end{theoreme}\end{boxtheorem}\vspace*{0.3cm}}
+
+%%%%%Styles pour Dzfinition, Condition, Exemples, Algo, Question, Axiommes, Propriété, hypothèses
+\theoremstyle{styledef}
+\newtheorem{definitions}[theoreme]{Définition}
+\newtheorem{exa}[theoreme]{Exemple}
+\newtheorem{ex}[theoreme]{Exemples}
+\newtheorem{exetco}[theoreme]{Exemple et Contre-exemple}
+\newtheorem{propozition}[theoreme]{Proposition-Définition}
+
+\theoremstyle{remark}
+%\newtheorem{remarque}[theoreme]{\textbf{Remarque}}
+\newtheorem*{nte}{\textbf{Note}}
+%\newtheorem{thm}{Th\'{e}or\`{e}me}[chapter] 
+%\newtheorem{thms}[subsubsection]{Th\'{e}or\`{e}me}
+
+
+
+\newenvironment{lemme}
+{\vspace*{0.3cm}\begin{boxtheorem}\begin{lemma}}{\end{lemma}\end{boxtheorem}\vspace*{0.3cm}}
+\newenvironment{prop}
+{\vspace*{0.3cm}\begin{boxtheorem}\begin{proposition}}{\end{proposition}\end{boxtheorem}\vspace*{0.3cm}}
+\newenvironment{ren}
+{\vspace*{0.3cm}\begin{boxtheorem}\begin{rema}}{\end{rema}\end{boxtheorem}\vspace*{0.3cm}}
+\newenvironment{p}
+{\vspace*{0.3cm}\begin{boxtheorem}\begin{proposition}}{\end{proposition}\end{boxtheorem}\vspace*{0.3cm}}
+\newenvironment{corollaire}{\begin{boxcorollaire}\begin{corollary}}{\end{corollary}\end{boxcorollaire}}
+\newenvironment{definition}{\vspace*{0.3cm}\begin{boxdefinition}\begin{definitions}}{\end{definitions}\end{boxdefinition}\vspace*{0.3cm}}
+\newenvironment{rem}{\vspace*{0.3cm}\begin{boxdefinition}\begin{remarque}}{\end{remarque}\end{boxdefinition}\vspace*{0.3cm}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{propdf}{\vspace*{0.3cm}\begin{boxdefinition}\begin{propozition}}{\end{propozition}\end{boxdefinition}\vspace*{0.3cm}}
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Listes stylées avec le paquet tcolorbox
+\newenvironment{monenumerate}{%
+\begin{enumerate}}{\end{enumerate}\vspace*{0.3cm}}
+\tcolorboxenvironment{monenumerate}{blanker,breakable,pad at break*=1mm,before skip=6pt, after skip=6pt,borderline west={-1mm}{0pt}{bleueLeger}}
+
+\newtheorem{dfs}[theoreme]{D\'{e}finition}
+\newtheorem{thme}{Th\'{e}or\`{e}me}[theoreme]
+
+
+%\numberwithin{equation}{equation}
+\renewcommand*{\familydefault}{\sfdefault}
+%\newtheorem{prpt}{Part}
+%================================================
+%===========Set of Functions==================
+\newcommand{\app}{\mathrm{App}}
+%=============================================
+
+
+\usepackage[tight,francais]{minitoc}
+\usepackage{multicol}
+%\usepackage{fancyhdr}
+\usepackage{fancybox}
+%\renewcommand{\thechapter}{\Roman{chapter}}
+%\renewcommand{proof}{\textit{Preuve}}
+
+
+\usepackage{setspace}
+%\renewcommand{\thesection}{\S\Roman{chapter}.\Alph{section}{}{}}
+\usepackage{hyperref}
+\hypersetup{backref,colorlinks=false,linkcolor=black}
+
+%\hypersetup{backref,pdfpagemode=FullScreen,colorlinks=true,linkcolor=blue}
+
+%%%%%%%%%%%%
+%Les scripts
+%--------------------------------------------------------------------------
+
+\newcommand{\ie}{c'est-à-dire }
+\newcommand{\Ie}{C'est-à-dire }
+\newcommand{\ssi}{si et seulement si\  }
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+%\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\K}{\ensuremath{\mathbb{K}}}
+\newcommand{\ep}{{1\leq i \leq p,1\leq j \leq q}}
+\newcommand{\eq}{{1\leq i \leq q,1\leq j \leq p}}
+\newcommand{\en}{{1\leq i \leq n,1\leq j \leq m}}
+\newcommand{\eij}{{1\leq i,j \leq p}}
+\newcommand{\Fe}{\ensuremath{Fe_{\tau}(X)}}
+\newcommand{\Fr}{\ensuremath{\mathcal{F}}  }
+\newcommand{\Pk}{\ensuremath{P_k}  }
+\newcommand{\F}{\ensuremath{\mathcal{F}}}
+\newcommand{\f}{\ensuremath{\mathscr{F}}}
+
+
+
+%-----------------------------------------------------------------------------------------------------
+\usepackage{pifont}
+\usepackage[tight]{shorttoc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+%\usepackage[T1]{fontenc}
+\newcommand{\first}[1]{{\color{steelblue}\calligra #1}}
+\everymath{\displaystyle}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\usepackage{amsmath, amsfonts, amssymb}
+
+
+
+
+
+%%%%%%%%%%%%%
+
+%
+\newsavebox{\auteurbm}
+\newenvironment{Bonmot}[1]%
+{\small\slshape%
+	\savebox{\auteurbm}{\upshape\sffamily#1}%
+	\begin{flushright}}
+	{\\[4pt]\usebox{\auteurbm}
+	\end{flushright}\normalsize\upshape}
+%
+
+\usepackage{mathpazo}
+%\renewcommand{\familydefault}{ttdefault}
+
+\newcommand*\closure[1]{\ensuremath{\overline{#1}}}
+
+
+\newcommand\frontmatter{%
+	\cleardoublepage
+	%\@mainmatterfalse
+	\pagenumbering{roman}}
+
+\newcommand\mainmatter{%
+	\cleardoublepage
+	% \@mainmattertrue
+	\pagenumbering{arabic}}
+
+
+
+
+

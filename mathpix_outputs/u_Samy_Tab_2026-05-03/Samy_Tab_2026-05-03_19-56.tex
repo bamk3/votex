@@ -1,0 +1,106 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{siunitx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{lmodern}
+\geometry{margin=2.5cm}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+
+\title{20260503 193341.jpg, 20260503 193352.jpg, 20260503 193401.jpg}
+\author{Samy Tab}
+\date{03 mai 2026}
+
+\begin{document}
+\maketitle
+
+\section*{20260503 193341.jpg}
+EXERCICE B1 -- 2025
+$$f(x ; \lambda)=\lambda e^{-\lambda x}, \quad x \in[0, \infty] .$$
+(a) Sraracteristic function
+$$\begin{aligned}
+\varphi(t) & =\mathbb{E}\left[e^{1+x}\right]=\int_{0}^{\infty} e^{1 t x} f(x ; \lambda) d x=\int_{0}^{\infty} e^{1 t x} \lambda e^{-\lambda x} d x=\lambda \int_{0}^{A} e^{(1 t-\lambda) x} d x \\
+\Rightarrow & \int_{0}^{\infty} e^{-(\lambda-1 t) x} d x=\frac{\lambda}{\lambda-t} \\
+\Rightarrow \varphi(t) & =\frac{\lambda}{\lambda-1 t} .
+\end{aligned}$$
+(b) For turo random variables $X$ and $Y$ both distributed as:
+$$\begin{array}{l}
+x \sim f_{x}(x ; \lambda)=\lambda e^{-\lambda x}, x \in[0, \infty] \text { and } \\
+y \sim g(y ; \lambda)=\lambda e^{-\lambda y}, y \in[0, \infty], \text { the pd.f. of } z=x+y \text { is given }
+\end{array}$$
+by the canvolution of both p.d.f.s:
+$$\begin{array}{l} 
+f(z ; \lambda)=\int_{-\infty}^{\infty} f_{x}(x ; \lambda) g(z-x ; \lambda) d x=\int_{0}^{z} f_{x}(x ; \lambda) g(z-x ; \lambda) d x \\
+=\int_{0}^{z} \lambda e^{-\lambda x} \cdot \lambda e^{-\lambda(z-x)} d x=\lambda^{2} \int_{0}^{z} e^{-\lambda(x+z-x)} d x \\
+=\lambda^{2} \int_{0}^{z} e^{-\lambda z} d x=\lambda^{2} e^{\lambda z} \int_{0}^{z} d x=\lambda^{2} e^{-\lambda z}[x]_{0}^{z}=\lambda^{2} z e^{-\lambda z} . \\
+\Rightarrow f(z ; \lambda)=\lambda^{2} z e^{-\lambda z}, \text { with } z \geqslant 0 .
+\end{array}$$
+(c) Let $X_{1}, X_{2}, \ldots, X_{N}$ be $M$ exparentially distrubuted no.s and $S=\sum_{i=1}^{N} X_{n}$;.ir $\forall i \in h 1, \ldots, N \eta, \quad f_{x_{i}}(x)=\lambda e^{-\lambda x}, \quad x \geqslant 0$.
+Base cax: $M=1 \Rightarrow f_{x_{1}}(x)=\lambda e^{-\lambda x}$ and $f(s ; \lambda)=\frac{\lambda^{1} s^{1-1} e^{-\lambda s}}{(1-1)!}=\lambda e^{-\lambda s}, s \geq 0$ matches $f_{x_{1}}(x)=f(5 ; \lambda)$
+
+\bigskip
+\section*{20260503 193352.jpg}
+Induction hypathesis:
+Aroume that for some $N>1$
+$$f_{M}(s)=\frac{\lambda^{N} s^{N-1} e^{-\lambda s}}{(N-1)!}, s \geqslant 0$$
+is the distribution of the sum of $N$ such exparential zandom coniables. Inductions step.
+let $S_{N+1}=S_{M}+X_{N+1}$. Using convolution, we have:
+$$\begin{aligned}
+f_{N+1}(s) & =\int_{0}^{s} f_{N}(s) f_{x_{N+1}}(s-\mu) d \mu=\int_{0}^{s} \frac{\lambda^{N} \mu^{N-1} e^{-\lambda x}}{(N-1)!} \lambda e^{-\lambda(s-\mu)} d \mu \\
+& =\frac{\lambda^{N+1} e^{N-1}}{(N-1)!} \int_{0}^{s} \mu^{N-1} e^{-\lambda(\mu+s-\mu)} d \mu=\frac{\lambda^{N+1} a^{N-N}}{(N-1)!} \int_{0}^{s} e^{-\lambda s} d \mu \mu^{N-1} \\
+& =\frac{\lambda^{N+1} e^{-\lambda s}}{(N-1)!} \int_{0}^{s} \mu^{N-1} d \mu=\left.\frac{\lambda^{N+1} e^{-\lambda s}}{(N-1)!} \frac{\mu^{N}}{N}\right|_{0} ^{s} \\
+& =\frac{\lambda^{N+1} s^{N} e^{-\lambda s}}{N!} \\
+\Rightarrow f_{M+1}(s) & =\frac{\lambda^{N+1} s^{N} e^{-\lambda s}}{N!}
+\end{aligned}$$
+
+Thus, $\forall N \in \mathbb{N}, f_{M}(s ; \lambda)=\frac{\lambda^{M} s^{M-1} e^{-\lambda s}}{(M-1)!} \quad s \geq 0$.
+(d) Let's cousider some dataset $\left\{x_{1}, x_{2}, \ldots, x_{N}\right\}$. The likelihood is given by: $L(\lambda)=\prod_{i=1}^{N} f\left(x_{i} ; \lambda\right)=\prod_{i=1}^{N} \lambda e^{-\lambda x_{i}}$. The $\log _{N}$ lipelihood is:
+$$\begin{array}{l} 
+\ln L(\lambda)=\ln \left[\lambda^{N} \prod_{i=1}^{N} e^{-\lambda x_{i}}\right] \\
+=\ln \left(\lambda^{N}\right)+\sum_{i=1}^{N} \ln \left(e^{-\lambda x_{i}}\right) \\
+\ln L(\lambda)=N \ln (\lambda)-\lambda \sum_{i=1}^{N} x_{i} \\
+\frac{\partial \ln L(\lambda)}{\partial \lambda}=0 \Leftrightarrow \frac{N}{\hat{\lambda}}=\sum_{i=1}^{N} x_{i} \\
+\hat{\lambda}=\frac{N}{\lambda}-\sum_{i=1}^{N} x_{i}=0
+\end{array}$$
+
+\bigskip
+\section*{20260503 193401.jpg}
+fe) The miminum roviance bound is given by the cramer-Rab in quality by:
+$$V(\lambda) \geqslant I(\theta)^{-1} .$$
+
+Where $I(\theta)=V(S(\theta))=\mathbb{E}\left[\cdot\left(\frac{\partial \ln L(\theta)}{\partial \theta}\right)^{2}\right]=-\mathbb{E}\left[\frac{\partial^{2} \ln L(\theta)}{\partial \theta^{2}}\right]$
+For cur cax, we have:
+$$\begin{aligned}
+& \ln L(\lambda)=\ln \left(\lambda^{N} \prod_{i=1}^{N} e^{-\lambda x_{i}}\right)=N \ln \lambda-\lambda \sum_{i=1}^{N} x_{i} \\
+\Rightarrow & \frac{\partial \ln L(\lambda)}{\partial \lambda}=\frac{N}{\lambda}-\sum_{i=1}^{N} x_{i} \\
+\Rightarrow & \frac{\partial^{2} \ln L(\lambda)}{\partial \lambda^{2}}=-\frac{N}{\lambda^{2}} \\
+\Rightarrow & I(\lambda)=-\mathbb{E}\left[\frac{\partial^{2} \ln L(\lambda)}{\partial \lambda^{2}}\right]=+\frac{N}{\lambda^{2}} \Rightarrow I(\lambda)=\frac{N}{\lambda^{2}}
+\end{aligned}$$
+
+Thus, at the minimum vaniance bound,
+$$\begin{aligned}
+V(\hat{\lambda}) & =I(\hat{i})^{-1}=\left(\frac{M}{\lambda^{2}}\right)^{-1}=\frac{\lambda^{2}}{M} \\
+\Rightarrow V(\hat{\lambda}) & =\frac{\lambda^{2}}{M}
+\end{aligned}$$
+(f) Let's chow that the ML estimate of $\lambda$ is briased and the bias is $b(\hat{\lambda})=\frac{\lambda^{2}}{N}$.
+$\hat{\lambda}=\frac{M}{N}=\frac{N}{N}$.
+$$\begin{array}{l} 
+\hat{\lambda}=\frac{N}{\sum_{i=1}^{N} x_{i}}=\frac{N}{s} \text { with } f_{s}(s)=\frac{\lambda^{N} s^{N-1} e^{-\lambda s}}{(N-1)!}, s \geqslant 0 \\
+\Rightarrow \mathbb{E}[\hat{\lambda}]=\int_{0}^{\hat{\lambda}} \hat{\lambda} f_{s}(s) d s=\int_{0}^{N} \frac{N}{s} \frac{\lambda^{N} s^{N-1} e^{-\lambda s}}{(N-1)!} d s \\
+=\frac{N \lambda^{N}}{(N-1)!} \int_{0}^{\infty} \frac{s^{N-1}}{s} e^{-\lambda s} d s=\frac{N \lambda^{N}}{(N-1)!} \int_{0}^{\infty} s^{M-2} e^{-\lambda s} d s \\
+=\frac{N \lambda^{N-1}}{(N-1)!} \int_{0}^{\infty}\left(\frac{x}{\lambda}\right)^{N-2} e^{-x} \frac{d x}{\lambda} \quad x=\lambda s \rightarrow s=\frac{1}{\lambda} x \\
+=\frac{N \lambda^{N}}{(N-1)!\lambda^{N-1}} \int_{0}^{\infty} x^{N-2} e^{-x} d x=\frac{N}{(N-1)!}(M-2)!\lambda \\
+\Rightarrow \mathbb{E}[\hat{\lambda}]=\frac{N}{N-1} \lambda .
+\end{array}$$
+
+
+\end{document}

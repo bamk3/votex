@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        /* A4 Print Setup */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        :root {
+            --primary-color: #1e293b;
+            --secondary-color: #64748b;
+            --accent-color: #0284c7;
+            --table-header: #f8fafc;
+            --watermark-color: rgba(0, 0, 0, 0.08); /* Increased opacity for visibility */
+        }
+        
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 40px;
+            color: var(--primary-color);
+            background-color: #e2e8f0;
+        }
+
+        /* The "Paper" Container */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm; /* Standard A4 Margin */
+            margin: 4mm auto;
+            background: white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Enhanced Watermark */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 100px;
+            font-weight: 500;
+            color: var(--watermark-color);
+            white-space: nowrap;
+            pointer-events: none;
+            text-transform: uppercase;
+            z-index: 5;
+            border: 5px solid var(--watermark-color);
+            padding: 20px 50px;
+            border-radius: 20px;
+            letter-spacing: 10px;
+        }
+
+        .invoice-container {
+            position: relative;
+            max-width: 850px;
+            margin: auto;
+            background: rgb(250, 240, 200);
+            padding: 60px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden ; /* Clips the watermark inside the paper */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .brand h2 { margin: 0; font-size: 14px; text-transform: uppercase; }
+        .brand p { margin: 2px 0; font-size: 11px; color: var(--secondary-color); }
+
+        .invoice-title-box { text-align: left; }
+        .invoice-title-box h1 { margin: 0; font-size: 17px; color: var(--accent-color); }
+
+        .billing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Modern Tabular Style */
+        .items-table {
+            width: 95%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .items-table th {
+            background-color: var(--table-header);
+            text-align: left;
+            font-size: 11px;
+            padding: 12px;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .items-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 11px;
+        }
+
+        .items-table tr:nth-child(even) { background-color: #fafafa; }
+
+        .summary-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 40px;
+        }
+
+        .summary-table { width: 280px; }
+        .total-row { font-size: 14px; font-weight: bold; border-top: 2px solid var(--primary-color); }
+
+        /* RIB Section */
+        .rib-section {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            margin-top: 20px;
+            font-size: 11px;
+        }
+
+        .footer-section { page-break-inside: avoid; }
+        .rib-section { page-break-inside: avoid; }
+
+        .rib-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .text-right { text-align: right; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .invoice-container { box-shadow: none; width: 100%; }
+            .watermark { color: rgba(0, 0, 0, 0.1) !important; -webkit-print-color-adjust: exact; }
+
+            .rib-section {
+            break-inside: avoid;
+            page-break-inside: avoid;
+
+            /* Optional but recommended */
+            margin-top: 30px;
+            }
+        }
+
+        /* PDF specific tweaks */
+        @media print {
+            body { background: none; }
+            .page {
+                margin: 10;
+                box-shadow: none;
+                width: 210mm;
+                height: 297mm;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="page">
+        <div class="watermark">PRO FORMA</div>
+
+        <div class="header">
+            <div class="brand">
+                <img src="logo.png" alt="Essor Travel" style="width:140px; margin-bottom: 8px; margin-left: 0.1px;">
+    
+                <p>RCCM     : GB123456789</p>
+                <p>ID. NAT. : 12345</p>
+                <p>Email    : billing@essortravel.com</p>
+                <p>Tel. : +243820732826</p>
+            </div>
+            <div class="invoice-title-box">
+                <h1>FACTURE PRO FORMA</h1>
+                <p style="margin-top:10px;"><strong>N° :</strong> {{ invoice_number }}</p>
+                <p><strong>Date :</strong> {{ date }}</p>
+            </div>
+        </div>
+
+        <div class="billing-grid">
+            <div>
+                <div class="section-label">Client</div>
+                <p style="margin: 0; font-weight: 600;">{{ client_name }}</p>
+                <p style="margin: 5px 0; color: var(--secondary-color);">{{ email }}</p>
+                <p style="margin: 5px 0; color: var(--secondary-color);">{{ telephone }}</p>
+
+            </div>
+            <div>
+                <div class="section-label">Objet</div>
+                <p style="font-size: 13px;"> {{objet}}</p>
+            </div>
+        </div>
+
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th class="text-right">Qté</th>
+                    <th class="text-right">Prix Unitaire</th>
+                    <th class="text-right">Total HT</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td style="font-weight:500;">{{ item.description }}</td>
+                    <td class="text-left">{{ item.quantity }}</td>
+                    <td class="text-left">${{ "%.2f"|format(item.unit_price) }}</td>
+                    <td class="text-left">${{ "%.2f"|format(item.quantity * item.unit_price) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="summary-wrapper">
+            <table class="summary-table">
+                <tr>
+                    <td>Total Hors Taxes (HT)</td>
+                    <td class="text-right">${{ "%.2f"|format(subtotal) }}</td>
+                </tr>
+                <tr>
+                    <td>TVA ({{TVA}})</td>
+                    <td class="text-right">${{ "%.2f"|format(tva) }}</td>
+                </tr>
+                <tr class="total-row">
+                    <td>Total TTC</td>
+                    <td class="text-right">${{ "%.2f"|format(total) }}</td>
+                </tr>
+            </table>
+        </div>
+
+
+
+        
+        <div class="rib-section">
+            <div class="section-label" style="border:none; margin-bottom: 0;">Coordonnées bancaires</div>
+            <div class="rib-grid">
+                <span><strong>Bénéficiaire :</strong></span> <span>Essor Group sarl</span>
+                <span><strong>Banque :</strong></span> <span> EquityBCDC </span>
+                <span><strong>IBAN :</strong></span> <span>GB29 IBBK 6016 1331 9268 00</span>
+                <span><strong>BIC/SWIFT :</strong></span> <span>IBBKGB2L</span>
+            </div>
+        </div>
+
+        <p style="text-align: center; font-size: 11px; color: var(--secondary-color); margin-top: 30px;">
+            Cette facture pro forma est émise à titre informatif et ne constitue pas une facture définitive.<br>
+            Merci de votre confiance !
+        </p>
+    </div>
+
+</body>
+</html>

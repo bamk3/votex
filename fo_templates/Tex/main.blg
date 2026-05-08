@@ -1,0 +1,66 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/dev/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: amsrn.bst
+I found no \bibdata command---while reading file main.aux
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Warning--I didn't find a database entry for "b5"
+Warning--I didn't find a database entry for "b6"
+Warning--I didn't find a database entry for "b7"
+Warning--I didn't find a database entry for "b9"
+Warning--I didn't find a database entry for "b11"
+Warning--I didn't find a database entry for "b8"
+Warning--I didn't find a database entry for "b13"
+Warning--I didn't find a database entry for "b12"
+Warning--I didn't find a database entry for "b14"
+Warning--I didn't find a database entry for "b1"
+Warning--I didn't find a database entry for "b2"
+Warning--I didn't find a database entry for "b15"
+Warning--I didn't find a database entry for "b16"
+Warning--I didn't find a database entry for "b17"
+Warning--I didn't find a database entry for "b18"
+Warning--I didn't find a database entry for "b19"
+You've used 0 entries,
+            1497 wiz_defined-function locations,
+            417 strings with 2533 characters,
+and the built_in function-call counts, 15 in all, are:
+= -- 0
+> -- 0
+< -- 0
++ -- 0
+- -- 0
+* -- 0
+:= -- 0
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 0
+duplicate$ -- 0
+empty$ -- 1
+format.name$ -- 0
+if$ -- 1
+int.to.chr$ -- 0
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 6
+num.names$ -- 0
+pop$ -- 0
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 1
+stack$ -- 0
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 0
+width$ -- 0
+write$ -- 5
+(There was 1 error message)
