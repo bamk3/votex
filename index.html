@@ -2223,7 +2223,7 @@ function AdminDash({user,onLogout}){
         </div>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <Avatar name={user.name} userId={user.id} size={28} editable={true}/>
-          <button className="btn-sm" onClick={()=>{window.location.href=document.documentElement.lang==='fr'?'/index.html':'/index-fr.html';}} style={{fontSize:11}}>🌐 {document.documentElement.lang==='fr'?'EN':'FR'}</button>
+          <button className="btn-sm" onClick={()=>{window.location.href=document.documentElement.lang==='en'?'/index-fr.html':'/index.html';}} style={{fontSize:11}}>🌐 {document.documentElement.lang==='fr'?'EN':'FR'}</button>
           <button className="btn-sm" onClick={onLogout}>Sign out</button>
         </div>
       </div>
