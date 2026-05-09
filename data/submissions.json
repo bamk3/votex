@@ -1,34 +1,3 @@
 [
-  {
-    "id": "s_1778249040632_l1jvuz7eav",
-    "batchId": "batch_1778249040548",
-    "userId": "u_1777833082862",
-    "uploadFolder": "u_Samy_Tab_2026-05-03",
-    "userName": "Samy Tab",
-    "userEmail": "samy@ex.cd",
-    "isMathDoc": true,
-    "fileName": "Practical-1.pdf",
-    "storedName": "2026-05-08T14-04-00_Practical-1.pdf",
-    "fileType": "application/pdf",
-    "fileSize": 386352,
-    "notes": "",
-    "templateName": "Mémoire_(Thèse)_I.pdf",
-    "uploadedAt": "2026-05-08T14:04:00.632Z",
-    "status": "done",
-    "pages": 2,
-    "price": 1598,
-    "paid": true,
-    "finalDoc": {
-      "fileName": "td1_pdf.pdf",
-      "storedName": "final_2026-05-08T14-05-15_td1_pdf.pdf"
-    },
-    "paymentProof": {
-      "fileName": "ko.jpg",
-      "storedName": "proof_2026-05-08T14-04-14_ko.jpg"
-    },
-    "assignedTo": {
-      "id": "m_1777807659235",
-      "name": "Chad Boseman"
-    }
-  }
+  
 ]

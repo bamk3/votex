@@ -24,49 +24,8 @@
     "role": "manager",
     "tagName": "Panth",
     "createdAt": "2026-05-03T11:27:39.235Z",
-    "paymentRequests": [
-      {
-        "id": "pr_1778245864989",
-        "amount": 18183,
-        "requestedAt": "2026-05-08T13:11:04.989Z",
-        "status": "paid",
-        "paidAt": "2026-05-08T13:11:38.655Z",
-        "paidAmount": 18000
-      },
-      {
-        "id": "pr_1778245434766",
-        "amount": 18183,
-        "requestedAt": "2026-05-08T13:03:54.766Z",
-        "status": "paid",
-        "paidAt": "2026-05-08T13:11:38.655Z",
-        "paidAmount": 18000
-      },
-      {
-        "id": "pr_1778245263618",
-        "amount": 18183,
-        "requestedAt": "2026-05-08T13:01:03.618Z",
-        "status": "paid",
-        "paidAt": "2026-05-08T13:11:38.655Z",
-        "paidAmount": 18000
-      },
-      {
-        "id": "pr_1778237810861",
-        "amount": 13183,
-        "requestedAt": "2026-05-08T10:56:50.861Z",
-        "status": "paid",
-        "paidAt": "2026-05-08T10:57:26.511Z",
-        "paidAmount": 8184
-      },
-      {
-        "id": "pr_1778190435592",
-        "amount": 5194,
-        "requestedAt": "2026-05-07T21:47:15.592Z",
-        "status": "paid",
-        "paidAt": "2026-05-07T21:47:49.905Z",
-        "paidAmount": 993
-      }
-    ],
-    "totalPaid": 32360
+    "paymentRequests": [    ],
+    "totalPaid": 0
   },
   {
     "id": "m_1777807857799",
