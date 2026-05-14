@@ -303,7 +303,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
       id:'n_'+Date.now(), type:'new_submission', batchId: sub.batchId,
       to:'admin@maktech.co.uk', toName:'Admin',
       subject:`New batch from ${sub.userName}`,
-      body:`${sub.userName} (${sub.userEmail}) started a new batch.\n• ${sub.fileName} — ${pages ?? '?'} pages · ${price != null ? pricing.currency+' '+price : 'N/A'}${sub.templateName ? '\n📄 Template: '+sub.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ') : ''}`,
+      body:`${sub.userName} started a new batch.\n• ${sub.fileName} — ${pages ?? '?'} pages · ${price != null ? pricing.currency+' '+price : 'N/A'}${sub.templateName ? '    📄 Template: '+sub.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ') : ''} ${sub.notes ? '\n📝 Commentaire: '+sub.notes : '\n'}`,
+      submissionId: sub.id,
       sentAt:new Date().toISOString(), read:false
     });
     // Manager notifications (view-only awareness — only unassigned managers)
@@ -312,8 +313,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
       notifs.unshift({
         id:'nm_'+Date.now()+'_'+mgr.id, type:'new_submission_manager', batchId: sub.batchId,
         to: mgr.id, toName: mgr.name,
-        subject:`New batch from ${sub.userName}`,
-        body:`${sub.userName} uploaded a new batch. You may request assignment from the admin.${sub.templateName ? '\n📄 Template: '+sub.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ') : ''}`,
+        subject:`Nouvelle commande de ${sub.userName}`,
+        body:`${sub.userName} a soumis une nouvelle commande. Vous pouvez demander une affectation auprès de l'administrateur.${sub.templateName ? '\n📄 Template: '+sub.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ') : ''} ${sub.notes ? '\n📝 Commentaire: '+sub.notes : ''}`,
         submissionId: sub.id,
         sentAt:new Date().toISOString(), read:false
       });
@@ -362,11 +363,11 @@ app.patch('/api/submissions/:id', (req, res) => {
     };
     const label = statusLabels[req.body.status] || req.body.status;
 
-    let body = `Your document "${sub.fileName}" status has been updated to: ${label.toUpperCase()}.`;
+    let body = `Votre document "${sub.fileName}" le statut de votre document a été mis à jour à: ${label.toUpperCase()}.`;
     if (req.body.status === 'in_progress')
-      body += '\n\nYour payment has been confirmed and we have started working on your document.';
+      body += '\n\n Votre paiement a été confirmé et nous avons commencé à travailler sur votre document.';
     if (req.body.status === 'done')
-      body += '\n\nYour document has been completed. The admin will send you the typed file shortly — you will receive another notification when it is ready to download.';
+      body += '\n\n Votre document est prêt. L\'administrateur vous enverra le fichier saisi sous peu — vous recevrez une autre notification lorsqu\'il sera prêt à être téléchargé.';
 
     const msgs = readJSON('messages.json');
     msgs.unshift({
@@ -438,12 +439,13 @@ app.post('/api/submissions/:id/payment-proof', uploadProof.single('file'), (req,
     });
   }
   writeJSON('submissions.json', subs);
-
+  // const vatRate = 1.16; // 16% VAT
+  const vatRate = 0; // 
   const sub = subs[idx];
   const pricing = readJSON('pricing.json');
   const batchSubs = sub.batchId ? subs.filter(s=>s.batchId===sub.batchId) : [sub];
   const batchTotal = batchSubs.reduce((a,s)=>a+(s.price||0),0);
-  const batchTTC = batchTotal * 1.16;
+  const batchTTC = batchTotal * (1+vatRate);
   const fileList = batchSubs.map(s=>`• ${s.fileName} (${s.pages??'?'}pp) — ${pricing.currency} ${s.price}`).join('\n');
 
   // message to admin
@@ -453,7 +455,7 @@ app.post('/api/submissions/:id/payment-proof', uploadProof.single('file'), (req,
     fromId: sub.userId, fromName: sub.userName,
     toId: 'admin', toName: 'Admin', toEmail: 'admin@maktech.co.uk',
     subject: `Payment proof — batch of ${batchSubs.length} file${batchSubs.length>1?'s':''} from ${sub.userName}`,
-    body: `${sub.userName} (${sub.userEmail}) submitted proof of payment for ${batchSubs.length} file${batchSubs.length>1?'s':''}:\n\n${fileList}\n\nSubtotal HT: ${pricing.currency} ${batchTotal}\nTVA (16%): ${pricing.currency} ${(batchTotal*0.16).toFixed(0)}\nTotal TTC: ${pricing.currency} ${batchTTC.toFixed(0)}\n\nProof file: ${req.file.originalname}\n\nPlease review and confirm payment to start processing.`,
+    body: `${sub.userName} (${sub.userEmail}) submitted proof of payment for ${batchSubs.length} file${batchSubs.length>1?'s':''}:\n\n${fileList}\n\nSubtotal HT: ${pricing.currency} ${batchTotal}\nTVA (${vatRate*100}%): ${pricing.currency} ${(batchTotal*vatRate).toFixed(0)}\nTotal TTC: ${pricing.currency} ${batchTTC.toFixed(0)}\n\nProof file: ${req.file.originalname}\n\nPlease review and confirm payment to start processing.`,
     submissionId: sub.id, submissionFileName: batchSubs.map(s=>s.fileName).join(', '),
     sentAt: new Date().toISOString(), read: false
   });
@@ -523,7 +525,7 @@ app.post('/api/submissions/:id/final', uploadFinal.single('file'), (req, res) =>
     id:'m_'+Date.now(), fromId:'admin', fromName:'Admin',
     toId:sub.userId, toName:sub.userName, toEmail:sub.userEmail,
     subject:`Your typed document ${batchSubs.length>1?'s are':'is'} ready`,
-    body:`Hi ${sub.userName},\n\nYour typed document${batchSubs.length>1?'s are':'is'} ready for download:\n${fileList}\n\nLog in and click Download next to each batch.\n\nBest regards,\nvoTex Team`,
+    body:`Salut ${sub.userName},\n\nVotre document saisi ${batchSubs.length>1?'sont':'est'} prêt pour le téléchargement. \n\nConnectez-vous et cliquez sur Télécharger à côté du numéro de la commande.\n\nCordialement, \n\nL 'équipe voTex`,
     submissionId:sub.id, submissionFileName:batchSubs.map(s=>s.fileName).join(', '),
     sentAt:new Date().toISOString(), read:false
   });
@@ -760,7 +762,7 @@ app.patch('/api/batches/:batchId/confirm-payment', (req, res) => {
     fromId:'admin', fromName:'Admin',
     toId:batch[0].userId, toName:batch[0].userName, toEmail:batch[0].userEmail,
     subject:`Payment confirmed — ${batch.length} file${batch.length>1?'s':''} in your batch`,
-    body:`Hi ${batch[0].userName},\n\nYour payment has been confirmed for the following file${batch.length>1?'s':''}:\n${fileList}\n\nWe have started working on ${batch.length>1?'them':'it'}. You will be notified when the typed document is ready.\n\nBest regards,\nvoTex Team`,
+    body:`Hi ${batch[0].userName},\n\nVotre paiement a été confirmé pour le(s) fichier(s) suivant(s):\n${fileList}\n\nNous avons commencé à travailler sur ${batch.length>1?'ça':'ça'}. Vous serez notifié lorsque le document saisi sera prêt.\n\nCordialement,\n\nL\' équipe voTex`,
     submissionId:batch[0].id, submissionFileName:batch.map(s=>s.fileName).join(', '),
     sentAt:new Date().toISOString(), read:false
   });

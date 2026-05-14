@@ -1,5 +1,201 @@
 [
   {
+    "id": "nm_1778539937412_m_1777897618513",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778539937365",
+    "to": "m_1777897618513",
+    "toName": "Bien-Aimée",
+    "subject": "Nouvelle commande de zeth",
+    "body": "zeth a soumis une nouvelle commande. Vous pouvez demander une affectation auprès de l'administrateur.\n📄 Template: template standard \n📝 Commentaire: Balala fjf j",
+    "submissionId": "s_1778539937410_uj27lve0so",
+    "sentAt": "2026-05-11T22:52:17.412Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778539937412_m_1777837521542",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778539937365",
+    "to": "m_1777837521542",
+    "toName": "BV Kiakisolako",
+    "subject": "Nouvelle commande de zeth",
+    "body": "zeth a soumis une nouvelle commande. Vous pouvez demander une affectation auprès de l'administrateur.\n📄 Template: template standard \n📝 Commentaire: Balala fjf j",
+    "submissionId": "s_1778539937410_uj27lve0so",
+    "sentAt": "2026-05-11T22:52:17.412Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778539937412_m_1777807857799",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778539937365",
+    "to": "m_1777807857799",
+    "toName": "JP Mak",
+    "subject": "Nouvelle commande de zeth",
+    "body": "zeth a soumis une nouvelle commande. Vous pouvez demander une affectation auprès de l'administrateur.\n📄 Template: template standard \n📝 Commentaire: Balala fjf j",
+    "submissionId": "s_1778539937410_uj27lve0so",
+    "sentAt": "2026-05-11T22:52:17.412Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778539937412_m_1777807659235",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778539937365",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "Nouvelle commande de zeth",
+    "body": "zeth a soumis une nouvelle commande. Vous pouvez demander une affectation auprès de l'administrateur.\n📄 Template: template standard \n📝 Commentaire: Balala fjf j",
+    "submissionId": "s_1778539937410_uj27lve0so",
+    "sentAt": "2026-05-11T22:52:17.412Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778539937412",
+    "type": "new_submission",
+    "batchId": "batch_1778539937365",
+    "to": "admin@maktech.co.uk",
+    "toName": "Admin",
+    "subject": "New batch from zeth",
+    "body": "zeth (zethgloria9@gmail.com) started a new batch.\n• 2026_05_11T14_22_12_1778509298027859271162834453981_jpg.pdf — 1 pages · CDF 799\n📄 Template: template standard \n📝 Commentaire: Balala fjf j",
+    "sentAt": "2026-05-11T22:52:17.412Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "nm_1778539767911_m_1777897618513",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778539767863",
+    "to": "m_1777897618513",
+    "toName": "Bien-Aimée",
+    "subject": "Nouvelle commande de zeth",
+    "body": "zeth a soumis une nouvelle commande. Vous pouvez demander une affectation auprès de l'administrateur.\n📄 Template: template standard \n📝 Commentaire: Blea bla h tnf",
+    "submissionId": "s_1778539767910_3mkhdl1iox",
+    "sentAt": "2026-05-11T22:49:27.911Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778539767911_m_1777837521542",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778539767863",
+    "to": "m_1777837521542",
+    "toName": "BV Kiakisolako",
+    "subject": "Nouvelle commande de zeth",
+    "body": "zeth a soumis une nouvelle commande. Vous pouvez demander une affectation auprès de l'administrateur.\n📄 Template: template standard \n📝 Commentaire: Blea bla h tnf",
+    "submissionId": "s_1778539767910_3mkhdl1iox",
+    "sentAt": "2026-05-11T22:49:27.911Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778539767911_m_1777807857799",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778539767863",
+    "to": "m_1777807857799",
+    "toName": "JP Mak",
+    "subject": "Nouvelle commande de zeth",
+    "body": "zeth a soumis une nouvelle commande. Vous pouvez demander une affectation auprès de l'administrateur.\n📄 Template: template standard \n📝 Commentaire: Blea bla h tnf",
+    "submissionId": "s_1778539767910_3mkhdl1iox",
+    "sentAt": "2026-05-11T22:49:27.911Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778539767911_m_1777807659235",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778539767863",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "Nouvelle commande de zeth",
+    "body": "zeth a soumis une nouvelle commande. Vous pouvez demander une affectation auprès de l'administrateur.\n📄 Template: template standard \n📝 Commentaire: Blea bla h tnf",
+    "submissionId": "s_1778539767910_3mkhdl1iox",
+    "sentAt": "2026-05-11T22:49:27.911Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778539767911",
+    "type": "new_submission",
+    "batchId": "batch_1778539767863",
+    "to": "admin@maktech.co.uk",
+    "toName": "Admin",
+    "subject": "New batch from zeth",
+    "body": "zeth (zethgloria9@gmail.com) started a new batch.\n• 2026_05_11T14_22_12_1778509298027859271162834453981_jpg.pdf — 1 pages · CDF 799\n📄 Template: template standard",
+    "sentAt": "2026-05-11T22:49:27.911Z",
+    "read": false,
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
+    "id": "nm_1778537889267_m_1777897618513",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778537889216",
+    "to": "m_1777897618513",
+    "toName": "Bien-Aimée",
+    "subject": "New batch from zeth",
+    "body": "zeth uploaded a new batch. You may request assignment from the admin.\n📄 Template: template standard",
+    "submissionId": "s_1778537889266_jdbg1d3xz2j",
+    "sentAt": "2026-05-11T22:18:09.267Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778537889267_m_1777837521542",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778537889216",
+    "to": "m_1777837521542",
+    "toName": "BV Kiakisolako",
+    "subject": "New batch from zeth",
+    "body": "zeth uploaded a new batch. You may request assignment from the admin.\n📄 Template: template standard",
+    "submissionId": "s_1778537889266_jdbg1d3xz2j",
+    "sentAt": "2026-05-11T22:18:09.267Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778537889267_m_1777807857799",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778537889216",
+    "to": "m_1777807857799",
+    "toName": "JP Mak",
+    "subject": "New batch from zeth",
+    "body": "zeth uploaded a new batch. You may request assignment from the admin.\n📄 Template: template standard",
+    "submissionId": "s_1778537889266_jdbg1d3xz2j",
+    "sentAt": "2026-05-11T22:18:09.267Z",
+    "read": false
+  },
+  {
+    "id": "nm_1778537889267_m_1777807659235",
+    "type": "new_submission_manager",
+    "batchId": "batch_1778537889216",
+    "to": "m_1777807659235",
+    "toName": "Chad Boseman",
+    "subject": "New batch from zeth",
+    "body": "zeth uploaded a new batch. You may request assignment from the admin.\n📄 Template: template standard",
+    "submissionId": "s_1778537889266_jdbg1d3xz2j",
+    "sentAt": "2026-05-11T22:18:09.267Z",
+    "read": false,
+    "readBy": [
+      "m_1777807659235"
+    ]
+  },
+  {
+    "id": "n_1778537889267",
+    "type": "payment_ready",
+    "batchId": "batch_1778537889216",
+    "to": "admin@maktech.co.uk",
+    "toName": "Admin",
+    "subject": "💰 Payment proof — zeth (1 files)",
+    "body": "zeth submitted payment proof for 1 file. Total TTC: CDF 927",
+    "sentAt": "2026-05-11T22:18:09.267Z",
+    "read": false,
+    "submissionId": "s_1778537889266_jdbg1d3xz2j",
+    "readBy": [
+      "admin"
+    ]
+  },
+  {
     "id": "n_1778184531792",
     "type": "payment_ready",
     "batchId": "batch_1778184531572",
