@@ -740,7 +740,7 @@ function AuthScreen({onLogin}){
             ))}
           </div>
           {mode==='signup'&&<div className="field"><label>Full name</label><input name="name" placeholder="Your full name" value={form.name} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>}
-          <div className="field"><label>Username</label><input name="email" type="email" placeholder="PLumumba" value={form.email} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
+          <div className="field"><label>Email</label><input name="email" type="email" placeholder="partice.lumuba@gmail.com" value={form.email} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
           <div className="field"><label>Password</label><input name="password" type="password" placeholder="••••••••" value={form.password} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
           {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
           <button className="btn-primary" onClick={submit} disabled={loading} style={{width:'100%'}}>{loading?'Please wait…':(mode==='login'?'Sign in':'Create account')}</button>
