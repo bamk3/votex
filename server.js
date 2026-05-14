@@ -211,6 +211,25 @@ app.get('/api/managers', (req, res) => {
   res.json(readJSON('users.json').filter(u=>u.role==='manager').map(({password:_,...u})=>u));
 });
 
+// ── CAFES (admin creates cafe accounts) ─────────────────────────────────
+app.post('/api/cafes', (req, res) => {
+  const { name, email, password, tagName } = req.body;
+  if (!name || !email || !password) return res.status(400).json({ error: 'All fields required.' });
+  const users = readJSON('users.json');
+  if (users.find(u => u.email.toLowerCase() === email.toLowerCase()))
+    return res.status(409).json({ error: 'Email already registered.' });
+  const user = { id:'c_'+Date.now(), name:name.trim(), email:email.trim().toLowerCase(), password, role:'cafe', tagName:(tagName||'').trim()||name.trim(), createdAt:new Date().toISOString() };
+  users.push(user);
+  writeJSON('users.json', users);
+  const { password:_, ...safe } = user;
+  res.json({ user: safe });
+});
+app.get('/api/cafes', (req, res) => {
+  res.json(readJSON('users.json').filter(u=>u.role==='cafe').map(({password:_,...u})=>u));
+});
+
+
+
 // ── BATCH ASSIGNMENT (admin assigns batch to manager) ─────────────────────────
 app.patch('/api/batches/:batchId/assign', (req, res) => {
   const { managerId, managerName } = req.body;
@@ -224,8 +243,8 @@ app.patch('/api/batches/:batchId/assign', (req, res) => {
     notifs.unshift({ id:'n_'+Date.now(), type:'assignment',
       to: managerId,       // manager's user ID — filtered in ManagerDash
       toName: managerName,
-      subject:`Batch assigned to you — ${batch[0].userName}`,
-      body:`You have been assigned to handle ${batch.length} file(s) from ${batch[0].userName}:\n${batch.map(s=>`• ${s.fileName}`).join('\n')}`,
+      subject:`Commande confiée à vous — ${batch[0].userName}`,
+      body:`Il vous a été assigné de traiter ${batch.length} doc(s) de ${batch[0].userName}:\n${batch.map(s=>`• ${s.fileName}`).join('\n')}`,
       sentAt:new Date().toISOString(), read:false });
     // explicitly NOT adding an admin notification here
     writeJSON('notifications.json', notifs.slice(0,100));

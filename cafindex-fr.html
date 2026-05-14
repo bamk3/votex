@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -112,12 +112,12 @@ const CHAT_MS = 5000;  // 5 seconds for open conversations
 
 // ── FOOTER ────────────────────────────────────────────────────────────────────
 function Footer(){
-  return <div className="page-footer app-footer"><strong> Pay with MPesa.</strong> <p> MakTech&reg; Group SARL (admin@maktech.co.uk)</p> <p>  &#169; Copyright 2026 · United Kingdom · DRC · Cameroon    </p> </div>;
+  return <div className="page-footer app-footer"><strong> Payer avec MPesa au 43331.</strong> <p> MakTech&reg; Group SARL (admin@maktech.co.uk)</p> <p>  &#169; Copyright 2026 · United Kingdom · DRC · Cameroon    </p> </div>;
 }
 const STATUS={
-  awaiting_payment:{label:'Awaiting Payment', bg:'#fff3cd', color:'#856404'},
-  in_progress:     {label:'In Progress',      bg:'#e6f1fb', color:'#1e3a5f'},
-  done:            {label:'Done',              bg:'#e1f5ee', color:'#0f6e56'},
+  awaiting_payment:{label:'En attente de paiement', bg:'#fff3cd', color:'#856404'},
+  in_progress:     {label:'En cours',      bg:'#e6f1fb', color:'#1e3a5f'},
+  done:            {label:'Terminé',              bg:'#e1f5ee', color:'#0f6e56'},
 };
 const stl=s=>(STATUS[s]||{label:s,bg:'#f5f5f3',color:'#6b6b6b'});
 
@@ -242,8 +242,8 @@ function ChatFloating({userId,userName,userEmail}){
               {threadList.length===0&&(
                 <div style={{textAlign:'center',padding:'2rem 1rem',color:'var(--color-text-secondary)'}}>
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style={{margin:'0 auto 8px',display:'block',opacity:0.4}}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  <div style={{fontSize:13}}>No messages yet</div>
-                  <div style={{fontSize:11,marginTop:4}}>Messages from admin will appear here</div>
+                  <div style={{fontSize:13}}>Pas de messages</div>
+                  <div style={{fontSize:11,marginTop:4}}>Les messages de l'administrateur apparaîtront ici</div>
                 </div>
               )}
               {threadList.map(t=>{
@@ -274,7 +274,7 @@ function ChatFloating({userId,userName,userEmail}){
                       <div style={{maxWidth:'85%',padding:'8px 11px',borderRadius:10,
                           fontSize:12,
                           lineHeight:1.55,
-                          whiteSpace: 'pre-wrap', 
+                          whiteSpace: 'pre-wrap',
                           background:isMe?'#1e3a5f':'var(--color-background-secondary)',
                           color:isMe?'#fff':'var(--color-text-primary)',
                           borderBottomRightRadius:isMe?2:10,
@@ -294,7 +294,7 @@ function ChatFloating({userId,userName,userEmail}){
                   <button onClick={sendReply} disabled={sending||!reply.trim()} style={{background:'#1e3a5f',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'6px 10px',cursor:'pointer',fontSize:13,alignSelf:'flex-end'}}>{sending?'…':'↑'}</button>
                 </div>
               ):lastStaffMsg?.replyBlocked?(
-                <div style={{padding:'8px 12px',fontSize:11,color:'#6b6b6b',textAlign:'center',background:'var(--color-background-secondary)',flexShrink:0}}>Replies are disabled.</div>
+                <div style={{padding:'8px 12px',fontSize:11,color:'#6b6b6b',textAlign:'center',background:'var(--color-background-secondary)',flexShrink:0}}>Réponses désactivées.</div>
               ):null}
             </div>
           )}
@@ -355,7 +355,7 @@ function PaymentProofModal({sub,user,pricing,onClose,onDone}){
     <div className="overlay" onClick={e=>e.target===e.currentTarget&&!uploading&&onClose()}>
       <div className="modal" style={{maxWidth:420}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem'}}>
-          <div style={{fontSize:15,fontWeight:500}}>Upload payment proof</div>
+          <div style={{fontSize:15,fontWeight:500}}>Envoie Preuve de Paiement</div>
           {!uploading&&<button className="btn-sm" onClick={onClose} style={{padding:'4px 10px'}}>✕</button>}
         </div>
 
@@ -367,7 +367,7 @@ function PaymentProofModal({sub,user,pricing,onClose,onDone}){
         </div>
 
         <div style={{fontSize:13,color:'var(--color-text-secondary)',marginBottom:'1rem'}}>
-          Take a screenshot of your payment confirmation (MPesa, bank transfer, etc.) and upload it below. Admin will review and confirm your payment.
+          Prenez une capture d'écran de votre confirmation de paiement (MPesa, virement bancaire, etc.) et soumettez-la ci-dessous. L'administrateur examinera et confirmera votre paiement.
         </div>
 
         {/* file picker */}
@@ -380,7 +380,7 @@ function PaymentProofModal({sub,user,pricing,onClose,onDone}){
                 ?<img src={preview} alt="proof preview" style={{width:'100%',maxHeight:220,objectFit:'contain',display:'block'}}/>
                 :<div style={{padding:'1.5rem',textAlign:'center'}}>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style={{margin:'0 auto 8px',display:'block',opacity:0.4}}><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" strokeWidth="1.5"/><path d="M21 15l-5-5L5 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  <div style={{fontSize:13,color:'var(--color-text-secondary)'}}>Tap to choose screenshot</div>
+                  <div style={{fontSize:13,color:'var(--color-text-secondary)'}}>Cliquez pour choisir une image</div>
                   <div style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:4}}>JPG, PNG · Max 5 MB</div>
                 </div>
               }
@@ -389,7 +389,7 @@ function PaymentProofModal({sub,user,pricing,onClose,onDone}){
             {file&&<div style={{fontSize:11,color:'#856404',marginBottom:'0.75rem',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>📎 {file.name}</div>}
             {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
             <button className="btn-primary" onClick={submit} disabled={uploading||!file} style={{width:'100%',background:'#d97706'}}>
-              {uploading?'Uploading…':'Send proof to admin'}
+              {uploading?'Chargement…':'Envoyer la Preuve de Paiement'}
             </button>
           </>
         )}
@@ -397,8 +397,8 @@ function PaymentProofModal({sub,user,pricing,onClose,onDone}){
         {done&&(
           <div style={{textAlign:'center',padding:'1rem 0'}}>
             <div style={{fontSize:32,marginBottom:8}}>✅</div>
-            <div style={{fontSize:14,fontWeight:600,color:'#0f6e56'}}>Proof submitted!</div>
-            <div style={{fontSize:12,color:'var(--color-text-secondary)',marginTop:4}}>Admin will review and confirm your payment shortly.</div>
+            <div style={{fontSize:14,fontWeight:600,color:'#0f6e56'}}>Preuve envoyée!</div>
+            <div style={{fontSize:12,color:'var(--color-text-secondary)',marginTop:4}}>L'administrateur examinera et confirmera votre paiement sous peu.</div>
           </div>
         )}
       </div>
@@ -464,7 +464,7 @@ function InvoiceModal({sub, user, pricing, isReceipt, onClose}){
     <tbody><tr>
       <td>Service de numérisation/saisie</td>
       <td class="tr">${sub.pages||0}</td>
-      <td class="tr">${currency}${(pricing.pricePerPage||0).toFixed(2)}</td>
+      <td class="tr">${currency}${(pricing.pricePerPageCafe||0).toFixed(2)}</td>
       <td class="tr">${currency}${subtotal.toFixed(2)}</td>
     </tr></tbody>
   </table>
@@ -582,7 +582,7 @@ function FeedbackModal({sub,onClose,onDone}){
       <div className="modal" style={{maxWidth:440}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem'}}>
           <div>
-            <div style={{fontSize:15,fontWeight:500}}>Send feedback</div>
+            <div style={{fontSize:15,fontWeight:500}}>Réclamation</div>
             <div style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:2}}>{sub.fileName}</div>
           </div>
           {!sending&&<button className="btn-sm" onClick={onClose} style={{padding:'4px 10px'}}>✕</button>}
@@ -591,7 +591,7 @@ function FeedbackModal({sub,onClose,onDone}){
         {done?(
           <div style={{textAlign:'center',padding:'1.5rem 0'}}>
             <div style={{fontSize:32,marginBottom:8}}>✅</div>
-            <div style={{fontSize:14,fontWeight:600,color:'#0f6e56'}}>Feedback sent!</div>
+            <div style={{fontSize:14,fontWeight:600,color:'#0f6e56'}}>Réclamation envoyée!</div>
             <div style={{fontSize:12,color:'var(--color-text-secondary)',marginTop:4}}>The admin will review and respond shortly.</div>
           </div>
         ):(
@@ -673,7 +673,7 @@ function DocPreviewModal({sub, onClose}){
           </span>
           <a href={`/api/submissions/${sub.id}/final`} download={sub.finalDoc?.fileName}
             style={{background:'rgba(255,255,255,0.15)',color:'#fff',padding:'6px 14px',borderRadius:'var(--border-radius-md)',textDecoration:'none',fontSize:13,fontFamily:'inherit',whiteSpace:'nowrap'}}>
-            ⬇ Download
+            ⬇ Télécharger
           </a>
         </div>
 
@@ -692,7 +692,7 @@ function DocPreviewModal({sub, onClose}){
               <div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:'1.5rem'}}>Preview not available for this file type</div>
               <a href={`/api/submissions/${sub.id}/final`} download={sub.finalDoc?.fileName}
                 style={{background:'#1e3a5f',color:'#fff',padding:'10px 20px',borderRadius:'var(--border-radius-md)',textDecoration:'none',fontSize:13,fontWeight:500}}>
-                ⬇ Download file
+                ⬇ Télécharger le fichier
               </a>
             </div>
           )}
@@ -729,7 +729,7 @@ function AuthScreen({onLogin}){
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 8h6M7 16h4M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
           <div style={{fontSize:19,fontWeight:500}}>voTex Platform</div>
-          <div style={{fontSize:13,color:'var(--color-text-secondary)',marginTop:3}}>Submit your handwritten documents</div>
+          <div style={{fontSize:13,color:'var(--color-text-secondary)',marginTop:3}}>Saisie semi-automatique de vos documents manuscrits</div>
         </div>
         <div className="card">
           <div style={{display:'flex',marginBottom:'1.25rem',gap:8}}>
@@ -739,12 +739,12 @@ function AuthScreen({onLogin}){
               </button>
             ))}
           </div>
-          {mode==='signup'&&<div className="field"><label>Full name</label><input name="name" placeholder="Your full name" value={form.name} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>}
-          <div className="field"><label>Username</label><input name="email" type="email" placeholder="PLumumba" value={form.email} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
-          <div className="field"><label>Password</label><input name="password" type="password" placeholder="••••••••" value={form.password} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
+          {mode==='signup'&&<div className="field"><label>Nom</label><input name="name" placeholder="Your full name" value={form.name} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>}
+          <div className="field"><label>Nom d'utilisateur</label><input name="email" type="email" placeholder="PLumumba" value={form.email} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
+          <div className="field"><label>Mot de passe</label><input name="password" type="password" placeholder="••••••••" value={form.password} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
           {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
           <button className="btn-primary" onClick={submit} disabled={loading} style={{width:'100%'}}>{loading?'Please wait…':(mode==='login'?'Sign in':'Create account')}</button>
-          <div style={{fontSize:13,color:'var(--color-text-secondary)',marginTop:10}}>*Keep your credentials — you'll need them to log in again.</div>
+          <div style={{fontSize:13,color:'var(--color-text-secondary)',marginTop:10}}>* Gardez vos identifiants — vous en aurez besoin pour vous connecter à nouveau.</div>
         </div>
       </div>
       </div>
@@ -753,13 +753,13 @@ function AuthScreen({onLogin}){
   );
 }
 
-// ── STUDENT DASHBOARD ─────────────────────────────────────────────────────────
+// ── CAFE DASHBOARD ─────────────────────────────────────────────────────────
 function StudentDash({user,onLogout}){
   const [subs,setSubs]=useState([]);
   const [notes,setNotes]=useState('');
   const [msg,setMsg]=useState('');
   const [tab,setTab]=useState('upload');
-  const [pricing,setPricing]=useState({pricePerPage:1000,currency:'CDF'});
+  const [pricing,setPricing]=useState({pricePerPageCafe:1000,currency:'CDF'});
   const fileRef=useRef();
 
   const [pendingFiles,setPendingFiles]=useState([]);
@@ -812,9 +812,9 @@ function StudentDash({user,onLogout}){
 
   async function uploadPending(){
     if(!pendingFiles.length)return;
-    if(!selectedTemplate){setMsg('Please select a template before uploading.');return}
-    if(isMath===null){setMsg('Please select a document type (Math or Text) before uploading.');return}
-    setMsg('Uploading...');
+    if(!selectedTemplate){setMsg('Choisissez un template avant de continuer.');return}
+    if(isMath===null){setMsg('Sélectionner un type de document (Math ou Texte) avant de continuer.');return}
+    setMsg('Téléchargement...');
     const batchId='batch_'+Date.now();
     for(const file of pendingFiles){
       const fd=new FormData();
@@ -860,16 +860,17 @@ function StudentDash({user,onLogout}){
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 8h6M7 16h4M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </div>
           <span style={{fontWeight:500,fontSize:14}}>voTex</span>
+          <span className="badge" style={{background:'#f2687a',color:'#f5f5f5',fontSize:10}}>Bureautique</span>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <Avatar name={user.name} userId={user.id} size={28} editable={true}/>
           <span style={{fontSize:12,color:'var(--color-text-secondary)'}}>{user.name.split(' ')[0]}</span>
-          <button className="btn-sm" onClick={()=>{const lang=document.documentElement.lang==='fr'?'en':'fr';window.location.href=lang==='en'?'/index.html':'/index-fr.html';}} style={{fontSize:11}}>🌐 {document.documentElement.lang==='fr'?'EN':'FR'}</button>
-          <button className="btn-sm" onClick={onLogout} style={{fontSize:12}}>Sign out</button>
+          <button className="btn-sm" onClick={()=>{const lang=document.documentElement.lang;window.location.href=lang==='fr'?'/index.html':'/index-fr.html';}} style={{fontSize:11}}>🌐 {document.documentElement.lang==='fr'?'EN':'FR'}</button>
+          <button className="btn-sm" onClick={onLogout} style={{fontSize:12}}>Se déconnecter</button>
         </div>
       </div>
       <div className="app-tabbar" style={{paddingLeft:24}}>
-        {[['upload','Upload'],['submissions','My Submissions']].map(([t,l])=>(
+        {[['upload','Accueil'],['submissions','Mes commandes']].map(([t,l])=>(
           <button key={t} className={'tab'+(tab===t?' active':'')} onClick={()=>setTab(t)}>{l}</button>
         ))}
 
@@ -885,9 +886,9 @@ function StudentDash({user,onLogout}){
           <>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:'1.5rem'}}>
               <div style={{background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)',padding:'1rem'}}>
-                <div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:4}}>Price per page (HT)</div>
-                <div style={{fontSize:22,fontWeight:500}}>{sym(pricing.currency)}{pricing.pricePerPage}</div>
-                {/*<div style={{fontSize:10,color:'var(--color-text-secondary)',marginTop:4}}>TVA 16%: {sym(pricing.currency)}{(pricing.pricePerPage*0.16).toFixed(0)} · TTC: {sym(pricing.currency)}{(pricing.pricePerPage*1.16).toFixed(0)}</div>*/}
+                <div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:4}}>Prix par page (HT)</div>
+                <div style={{fontSize:22,fontWeight:500}}>{sym(pricing.currency)}{pricing.pricePerPageCafe}</div>
+                {/*<div style={{fontSize:10,color:'var(--color-text-secondary)',marginTop:4}}>TVA 16%: {sym(pricing.currency)}{(pricing.pricePerPageCafe*0.16).toFixed(0)} · TTC: {sym(pricing.currency)}{(pricing.pricePerPageCafe*1.16).toFixed(0)}</div>*/}
               </div>
               <div style={{background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)',padding:'1rem'}}>
                 <div style={{fontSize:12,color:'var(--color-text-secondary)',marginBottom:2}}>Balance due</div>
@@ -906,8 +907,8 @@ function StudentDash({user,onLogout}){
               <div style={{background:'#fff3cd',border:'1.5px solid #f59e0b',borderRadius:'var(--border-radius-md)',padding:'12px 16px',marginBottom:'1rem',display:'flex',alignItems:'center',gap:10}}>
                 <span style={{fontSize:18}}>🔒</span>
                 <div>
-                  <div style={{fontSize:13,fontWeight:600,color:'#92400e'}}>Upload locked</div>
-                  <div style={{fontSize:12,color:'#b45309',marginTop:2}}>Pay for your pending submissions before uploading new files. Go to <button onClick={()=>setTab('submissions')} style={{background:'none',border:'none',color:'#92400e',fontWeight:600,cursor:'pointer',padding:0,fontFamily:'inherit',fontSize:12,textDecoration:'underline'}}>My Submissions</button> to proceed.</div>
+                  <div style={{fontSize:13,fontWeight:600,color:'#92400e'}}>Chargement bloqué</div>
+                  <div style={{fontSize:12,color:'#b45309',marginTop:2}}>Payer pour vos commandes en attente avant de télécharger de nouveaux fichiers. Aller à <button onClick={()=>setTab('submissions')} style={{background:'none',border:'none',color:'#92400e',fontWeight:600,cursor:'pointer',padding:0,fontFamily:'inherit',fontSize:12,textDecoration:'underline'}}>Mes commandes</button> pour procéder.</div>
                 </div>
               </div>
             )}
@@ -917,17 +918,17 @@ function StudentDash({user,onLogout}){
               {/* Document type — REQUIRED */}
               <div style={{marginBottom:'1rem',padding:'10px 12px',background:isMath===null?'#fff3cd':'var(--color-background-secondary)',border:isMath===null?'1px solid #f59e0b':'none',borderRadius:'var(--border-radius-md)'}}>
                 <div style={{fontSize:12,fontWeight:600,color:isMath===null?'#92400e':'var(--color-text-secondary)',marginBottom:6}}>
-                  Document type <span style={{color:'#a32d2d'}}>*</span>{isMath===null&&<span style={{fontWeight:400,marginLeft:4}}>— choose before uploading</span>}
+                  Type de document <span style={{color:'#a32d2d'}}>*</span>{isMath===null&&<span style={{fontWeight:400,marginLeft:4}}>— choisissez avant d'envoyer</span>}
                 </div>
                 <div style={{display:'flex',gap:8}}>
                   <button onClick={()=>setIsMath(true)} style={{flex:1,padding:'9px 10px',border:'1.5px solid '+(isMath===true?'#1e3a5f':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',background:isMath===true?'#1e3a5f':'transparent',color:isMath===true?'#fff':'var(--color-text-primary)',cursor:'pointer',fontFamily:'inherit',fontSize:12,fontWeight:500}}>
                     📐 Math / Sciences
                   </button>
                   <button onClick={()=>setIsMath(false)} style={{flex:1,padding:'9px 10px',border:'1.5px solid '+(isMath===false?'#0f6e56':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',background:isMath===false?'#0f6e56':'transparent',color:isMath===false?'#fff':'var(--color-text-primary)',cursor:'pointer',fontFamily:'inherit',fontSize:12,fontWeight:500}}>
-                    📝 Text / Languages
+                    📝 Texte
                   </button>
                 </div>
-                {isMath!==null&&<div style={{fontSize:10,color:'var(--color-text-secondary)',marginTop:5}}>{isMath?'→ LaTeX output (Overleaf)':'→ Plain text output (Google Docs)'}</div>}
+                {isMath!==null&&<div style={{fontSize:10,color:'var(--color-text-secondary)',marginTop:5}}>{isMath?'→ LaTeX':'→ Texte ordinaire MS Word'}</div>}
               </div>
 
               <div onDrop={e=>{e.preventDefault();handleFiles(e.dataTransfer.files)}} onDragOver={e=>e.preventDefault()} onClick={()=>fileRef.current.click()}
@@ -935,15 +936,15 @@ function StudentDash({user,onLogout}){
                 onMouseEnter={e=>{if(!hasUnpaid)e.currentTarget.style.background='var(--color-background-secondary)'}}
                 onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style={{margin:'0 auto 8px',display:'block'}}><path d="M12 16V8M12 8L9 11M12 8l3 3" stroke="var(--color-text-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M20 16.5A4.5 4.5 0 0 0 15.5 12H14a6 6 0 1 0-5.5 8.5" stroke="var(--color-text-secondary)" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                <div style={{fontSize:14,fontWeight:500,marginBottom:3}}>Drop files here or click to browse</div>
-                <div style={{fontSize:12,color:'var(--color-text-secondary)'}}>PDF (pages auto-detected) · JPG/PNG (1 page each) · Max 10 MB</div>
+                <div style={{fontSize:14,fontWeight:500,marginBottom:3}}>Déposez les fichiers ici ou cliquez pour parcourir</div>
+                <div style={{fontSize:12,color:'var(--color-text-secondary)'}}>PDF (nbre de pages detectées automatiquement) · JPG/PNG (1 image = 1 page) · Max 10 MB</div>
               </div>
               <input ref={fileRef} type="file" multiple accept=".pdf,.jpg,.jpeg,.png" style={{display:'none'}} onChange={e=>handleFiles(e.target.files)}/>
 
               {/* staged files preview */}
               {pendingFiles.length>0&&(
                 <div style={{marginTop:'1rem',background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)',padding:'10px 12px'}}>
-                  <div style={{fontSize:12,fontWeight:500,marginBottom:8,color:'var(--color-text-secondary)'}}>{pendingFiles.length} file{pendingFiles.length!==1?'s':''} selected — confirm to upload</div>
+                  <div style={{fontSize:12,fontWeight:500,marginBottom:8,color:'var(--color-text-secondary)'}}>{pendingFiles.length} fichiers {pendingFiles.length!==1?'s':''} selectionné(s)</div>
                   {pendingFiles.map((f,i)=>(
                     <div key={i} style={{display:'flex',alignItems:'center',gap:8,padding:'4px 0',borderBottom:'0.5px solid var(--color-border-tertiary)'}}>
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{flexShrink:0}}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="var(--color-text-secondary)" strokeWidth="1.5"/><path d="M14 2v6h6" stroke="var(--color-text-secondary)" strokeWidth="1.5"/></svg>
@@ -958,7 +959,7 @@ function StudentDash({user,onLogout}){
               <div className="field" style={{marginTop:'1rem'}}>
                 <label>Template <span style={{color:'#a32d2d'}}>*</span></label>
                 {templates.length===0
-                  ?<div style={{fontSize:12,color:'var(--color-text-secondary)',padding:'8px 0'}}>Loading templates…</div>
+                  ?<div style={{fontSize:12,color:'var(--color-text-secondary)',padding:'8px 0'}}>Chargement des templates…</div>
                   :<div style={{display:'flex',flexDirection:'column',gap:6}}>
                     {templates.map(t=>(
                       <label key={t} style={{display:'flex',alignItems:'center',gap:8,padding:'8px 10px',border:'0.5px solid '+(selectedTemplate===t?'#1e3a5f':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',cursor:'pointer',background:selectedTemplate===t?'#e6f1fb':'transparent',marginBottom:0}}>
@@ -966,7 +967,7 @@ function StudentDash({user,onLogout}){
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:12,fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.replace(/_/g,' ').replace(/\.pdf$/i,'')}</div>
                         </div>
-                        <button onClick={e=>{e.stopPropagation();setPreviewTemplate(t);}} style={{fontSize:10,color:'#1e3a5f',background:'transparent',border:'0.5px solid #85b7eb77',borderRadius:4,padding:'2px 7px',cursor:'pointer',fontFamily:'inherit',flexShrink:0,whiteSpace:'nowrap'}}>Preview</button>
+                        <button onClick={e=>{e.stopPropagation();setPreviewTemplate(t);}} style={{fontSize:10,color:'#1e3a5f',background:'transparent',border:'0.5px solid #85b7eb77',borderRadius:4,padding:'2px 7px',cursor:'pointer',fontFamily:'inherit',flexShrink:0,whiteSpace:'nowrap'}}>Aperçu</button>
                       </label>
                     ))}
                   </div>
@@ -974,15 +975,15 @@ function StudentDash({user,onLogout}){
               </div>
 
               <div className="field" style={{marginTop:'0.75rem',marginBottom:0}}>
-                <label>Notes for the reviewer (optional)</label>
-                <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="e.g. pages 1-3 are maths problems, please use LaTeX" style={{height:64,resize:'vertical'}}/>
+                <label>Commentaire (facultatif)</label>
+                <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="e.g. pages 1-3 contiennent des notations mathématiques, utilisez LaTeX" style={{height:64,resize:'vertical'}}/>
               </div>
 
               {msg&&<div style={{fontSize:12,marginTop:8,color:msg.includes('failed')||msg.includes('skipped')?'#a32d2d':'var(--color-text-secondary)'}}>{msg}</div>}
 
               {pendingFiles.length>0&&(
                 <button className="btn-primary" onClick={uploadPending} disabled={!selectedTemplate||isMath===null} style={{width:'100%',marginTop:'1rem',opacity:(selectedTemplate&&isMath!==null)?1:0.5}}>
-                  {!selectedTemplate?'Select a template to upload':isMath===null?'Select document type to upload':`Upload ${pendingFiles.length} file${pendingFiles.length!==1?'s':''}`}
+                  {!selectedTemplate?'Choisissez un template':isMath===null?'Selectionner un type de document':`Soumettre ${pendingFiles.length} fichier(s)${pendingFiles.length!==1?'s':''}`}
                 </button>
               )}
             </div>
@@ -991,8 +992,8 @@ function StudentDash({user,onLogout}){
 
         {tab==='submissions'&&(
           <>
-            <div style={{fontSize:15,fontWeight:500,marginBottom:'1rem'}}>My submissions <span style={{fontSize:13,fontWeight:400,color:'var(--color-text-secondary)'}}>({subs.length} file{subs.length!==1?'s':''} in {batches.length} batch{batches.length!==1?'es':''})</span></div>
-            {batches.length===0&&<div style={{fontSize:13,color:'var(--color-text-secondary)',background:'var(--color-background-secondary)',padding:'1.5rem',borderRadius:'var(--border-radius-md)',textAlign:'center'}}>No submissions yet.</div>}
+            <div style={{fontSize:15,fontWeight:500,marginBottom:'1rem'}}>Mes commandes <span style={{fontSize:13,fontWeight:400,color:'var(--color-text-secondary)'}}>({subs.length} document{subs.length!==1?'s':''} dans {batches.length} commande{batches.length!==1?'s':''})</span></div>
+            {batches.length===0&&<div style={{fontSize:13,color:'var(--color-text-secondary)',background:'var(--color-background-secondary)',padding:'1.5rem',borderRadius:'var(--border-radius-md)',textAlign:'center'}}>Aucun document pour le moment.</div>}
             <div style={{display:'flex',flexDirection:'column',gap:16}}>
               {batches.map((batch,bi)=>{
                 const batchNum=batches.length-bi; // newest batch gets the highest number
@@ -1012,12 +1013,12 @@ function StudentDash({user,onLogout}){
                       <div style={{display:'flex',alignItems:'center',gap:8}}>
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{transform:isCollapsed?'rotate(-90deg)':'none',transition:'transform 0.2s',flexShrink:0}}><path d="M6 9l6 6 6-6" stroke="var(--color-text-secondary)" strokeWidth="1.8" strokeLinecap="round"/></svg>
                         <div style={{fontSize:12,fontWeight:600,color:'var(--color-text-secondary)'}}>
-                          Batch {batchNum} · {new Date(batch.uploadedAt).toLocaleString()} · {batch.subs.length} file{batch.subs.length!==1?'s':''}
+                          Commande {batchNum} · {new Date(batch.uploadedAt).toLocaleString()} · {batch.subs.length} fichier(s){batch.subs.length!==1?'s':''}
                         </div>
                       </div>
                       <div style={{display:'flex',gap:6,alignItems:'center'}}>
                         <span style={{fontSize:13,fontWeight:700,color:batchPaid?'#0f6e56':'#92400e'}}>{sym(pricing.currency)}{Math.round(batchTTC)}</span>
-                        <span className="badge" style={{background:batchPaid?'#e1f5ee':batchStatus==='awaiting_payment'?'#fff3cd':'#e6f1fb',color:batchPaid?'#0f6e56':batchStatus==='awaiting_payment'?'#856404':'#1e3a5f'}}>{batchPaid?'Paid':batchStatus==='awaiting_payment'?'Awaiting Payment':'In Progress'}</span>
+                        <span className="badge" style={{background:batchPaid?'#e1f5ee':batchStatus==='awaiting_payment'?'#fff3cd':'#e6f1fb',color:batchPaid?'#0f6e56':batchStatus==='awaiting_payment'?'#856404':'#1e3a5f'}}>{batchPaid?'Payé':batchStatus==='awaiting_payment'?'En attente de paiement':'En cours'}</span>
                       </div>
                     </div>
 
@@ -1037,7 +1038,7 @@ function StudentDash({user,onLogout}){
                           </div>
                           <span className="badge" style={{background:st.bg,color:st.color,flexShrink:0}}>{st.label}</span>
                           {s.status==='awaiting_payment'&&!s.paid&&(
-                            <button onClick={async()=>{if(confirm(`Delete "${s.fileName}"? This cannot be undone.`)){await api.del(`/api/submissions/${s.id}`);refresh();}}} className="btn-danger" style={{fontSize:11,padding:'3px 8px',flexShrink:0}}>Delete</button>
+                            <button onClick={async()=>{if(confirm(`Delete "${s.fileName}"? This cannot be undone.`)){await api.del(`/api/submissions/${s.id}`);refresh();}}} className="btn-danger" style={{fontSize:11,padding:'3px 8px',flexShrink:0}}>Supprimer</button>
                           )}
                         </div>
                       );
@@ -1046,14 +1047,14 @@ function StudentDash({user,onLogout}){
                     {/* batch-level download + feedback — ONE per batch when done */}
                     {allDone&&batch.subs[0].finalDoc&&(
                       <div style={{padding:'10px 16px',background:'#e6f1fb',borderTop:'0.5px solid #85b7eb44',display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,flexWrap:'wrap'}}>
-                        <div style={{fontSize:12,fontWeight:500,color:'#1e3a5f'}}>📄 Your typed document is ready</div>
+                        <div style={{fontSize:12,fontWeight:500,color:'#1e3a5f'}}>📄 Votre document saisi est prêt.</div>
                         <div style={{display:'flex',gap:8,alignItems:'center'}}>
                           {batch.subs[0].feedbackClosed
-                            ?<span style={{fontSize:11,color:'#0f6e56',fontWeight:500}}>✓ Case completed</span>
-                            :<button onClick={()=>setFeedbackModal(batch.subs[0])} style={{background:'transparent',color:'#854f0b',border:'0.5px solid #d4960077',borderRadius:'var(--border-radius-md)',padding:'4px 9px',fontSize:11,cursor:'pointer',fontFamily:'inherit'}}>✏️ Send feedback</button>
+                            ?<span style={{fontSize:11,color:'#0f6e56',fontWeight:500}}>✓ Traitement terminé!</span>
+                            :<button onClick={()=>setFeedbackModal(batch.subs[0])} style={{background:'transparent',color:'#854f0b',border:'0.5px solid #d4960077',borderRadius:'var(--border-radius-md)',padding:'4px 9px',fontSize:11,cursor:'pointer',fontFamily:'inherit'}}>✏️ Réclamation</button>
                           }
-                          <a href={`/api/submissions/${batch.subs[0].id}/final`} download style={{fontSize:11,background:'transparent',color:'#1e3a5f',padding:'4px 9px',borderRadius:'var(--border-radius-md)',textDecoration:'none',fontWeight:500,border:'0.5px solid #85b7eb77'}}>⬇ Download</a>
-                          <button onClick={()=>setDocPreviewModal(batch.subs[0])} style={{fontSize:11,background:'#1e3a5f',color:'#fff',padding:'4px 9px',borderRadius:'var(--border-radius-md)',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>👁 Preview</button>
+                          <a href={`/api/submissions/${batch.subs[0].id}/final`} download style={{fontSize:11,background:'transparent',color:'#1e3a5f',padding:'4px 9px',borderRadius:'var(--border-radius-md)',textDecoration:'none',fontWeight:500,border:'0.5px solid #85b7eb77'}}>⬇ Télécharger</a>
+                          <button onClick={()=>setDocPreviewModal(batch.subs[0])} style={{fontSize:11,background:'#1e3a5f',color:'#fff',padding:'4px 9px',borderRadius:'var(--border-radius-md)',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>👁 Aperçu</button>
                         </div>
                       </div>
                     )}
@@ -1063,20 +1064,20 @@ function StudentDash({user,onLogout}){
                       <div style={{borderTop:'2px solid #f59e0b',background:'#fffbeb',padding:'14px 16px'}}>
                         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
                           <div>
-                            <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:4}}>⚠️ Payment required for this batch</div>
+                            <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:4}}>⚠️ Paiement requis pour cette commande</div>
                             <div style={{fontSize:20,fontWeight:700,color:'#92400e'}}>{sym(pricing.currency)}{Math.round(batchTTC)}</div>
-                            <div style={{fontSize:11,color:'#b45309',marginTop:2}}>{batch.subs.reduce((a,s)=>a+(s.pages||0),0)} total pages × {sym(pricing.currency)}{pricing.pricePerPage} per page + {sym(pricing.currency)}{vatRate*batchTotal} of TVA</div>
+                            <div style={{fontSize:11,color:'#b45309',marginTop:2}}>{batch.subs.reduce((a,s)=>a+(s.pages||0),0)} total pages × {sym(pricing.currency)}{pricing.pricePerPageCafe} par page + {sym(pricing.currency)}{vatRate*batchTotal} de TVA</div>
                           </div>
                           <div style={{display:'flex',flexDirection:'column',gap:6,alignItems:'flex-end'}}>
                             {!batchProof?(
                               <button onClick={()=>setProofModal(batch.subs)} style={{background:'#d97706',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'8px 14px',fontSize:12,fontWeight:600,cursor:'pointer',whiteSpace:'nowrap'}}>
-                                📎 I've paid — upload proof
+                                📎 J'ai payé — soumettre un justificatif
                               </button>
                             ):(
-                              <span style={{fontSize:12,color:'#b45309',fontWeight:500}}>✓ Proof submitted — awaiting confirmation</span>
+                              <span style={{fontSize:12,color:'#b45309',fontWeight:500}}>✓ Justificatif soumis — en attente de confirmation</span>
                             )}
                             <a href={`mailto:admin@maktech.co.uk?subject=Payment for batch ${batch.batchId}&body=Hi, I paid ${sym(pricing.currency)}${batchTotal} for my batch of ${batch.subs.length} file(s).`}
-                              style={{fontSize:11,color:'#b45309',textDecoration:'none'}}>or email admin@maktech.co.uk →</a>
+                              style={{fontSize:11,color:'#b45309',textDecoration:'none'}}>ou écrire à admin@maktech.co.uk →</a>
                           </div>
                         </div>
                       </div>
@@ -1085,12 +1086,12 @@ function StudentDash({user,onLogout}){
                     {/* batch paid strip */}
                     {batchPaid&&(
                       <div style={{borderTop:'0.5px solid #5dcaa533',background:'#e1f5ee',padding:'8px 16px',display:'flex',alignItems:'center',gap:8}}>
-                        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}>✓ Payment confirmed</span>
+                        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}>✓ Paiement confirmé</span>
                         <span style={{fontSize:11,color:'#0f6e56'}}>{sym(pricing.currency)}{batchTTC}</span>
                         <div style={{marginLeft:'auto',display:'flex',gap:6}}>
                           <button onClick={()=>setInvoiceModal({sub:{...batch.subs[0],price:batchTotal,pages:batch.subs.reduce((a,s)=>a+(s.pages||0),0),fileName:batch.subs.map(s=>s.fileName).join(', ')},isReceipt:true})}
                             style={{fontSize:11,padding:'3px 9px',background:'transparent',color:'#0f6e56',border:'0.5px solid #5dcaa577',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit'}}>
-                            🧾 Receipt
+                            🧾 Reçu
                           </button>
                         </div>
                       </div>
@@ -1103,14 +1104,14 @@ function StudentDash({user,onLogout}){
                         
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                           <div style={{ fontSize: 11, color: '#856404', background: '#fff3cd', padding: '8px', borderRadius: '4px', border: '0.5px solid #ffeeba' }}>
-                            <strong>Instruction:</strong> Pay using M-Pesa at <strong>TBC</strong>.
+                            <strong>Instruction:</strong> Payer avec M-Pesa au <strong>TBC</strong>.
                           </div>
                           <div>  </div>
                         </div>
 
                         <button onClick={()=>setInvoiceModal({sub:{...batch.subs[0],price:batchTotal,pages:batch.subs.reduce((a,s)=>a+(s.pages||0),0),fileName:batch.subs.map(s=>s.fileName).join(', ')},isReceipt:false})}
                           style={{fontSize:11,padding:'4px 10px',background:'transparent',color:'#1e3a5f',border:'0.5px solid #85b7eb77',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit'}}>
-                          📄 Download invoice
+                          📄 Facture PROFORMA
                         </button>
                       </div>
                     )}
@@ -1225,7 +1226,7 @@ function ThesisTab({user,pricing,subs,refresh}){
               📐 Math / Sciences
             </button>
             <button onClick={()=>setIsMath(false)} style={{flex:1,padding:'8px',border:'1.5px solid '+(isMath===false?'#0f6e56':'var(--color-border-secondary)'),borderRadius:'var(--border-radius-md)',background:isMath===false?'#0f6e56':'transparent',color:isMath===false?'#fff':'var(--color-text-primary)',cursor:'pointer',fontFamily:'inherit',fontSize:12,fontWeight:500}}>
-              📝 Text / Languages
+              📝 Texte
             </button>
           </div>
         </div>
@@ -1283,13 +1284,11 @@ function App(){
   function logout(){clearSession();setUser(null)} {/*jn vdjvb okjvb iusyufg9oibfviyudbk yudghcbo uieydjhv*/}
   if(!user)return <AuthScreen onLogin={login}/>; {/*jn vdjvb okjvb iusyufg9oibfviyudbk yudghcbo uieydjhv*/}
   if(user.role==='admin') window.location.href = 'mukindex-Admln.html';{/*jn vdjvb okjvb iusyufg9oibfviyudbk yudghcbo uieydjhv*/}
-  if(user.role==='manager') window.location.href = 'patindex-Man.html'; {/*jn vdjvb okjvb iusyufg9oibfviyudbk yudghcbo uieydjhv*/}
-  if(user.role==='cafe') window.location.href = 'cafindex-fr.html'; {/*jn vdjvb okjvb iusyufg9oibfviyudbk yudghcbo uieydjhv*/}
+  if(user.role==='manager') window.location.href = 'patindex-Man-fr.html'; {/*jn vdjvb okjvb iusyufg9oibfviyudbk yudghcbo uieydjhv*/}
+  {/*if(user.role==='cafe') window.location.href = 'cafindex-fr.html';*/} {/*jn vdjvb okjvb iusyufg9oibfviyudbk yudghcbo uieydjhv*/}
   return <StudentDash user={user} onLogout={logout}/>;
 }
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>); {/*jn vdjvb okjvb iusyufg9oibfviyudbk yudghcbo uieydjhv*/}
 </script>
 </body>
 </html>
-
-<!-- return <ManagerDash user={user} onLogout={logout}/>; -->

@@ -2062,14 +2062,16 @@ function AdminDash({user,onLogout}){
   const [pricing,setPricing]=useState({pricePerPage:1000,currency:'CDF'});
   const [search,setSearch]=useState('');
   const [openFolder,setOpenFolder]=useState(null);
-  const [priceForm,setPriceForm]=useState({pricePerPage:1000,currency:'CDF',managerRate:10});
+  const [priceForm,setPriceForm]=useState({pricePerPage:1000,pricePerPageCafe:300,currency:'CDF',managerRate:10,vatRate:0});
   const [compose,setCompose]=useState(null);
   const [sendFinal,setSendFinal]=useState(null);
   const [convModal,setConvModal]=useState(null);
   const [mathPixModal,setMathPixModal]=useState(null);
   const [openBatches,setOpenBatches]=useState(new Set());
   const [managers,setManagers]=useState([]);
+  const [cafes,setCafes]=useState([]);
   const [newManager,setNewManager]=useState({name:'',tagName:'',email:'',password:''});
+  const [newCafe,setNewCafe]=useState({name:'',tagName:'',email:'',password:''});
   const [staffMsgsCache,setStaffMsgsCache]=useState([]);
   const [withdrawals,setWithdrawals]=useState([]);
   // const vatRate = 0.16;
@@ -2080,6 +2082,11 @@ function AdminDash({user,onLogout}){
     api.get('/api/staff-chat').then(setStaffMsgsCache).catch(()=>{});
     const t=setInterval(()=>api.get('/api/staff-chat').then(setStaffMsgsCache).catch(()=>{}),30000);
     return()=>clearInterval(t);
+  },[]);
+
+  useEffect(()=>{
+    api.get('/api/cafes').then(setCafes).catch(()=>{});
+    return()=>0;
   },[]);
 
 
@@ -2112,6 +2119,9 @@ function AdminDash({user,onLogout}){
     api.get('/api/withdrawals').then(setWithdrawals).catch(()=>{});
     api.get('/api/managers').then(setManagers).catch(()=>{});
   }
+
+ 
+
   useEffect(()=>{refresh();const t=setInterval(refresh,POLL_MS);return()=>clearInterval(t)},[]);
 
   async function updateStatus(id,status){
@@ -2138,7 +2148,7 @@ function AdminDash({user,onLogout}){
   function downloadFile(doc){window.open(`/api/files/${doc.uploadFolder||doc.userId}/${doc.storedName}`,'_blank')}
 
   async function savePricingSettings(){
-    const p={pricePerPage:parseFloat(priceForm.pricePerPage)||1000,currency:priceForm.currency,managerRate:parseFloat(priceForm.managerRate)||10};
+    const p={pricePerPage:parseFloat(priceForm.pricePerPage)||1000,currency:priceForm.currency,managerRate:parseFloat(priceForm.managerRate)||10, pricePerPageCafe:parseFloat(priceForm.pricePerPageCafe)||300,vatRate:parseFloat(priceForm.vatRate)||0};
     await api.post('/api/pricing',p);setPricing(p);alert('Pricing saved.');
   }
 
@@ -2488,10 +2498,11 @@ function AdminDash({user,onLogout}){
                 <div className="card" style={{marginBottom:'1rem'}}>
                   <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Rates</div>
                   <div className="field"><label>Price per page (HT)</label><input type="number" min="0" step="50" value={priceForm.pricePerPage} onChange={e=>setPriceForm(f=>({...f,pricePerPage:e.target.value}))} style={{width:'100%'}}/></div>
+                  <div className="field"><label>Price per page Cafe (HT)</label><input type="number" min="0" step="50" value={priceForm.pricePerPageCafe} onChange={e=>setPriceForm(f=>({...f,pricePerPageCafe:e.target.value}))} style={{width:'100%'}}/></div>
                   <div className="field"><label>Currency</label><select value={priceForm.currency} onChange={e=>setPriceForm(f=>({...f,currency:e.target.value}))} style={{width:'100%'}}><option value="USD">USD ($)</option><option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option><option value="CDF">CDF (FC) — Congolese franc</option><option value="XAF">XAF (FCFA) — Central African CFA</option></select></div>
                   <div className="field"><label>Manager commission (%)</label><input type="number" min="0" max="100" step="1" value={priceForm.managerRate??10} onChange={e=>setPriceForm(f=>({...f,managerRate:e.target.value}))} style={{width:'100%'}}/></div>
                   <div className="field"><label>Minimum payout ({sym(pricing.currency)}) <span style={{fontSize:11,fontWeight:400,color:'var(--color-text-secondary)'}}>— threshold before manager can request payment</span></label><input type="number" min="0" step="500" value={priceForm.minPayout??5000} onChange={e=>setPriceForm(f=>({...f,minPayout:e.target.value}))} style={{width:'100%'}}/></div>
-                  {/*<div className="field"><label>VAT rate (%) <span style={{fontSize:11,fontWeight:400,color:'var(--color-text-secondary)'}}>— VAT rate ajustment</span></label><input type="number" min="0" step="500" value={priceForm.minPayout??5000} onChange={e=>setPriceForm(f=>({...f,minPayout:e.target.value}))} style={{width:'100%'}}/></div>*/}
+                  <div className="field"><label>VAT rate (%) <span style={{fontSize:11,fontWeight:400,color:'var(--color-text-secondary)'}}>— VAT rate ajustment</span></label><input type="number" min="0" step="500" value={priceForm.vatRate??10} onChange={e=>setPriceForm(f=>({...f,vatRate:e.target.value}))} style={{width:'100%'}}/></div>
                   <button className="btn-primary" onClick={savePricingSettings} style={{width:'100%'}}>Save pricing</button>
                 </div>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
@@ -2602,7 +2613,41 @@ function AdminDash({user,onLogout}){
               {/* Left*/}
 
             {/* Active managers — based on staff chat activity in last 10 min */}
-            {managers.length>0&&(
+            <div className="card" style={{marginBottom:'1rem'}}>
+              <div style={{fontSize:13,fontWeight:500,marginBottom:'1rem'}}>Create manager account</div>
+              <div className="field"><label>Full name</label><input value={newManager.name} onChange={e=>setNewManager(p=>({...p,name:e.target.value}))} placeholder="Manager real name"/></div>
+              <div className="field"><label>Tag name <span style={{fontSize:11,fontWeight:400,color:'var(--color-text-secondary)'}}>— shown to other managers (e.g. Alpha, @mak)</span></label><input value={newManager.tagName||''} onChange={e=>setNewManager(p=>({...p,tagName:e.target.value}))} placeholder="e.g. Alpha"/></div>
+              <div className="field"><label>Email</label><input type="email" value={newManager.email} onChange={e=>setNewManager(p=>({...p,email:e.target.value}))} placeholder="manager@company.com"/></div>
+              <div className="field"><label>Password</label><input type="password" value={newManager.password} onChange={e=>setNewManager(p=>({...p,password:e.target.value}))} placeholder="Temporary password"/></div>
+              <button className="btn-primary" style={{width:'100%'}} onClick={async()=>{
+                if(!newManager.name||!newManager.email||!newManager.password){alert('Name, email and password are required.');return}
+                const res=await api.post('/api/managers',newManager);
+                if(res.error){alert(res.error);return}
+                setManagers(prev=>[...prev,res.user]);
+                setNewManager({name:'',tagName:'',email:'',password:''});
+                alert('Manager account created.');
+              }}>Create manager</button>
+            </div>
+            
+             <div className="card" style={{marginBottom:'1rem'}}>
+              <div style={{fontSize:13,fontWeight:500,marginBottom:'1rem'}}>Create Cafe account</div>
+              <div className="field"><label>Cafe name</label><input value={newCafe.name} onChange={e=>setNewCafe(p=>({...p,name:e.target.value}))} placeholder="Cafe name"/></div>
+              <div className="field"><label>Tag name <span style={{fontSize:11,fontWeight:400,color:'var(--color-text-secondary)'}}>— shown to other managers (e.g. Alpha, @mak)</span></label><input value={newCafe.tagName||''} onChange={e=>setNewCafe(p=>({...p,tagName:e.target.value}))} placeholder="e.g. Alpha"/></div>
+              <div className="field"><label>Email</label><input type="email" value={newCafe.email} onChange={e=>setNewCafe(p=>({...p,email:e.target.value}))} placeholder="cafe@company.com"/></div>
+              <div className="field"><label>Password</label><input type="password" value={newCafe.password} onChange={e=>setNewCafe (p=>({...p,password:e.target.value}))} placeholder="Temporary password"/></div>
+              <button className="btn-primary" style={{width:'100%'}} onClick={async()=>{
+                if(!newCafe.name||!newCafe.email||!newCafe.password){alert('Name, email and password are required.');return}
+                const res=await api.post('/api/cafes',newCafe);
+                if(res.error){alert(res.error);return}
+                setCafes(prev=>[...prev,res.user]);
+                setNewCafe({name:'',tagName:'',email:'',password:''});
+                alert('Cafe account created.');
+              }}>Create Cafe</button>
+            </div>
+            
+        
+            {/* Right — */}
+           {managers.length>0&&(
               <div className="card" style={{marginBottom:'1rem'}}>
                 <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Managers ({managers.length})</div>
                 {managers.map(m=>{
@@ -2645,28 +2690,42 @@ function AdminDash({user,onLogout}){
                     </div>
                   );
                 })}
-              </div>
+              </div>  
             )}
-            
-            {/* Right — */}
-            <div>
+
+
+
             <div className="card" style={{marginBottom:'1rem'}}>
-              <div style={{fontSize:13,fontWeight:500,marginBottom:'1rem'}}>Create manager account</div>
-              <div className="field"><label>Full name</label><input value={newManager.name} onChange={e=>setNewManager(p=>({...p,name:e.target.value}))} placeholder="Manager real name"/></div>
-              <div className="field"><label>Tag name <span style={{fontSize:11,fontWeight:400,color:'var(--color-text-secondary)'}}>— shown to other managers (e.g. Alpha, @mak)</span></label><input value={newManager.tagName||''} onChange={e=>setNewManager(p=>({...p,tagName:e.target.value}))} placeholder="e.g. Alpha"/></div>
-              <div className="field"><label>Email</label><input type="email" value={newManager.email} onChange={e=>setNewManager(p=>({...p,email:e.target.value}))} placeholder="manager@company.com"/></div>
-              <div className="field"><label>Password</label><input type="password" value={newManager.password} onChange={e=>setNewManager(p=>({...p,password:e.target.value}))} placeholder="Temporary password"/></div>
-              <button className="btn-primary" style={{width:'100%'}} onClick={async()=>{
-                if(!newManager.name||!newManager.email||!newManager.password){alert('Name, email and password are required.');return}
-                const res=await api.post('/api/managers',newManager);
-                if(res.error){alert(res.error);return}
-                setManagers(prev=>[...prev,res.user]);
-                setNewManager({name:'',tagName:'',email:'',password:''});
-                alert('Manager account created.');
-              }}>Create manager</button>
-            </div>
-            </div>
-          </div>
+                <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Cafes ({cafes.length})</div>
+                {cafes.map(m=>{
+                  const isActive=staffActivity.has(m.id);
+                  const lastMsg=[...staffMsgsCache].reverse().find(x=>x.fromId===m.id);
+                  const mCompletedSubs=subs.filter(s=>s.assignedTo?.id===m.id&&s.paid&&s.status==='done');
+                  const mEarned=Math.round(mCompletedSubs.reduce((a,s)=>a+(s.price||0),0)*(pricing.managerRate||10)/100);
+                  const mPaid=m.totalPaid||0;
+                  // totalPaidToManagers+=mPaid;
+                  const mOwed=Math.max(0,mEarned-mPaid);
+                  const hasPending=m.paymentRequests?.some(r=>r.status==='pending');
+
+                  return(
+                    <div key={m.id} style={{display:'flex',alignItems:'center',gap:10,padding:'8px 0',borderBottom:'0.5px solid var(--color-border-tertiary)',flexWrap:'wrap',background:hasPending?'#fffbea':'transparent'}}>
+                      <div style={{position:'relative',flexShrink:0}}>
+                        <Avatar name={m.name} userId={m.id} size={32}/>
+                        <span style={{position:'absolute',bottom:0,right:0,width:9,height:9,borderRadius:'50%',background:isActive?'#22c55e':'#d1d5db',border:'1.5px solid #fff'}}/>
+                      </div>
+                      <div style={{flex:1,minWidth:100}}>
+                        <div style={{fontSize:13,fontWeight:500}}>{m.tagName?`[${m.tagName}] `:''}{m.name}</div>
+                        <div style={{fontSize:10,color:'var(--color-text-secondary)'}}>{lastMsg?`Last active: ${new Date(lastMsg.sentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`:m.email}</div>
+                      </div>
+                      <span style={{fontSize:10,background:isActive?'#dcfce7':'#f5f5f3',color:isActive?'#166534':'#6b6b6b',padding:'2px 6px',borderRadius:8,fontWeight:500,whiteSpace:'nowrap'}}>{isActive?'● Active':'○ Away'}</span>
+                      <div style={{fontSize:11,textAlign:'right',lineHeight:1.4}}>
+                        <div style={{color:'#0f6e56',fontWeight:600}}>{sym(pricing.currency)}{mEarned} earned</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+           </div>
           </div>
         )}
 

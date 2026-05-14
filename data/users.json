@@ -8,15 +8,6 @@
     "createdAt": "2024-01-01T00:00:00.000Z"
   },
   {
-    "id": "u_1777758616327",
-    "name": "Sam Tab",
-    "email": "sq,2ex:cd",
-    "password": "&é\"",
-    "role": "student",
-    "uploadFolder": "u_Sam_Tab_2026-05-02",
-    "createdAt": "2026-05-02T21:50:16.327Z"
-  },
-  {
     "id": "m_1777807659235",
     "name": "Chad Boseman",
     "email": "chad@votex.co.uk",
@@ -24,17 +15,6 @@
     "role": "manager",
     "tagName": "Panth",
     "createdAt": "2026-05-03T11:27:39.235Z",
-    "paymentRequests": [    ],
-    "totalPaid": 0
-  },
-  {
-    "id": "m_1777807857799",
-    "name": "JP Mak",
-    "email": "jp@votex.co.uk",
-    "password": "123456",
-    "role": "manager",
-    "tagName": "Alpha",
-    "createdAt": "2026-05-03T11:30:57.799Z",
     "paymentRequests": [],
     "totalPaid": 0
   },
@@ -46,15 +26,6 @@
     "role": "student",
     "uploadFolder": "u_Samy_Tab_2026-05-03",
     "createdAt": "2026-05-03T18:31:22.862Z"
-  },
-  {
-    "id": "u_1777836211550",
-    "name": "Biko",
-    "email": "kiaki@gmail.com",
-    "password": "123456789@@",
-    "role": "student",
-    "uploadFolder": "u_Biko_2026-05-03",
-    "createdAt": "2026-05-03T19:23:31.550Z"
   },
   {
     "id": "m_1777837521542",
@@ -75,15 +46,6 @@
     "createdAt": "2026-05-04T11:47:32.734Z"
   },
   {
-    "id": "m_1777897618513",
-    "name": "Bien-Aimée",
-    "email": "zeth@votex.co.uk",
-    "password": "123",
-    "role": "manager",
-    "tagName": "Glo",
-    "createdAt": "2026-05-04T12:26:58.513Z"
-  },
-  {
     "id": "u_1778004811254",
     "name": "Félix Edjobola",
     "email": "felixedjobola@gmail.com",
@@ -102,12 +64,21 @@
     "createdAt": "2026-05-05T18:13:31.655Z"
   },
   {
-    "id": "u_1778011261898",
-    "name": "Yadibere Clemie",
-    "email": "clemieyadibere04@gmail.com",
-    "password": "FoRtune@1",
-    "role": "student",
-    "uploadFolder": "u_Yadibere_Clemie_2026-05-05",
-    "createdAt": "2026-05-05T20:01:01.898Z"
+    "id": "u_1778004811656",
+    "name": "Bureautique 1",
+    "email": "bureautique1@gmail.com",
+    "password": "123456",
+    "role": "cafe",
+    "uploadFolder": "u_Bureautique_1_2026-05-05",
+    "createdAt": "2026-05-05T18:13:31.656Z"
+  },
+  {
+    "id": "c_1778780362380",
+    "name": "Bureautique 3",
+    "email": "bureau3@gmail.com",
+    "password": "1234",
+    "role": "cafe",
+    "tagName": "B3",
+    "createdAt": "2026-05-14T17:39:22.380Z"
   }
 ]

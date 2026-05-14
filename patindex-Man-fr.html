@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -112,12 +112,12 @@ const CHAT_MS = 5000;  // 5 seconds for open conversations
 
 // ── FOOTER ────────────────────────────────────────────────────────────────────
 function Footer(){
-  return <div className="page-footer app-footer"><strong> Pay with MPesa.</strong> <p> MakTech&reg; Group SARL (admin@maktech.co.uk)</p> <p>  &#169; Copyright 2026 · United Kingdom · DRC · Cameroon    </p> </div>;
+  return <div className="page-footer app-footer"><strong> Payer avec MPesa au 43331.</strong> <p> MakTech&reg; Group SARL (admin@maktech.co.uk)</p> <p>  &#169; Copyright 2026 · United Kingdom · DRC · Cameroon    </p> </div>;
 }
 const STATUS={
-  awaiting_payment:{label:'Awaiting Payment', bg:'#fff3cd', color:'#856404'},
-  in_progress:     {label:'In Progress',      bg:'#e6f1fb', color:'#1e3a5f'},
-  done:            {label:'Done',              bg:'#e1f5ee', color:'#0f6e56'},
+  awaiting_payment:{label:'En attente de Paiement', bg:'#fff3cd', color:'#856404'},
+  in_progress:     {label:'En cours',      bg:'#e6f1fb', color:'#1e3a5f'},
+  done:            {label:'Terminé',              bg:'#e1f5ee', color:'#0f6e56'},
 };
 const stl=s=>(STATUS[s]||{label:s,bg:'#f5f5f3',color:'#6b6b6b'});
 
@@ -385,7 +385,7 @@ function SendFinalModal({doc,onClose,onDone}){
     <div className="overlay" onClick={e=>e.target===e.currentTarget&&onClose()}>
       <div className="modal" style={{maxWidth:400}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem'}}>
-          <div style={{fontSize:15,fontWeight:500}}>Send final document</div>
+          <div style={{fontSize:15,fontWeight:500}}>Livrer le document final</div>
           <button className="btn-sm" onClick={onClose} style={{padding:'4px 10px'}}>✕</button>
         </div>
         <div style={{fontSize:13,color:'var(--color-text-secondary)',marginBottom:'1rem',background:'var(--color-background-secondary)',padding:'10px 12px',borderRadius:'var(--border-radius-md)'}}>
@@ -687,7 +687,7 @@ function MathPixModal({batch,user,onClose,onDone}){
           <button onClick={()=>{navigator.clipboard.writeText(latexText).catch(()=>{});}} style={{marginLeft:'auto',background:'rgba(255,255,255,0.15)',border:'none',color:'#fff',padding:'6px 14px',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit',fontSize:13}}>Copy all</button>
         </div>
         <div style={{padding:'8px 12px',background:'#fff3cd',fontSize:11,color:'#92400e',flexShrink:0}}>
-          ✏️ Review the OCR output below, correct any errors, then close this editor and use <strong>Send final doc</strong> on the submission to deliver it to the student.
+          ✏️ Vérifier le résultat de généré ci-dessous, corriger les erreurs, puis fermer cet éditeur et utiliser <strong>Envoyer le document final</strong> sur la soumission pour le remettre à l'étudiant.
         </div>
         <textarea value={latexText} onChange={e=>setLatexText(e.target.value)}
           style={{flex:1,padding:'16px',fontFamily:'monospace',fontSize:13,border:'none',outline:'none',resize:'none',background:'#fafafa',color:'#1a1a1a'}}
@@ -709,7 +709,7 @@ function MathPixModal({batch,user,onClose,onDone}){
 
         {/* Info banner */}
         <div style={{background:'#e6f1fb',border:'0.5px solid #85b7eb',borderRadius:'var(--border-radius-md)',padding:'10px 12px',marginBottom:'1rem',fontSize:12,color:'#1e3a5f'}}>
-          <strong>Staff only:</strong> The digitisation result is stored for review. The student will NOT be notified. Use <em>Send final doc</em> when ready to deliver.
+          <strong>Staff only:</strong> Le résultat est enregistré pour vérification. L'étudiant ne sera pas notifié. Utilisez <em>Envoyer le document final</em> quand vous êtes prêt à le livrer.
         </div>
 
         {results?(
@@ -883,7 +883,7 @@ function StaffChatPanel({user}){
             <div ref={bottomRef}/>
           </div>
           <div style={{padding:'8px',borderTop:'0.5px solid var(--color-border-tertiary)',display:'flex',gap:6,flexShrink:0}}>
-            <textarea value={text} onChange={e=>setText(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}} placeholder="Message staff… (Enter to send)" style={{flex:1,height:40,resize:'none',fontSize:12,padding:'6px 8px'}}/>
+            <textarea value={text} onChange={e=>setText(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}} placeholder="Écrire au staff… (Tapez Entrée pour envoyer)" style={{flex:1,height:40,resize:'none',fontSize:12,padding:'6px 8px'}}/>
             <button onClick={send} disabled={sending||!text.trim()} style={{background:'#0f6e56',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'6px 10px',cursor:'pointer',fontSize:13,alignSelf:'flex-end'}}>{sending?'…':'↑'}</button>
           </div>
         </div>
@@ -1199,18 +1199,18 @@ async function calculateFinalBalance(userId) {
         <div style={{display:'flex',alignItems:'center',gap:10}}>
           <div style={{width:30,height:30,borderRadius:7,background:'#0f6e56',display:'flex',alignItems:'center',justifyContent:'center'}}><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 8h6M7 16h4M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/></svg></div>
           <span style={{fontWeight:500,fontSize:14}}>voTex</span>
-          <span className="badge" style={{background:'#e1f5ee',color:'#0f6e56',fontSize:10}}>Partner</span>
+          <span className="badge" style={{background:'#e1f5ee',color:'#0f6e56',fontSize:10}}>Partenaire</span>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <Avatar name={user.name} userId={user.id} size={28} editable={true}/>
           <span style={{fontSize:12,color:'var(--color-text-secondary)'}}>{user.name.split(' ')[0]}</span>
-          <button className="btn-sm" onClick={()=>{window.location.href=document.documentElement.lang==='fr'?'/index.html':'/index-fr.html';}} style={{fontSize:11}}>🌐 FR</button>
-          <button className="btn-sm" onClick={onLogout}>Sign out</button>
+          <button className="btn-sm" onClick={()=>{window.location.href=document.documentElement.lang==='fr'?'/patindex-Man.html':'/patindex-Man-fr.html';}} style={{fontSize:11}}>🌐 {document.documentElement.lang==='fr'?'EN':'FR'}</button>
+          <button className="btn-sm" onClick={onLogout}>Se déconnecter</button>
         </div>
       </div>
 
       <div className="app-tabbar" style={{paddingLeft:16,display:'flex',alignItems:'center',justifyContent:'space-between',paddingRight:16}}>
-        <div>{[['submissions','Submissions'],['notifications','Notifications'+(unread>0?` (${unread})`:'')]].map(([t,l])=><button key={t} className={'tab'+(tab===t?' active':'')} onClick={()=>setTab(t)}>{l}</button>)}</div>
+        <div>{[['submissions','Commandes'],['notifications','Notifications'+(unread>0?` (${unread})`:'')]].map(([t,l])=><button key={t} className={'tab'+(tab===t?' active':'')} onClick={()=>setTab(t)}>{l}</button>)}</div>
         <button className="btn-sm" onClick={refresh} style={{fontSize:11}}>Refresh</button>
       </div>
       
@@ -1218,19 +1218,19 @@ async function calculateFinalBalance(userId) {
 
       <div className="app-content">
       {myEarnings>0&&<div style={{background:'#e1f5ee',borderBottom:'0.5px solid #5dcaa533',padding:'8px 24px',display:'flex',alignItems:'center',gap:12,flexShrink:0,flexWrap:'wrap'}}>
-        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}>💼 Earnings: {sym(pricing.currency)}{myEarnings} </span>
-        <span style={{fontSize:11,color:'#0f6e56'}}>({pricing.managerRate||10}% of {sym(pricing.currency)}{myRevenueHT} HT · {myCompletedSubs.length} completed)</span>
-        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}> Withdrawn: {sym(pricing.currency)}{totalPaidToManager||0}</span>
-        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}> Available: {sym(pricing.currency)}{myEarnings-totalPaidToManager||0}</span>
+        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}>💼 Gains: {sym(pricing.currency)}{myEarnings} </span>
+        <span style={{fontSize:11,color:'#0f6e56'}}>({pricing.managerRate||10}% of {sym(pricing.currency)}{myRevenueHT} HT · {myCompletedSubs.length} executé(s)</span>
+        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}> Retrait: {sym(pricing.currency)}{totalPaidToManager||0}</span>
+        <span style={{fontSize:12,color:'#0f6e56',fontWeight:500}}> Disponible: {sym(pricing.currency)}{myEarnings-totalPaidToManager||0}</span>
         
-        {(pricing.alreadyPaid?.[user.id]||0)>0&&<span style={{fontSize:11,color:'#6b6b6b'}}>· Paid out: {sym(pricing.currency)}{pricing.alreadyPaid?.[user.id]||0}</span>}
+        {(pricing.alreadyPaid?.[user.id]||0)>0&&<span style={{fontSize:11,color:'#6b6b6b'}}>· Déjà retirés: {sym(pricing.currency)}{pricing.alreadyPaid?.[user.id]||0}</span>}
         <button onClick={async()=>{
           if(!confirm(`Request payout of ${sym(pricing.currency)}${myEarnings-totalPaidToManager}?`))return;
           const res=await fetch(`/api/managers/${user.id}/payment-request`,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
           const data=await res.json(); 
           if(data.error)alert(data.error);else alert('Payment request sent to admin!');refresh();
         }} style={{marginLeft:'auto',background:'#0f6e56',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'5px 12px',fontSize:12,cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>
-          💸 Request payout
+          💸 Solliciter un retrait
         </button>
       </div>}
       <div style={{maxWidth:860,margin:'0 auto',padding:'1.5rem 1rem'}}>
@@ -1238,7 +1238,7 @@ async function calculateFinalBalance(userId) {
         {tab==='submissions'&&(
           <>
             <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:'1rem'}}>
-              <input placeholder="Search students or files…" value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1}}/>
+              <input placeholder="Rechercher des clients ou des documents…" value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1}}/>
               <span style={{fontSize:12,color:'var(--color-text-secondary)',whiteSpace:'nowrap'}}>{subs.length} docs</span>
             </div>
             {folders.length===0&&<div style={{fontSize:13,color:'var(--color-text-secondary)',textAlign:'center',padding:'2rem',background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)'}}>No submissions yet.</div>}
@@ -1277,7 +1277,7 @@ async function calculateFinalBalance(userId) {
                                   onClick={()=>toggleAdminBatch(abatch.batchId)}>
                                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{transform:batchOpen?'none':'rotate(-90deg)',transition:'transform 0.2s'}}><path d="M6 9l6 6 6-6" stroke="var(--color-text-secondary)" strokeWidth="1.8" strokeLinecap="round"/></svg>
                                   <div style={{flex:1,fontSize:11,fontWeight:600,color:'var(--color-text-secondary)'}}>
-                                    Batch {abi+1} · {new Date(abatch.uploadedAt).toLocaleDateString()} · {abatch.docs.length} file{abatch.docs.length!==1?'s':''}
+                                    Commande {abi+1} · {new Date(abatch.uploadedAt).toLocaleDateString()} · {abatch.docs.length} file{abatch.docs.length!==1?'s':''}
                                     {leader.templateName&&leader.templateName!=='none'&&<span style={{marginLeft:6,background:'#f3e8ff',color:'#6d28d9',padding:'1px 6px',borderRadius:6,fontSize:10,fontWeight:400}}>📄 {leader.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ')}</span>}
                                     {leader.isMathDoc===false&&<span style={{marginLeft:4,background:'#e1f5ee',color:'#0f6e56',padding:'1px 5px',borderRadius:6,fontSize:10,fontWeight:400}}>📝 Text</span>}
                                     {leader.isMathDoc===true&&<span style={{marginLeft:4,background:'#e6f1fb',color:'#1e3a5f',padding:'1px 5px',borderRadius:6,fontSize:10,fontWeight:400}}>📐 Math</span>}
@@ -1297,9 +1297,9 @@ async function calculateFinalBalance(userId) {
                                     {/*{leader.paymentProof&&<a href={`/api/submissions/${leader.id}/payment-proof`} target="_blank" rel="noreferrer" style={{background:'transparent',color:'#856404',padding:'4px 8px',border:'0.5px solid #d4960077',borderRadius:'var(--border-radius-md)',fontSize:11,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:3,cursor:'pointer'}}>View proof</a>}*/}
                                     {leader.status==='in_progress'&&leader.batchId&&<button onClick={()=>setMathPixModal(subs.filter(s=>s.batchId===leader.batchId).sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt)))} style={{background:'transparent',color:'#6d28d9',border:'0.5px solid #a78bfa77',padding:'4px 8px',borderRadius:'var(--border-radius-md)',fontSize:11,cursor:'pointer',fontFamily:'inherit'}}>Latex</button>}
                                     {!!leader.mathpixResult&&<button onClick={()=>setMathPixModal(subs.filter(s=>s.batchId===leader.batchId).sort((a,b)=>new Date(a.uploadedAt)-new Date(b.uploadedAt)))} style={{background:'#6d28d9',color:'#fff',border:'none',padding:'4px 8px',borderRadius:'var(--border-radius-md)',fontSize:11,cursor:'pointer',fontFamily:'inherit'}}>✏️ Open Text</button>}
-                                    {(leader.status==='in_progress'||leader.status==='done')&&<button className="btn-green" onClick={()=>setSendFinal(leader)} style={{fontSize:11,padding:'4px 8px'}}>{leader.finalDoc?'Resend doc':'Send final doc'}</button>}
-                                    {leader.status==='in_progress'&&!leader.managerDone&&<button onClick={()=>markBatchDone(leader.batchId)} style={{background:'#0f6e56',color:'#fff',border:'none',padding:'4px 8px',borderRadius:'var(--border-radius-md)',fontSize:11,cursor:'pointer',fontFamily:'inherit'}}>✅ Mark done</button>}
-                                    {leader.managerDone&&<span style={{fontSize:10,background:'#e1f5ee',color:'#0f6e56',padding:'2px 6px',borderRadius:8,fontWeight:600}}>✓ Marked done</span>}
+                                    {(leader.status==='in_progress'||leader.status==='done')&&<button className="btn-green" onClick={()=>setSendFinal(leader)} style={{fontSize:11,padding:'4px 8px'}}>{leader.finalDoc?'Renvoyer doc.':'Envoyer doc. final'}</button>}
+                                    {leader.status==='in_progress'&&!leader.managerDone&&<button onClick={()=>markBatchDone(leader.batchId)} style={{background:'#0f6e56',color:'#fff',border:'none',padding:'4px 8px',borderRadius:'var(--border-radius-md)',fontSize:11,cursor:'pointer',fontFamily:'inherit'}}>✅ Cloturer</button>}
+                                    {leader.managerDone&&<span style={{fontSize:10,background:'#e1f5ee',color:'#0f6e56',padding:'2px 6px',borderRadius:8,fontWeight:600}}>✓ Cloturé</span>}
                                      </div>}
                                 </div>
                                 {batchOpen&&abatch.docs.map(doc=>{
@@ -1314,9 +1314,9 @@ async function calculateFinalBalance(userId) {
                                        {isAssignedToMe&&<button className="btn-blue" onClick={()=>setConvModal(doc)} style={{fontSize:11,padding:'4px 8px'}}>Chat</button>}
                                       {<a href={`/api/files/${doc.uploadFolder||doc.userId}/${doc.storedName}/preview`} target="_blank" rel="noreferrer" style={{background:'transparent',color:'#1e3a5f',padding:'4px 8px',border:'0.5px solid #85b7eb77',borderRadius:'var(--border-radius-md)',fontSize:11,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:3}}>
                                         <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/></svg>
-                                        Preview
+                                        Aperçu
                                       </a>}
-                                      {isAssignedToMe&&<button className="btn-sm" style={{fontSize:11,padding:'4px 8px'}} onClick={()=>downloadFile(doc)}>Download</button>}
+                                      {isAssignedToMe&&<button className="btn-sm" style={{fontSize:11,padding:'4px 8px'}} onClick={()=>downloadFile(doc)}>Télécharger</button>}
                                     </div>
                                   );
                                 })}
@@ -1356,7 +1356,7 @@ async function calculateFinalBalance(userId) {
                   <div style={{fontSize:12,color:'var(--color-text-secondary)',whiteSpace:'pre-line',maxHeight:60,overflow:'hidden'}}>{n.body}</div>
                   {n.type==='new_submission_manager'&&n.batchId&&!batchLeader&&(
                     <button onClick={e=>{e.stopPropagation();requestAssignment(n.batchId);}} style={{marginTop:8,fontSize:11,background:'#f3e8ff',color:'#6d28d9',border:'0.5px solid #a78bfa77',borderRadius:'var(--border-radius-md)',padding:'4px 10px',cursor:'pointer',fontFamily:'inherit'}}>
-                      🙋 Request assignment from admin
+                      🙋 Demander l'execution de cette commande
                     </button>
                   )}
                   {n.type==='new_submission_manager'&&batchLeader&&(
@@ -1364,7 +1364,7 @@ async function calculateFinalBalance(userId) {
                   )}
                   {n.type==='feedback'&&n.submissionId&&(
                     <button onClick={async e=>{e.stopPropagation();if(!confirm('Mark this batch as complete?'))return;await fetch(`/api/submissions/${n.submissionId}/close-feedback`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:'{}'});refresh();}} style={{marginTop:8,fontSize:11,background:'#e1f5ee',color:'#0f6e56',border:'0.5px solid #5dcaa577',borderRadius:'var(--border-radius-md)',padding:'4px 10px',cursor:'pointer',fontFamily:'inherit'}}>
-                      ✓ Mark batch complete
+                      ✓ Cloturer la commande!
                     </button>
                   )}
                 </div>
