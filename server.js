@@ -208,7 +208,13 @@ app.post('/api/managers', (req, res) => {
   res.json({ user: safe });
 });
 app.get('/api/managers', (req, res) => {
-  res.json(readJSON('users.json').filter(u=>u.role==='manager').map(({password:_,...u})=>u));
+  res.json(readJSON('users.json').filter(u=>u.role==='manager'));
+});
+
+// STUDENTS LIST
+
+app.get('/api/students', (req, res) => {
+  res.json(readJSON('users.json').filter(u=>u.role==='student').map(({uploadFolder:_,...u})=>u));
 });
 
 // ── CAFES (admin creates cafe accounts) ─────────────────────────────────
@@ -225,7 +231,7 @@ app.post('/api/cafes', (req, res) => {
   res.json({ user: safe });
 });
 app.get('/api/cafes', (req, res) => {
-  res.json(readJSON('users.json').filter(u=>u.role==='cafe').map(({password:_,...u})=>u));
+  res.json(readJSON('users.json').filter(u=>u.role==='cafe'));
 });
 
 
@@ -355,6 +361,101 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   res.json({ submission: sub });
 });
 
+// ── FILE UPLOAD (Cafe) ─────────────────────────────────────────────────────
+app.post('/api/uploadCafe', upload.single('file'), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file received.' });
+
+  const pricing = readJSON('pricing.json');
+  let pages = null;
+
+  if (req.file.mimetype === 'application/pdf') {
+    try {
+      const bytes  = fs.readFileSync(req.file.path);
+      const pdfDoc = await PDFDocument.load(bytes);
+      pages = pdfDoc.getPageCount();
+    } catch (e) {
+      console.error('PDF page count error:', e.message);
+      pages = 1;
+    }
+  } else if (req.file.mimetype.startsWith('image/')) {
+    pages = 1; // each image = 1 page
+  }
+
+  // ── count total images already in this submission batch ──────────────────
+  // (for multi-file uploads the frontend calls once per file, so pages=1 each)
+  const price = pages != null ? pages * pricing.pricePerPageCafe : null;
+
+  const sub = {
+    id:           's_'+Date.now()+'_'+Math.random().toString(36).slice(2),
+    batchId:      req.body.batchId || ('batch_'+Date.now()),
+    userId:       req.body.userId,
+    uploadFolder: resolveUserFolder(req.body.userId),
+    userName:     req.body.userName,
+    userEmail:    req.body.userEmail,
+    isMathDoc:    req.body.isMathDoc === 'false' ? false : true, // default true for backwards compat
+    fileName:     req.file.originalname,
+    storedName:   req.file.filename,
+    fileType:     req.file.mimetype,
+    fileSize:     req.file.size,
+    notes:        req.body.notes || '',
+    templateName: req.body.templateName || '',
+    uploadedAt:   new Date().toISOString(),
+    status:       'awaiting_payment',
+    pages,
+    price,
+    paid:         false,
+    finalDoc:     null   // will be set when admin sends the typed result
+  };
+
+  const subs = readJSON('submissions.json');
+  const isFirstInBatch = !subs.some(s => s.batchId === sub.batchId);
+  subs.push(sub);
+  writeJSON('submissions.json', subs);
+
+  const notifs = readJSON('notifications.json');
+  if (isFirstInBatch) {
+    // Admin notification
+    notifs.unshift({
+      id:'n_'+Date.now(), type:'new_submission', batchId: sub.batchId,
+      to:'admin@maktech.co.uk', toName:'Admin',
+      subject:`New batch from ${sub.userName}`,
+      body:`${sub.userName} started a new batch.\n• ${sub.fileName} — ${pages ?? '?'} pages · ${price != null ? pricing.currency+' '+price : 'N/A'}${sub.templateName ? '    📄 Template: '+sub.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ') : ''} ${sub.notes ? '\n📝 Commentaire: '+sub.notes : '\n'}`,
+      submissionId: sub.id,
+      sentAt:new Date().toISOString(), read:false
+    });
+    // Manager notifications (view-only awareness — only unassigned managers)
+    const managers = readJSON('users.json').filter(u => u.role === 'manager');
+    managers.forEach(mgr => {
+      notifs.unshift({
+        id:'nm_'+Date.now()+'_'+mgr.id, type:'new_submission_manager', batchId: sub.batchId,
+        to: mgr.id, toName: mgr.name,
+        subject:`Nouvelle commande de ${sub.userName}`,
+        body:`${sub.userName} a soumis une nouvelle commande. Vous pouvez demander une affectation auprès de l'administrateur.${sub.templateName ? '\n📄 Template: '+sub.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ') : ''} ${sub.notes ? '\n📝 Commentaire: '+sub.notes : ''}`,
+        submissionId: sub.id,
+        sentAt:new Date().toISOString(), read:false
+      });
+    });
+  } else {
+    // Update existing admin batch notification
+    const existingIdx = notifs.findIndex(n => n.batchId === sub.batchId && n.to === 'admin@maktech.co.uk');
+    if (existingIdx !== -1) {
+      const batchSubs = subs.filter(s => s.batchId === sub.batchId);
+      const batchTotal = batchSubs.reduce((a,s)=>a+(s.price||0),0);
+      notifs[existingIdx].subject = `New batch from ${sub.userName} (${batchSubs.length} files)`;
+      const templateLine = sub.templateName ? `\n📄 Template: ${sub.templateName.replace(/\.pdf$/i,'').replace(/_/g,' ')}` : '';
+      notifs[existingIdx].body = `${sub.userName} (${sub.userEmail}) uploaded ${batchSubs.length} files:\n${batchSubs.map(s=>`• ${s.fileName} — ${s.pages??'?'}pp`).join('\n')}\nTotal: ${pricing.currency} ${batchTotal}${templateLine}`;
+      notifs[existingIdx].read = false;
+    }
+  }
+  writeJSON('notifications.json', notifs.slice(0,300));
+
+  res.json({ submission: sub });
+});
+
+
+
+
+
 // ── SUBMISSIONS ───────────────────────────────────────────────────────────────
 app.get('/api/submissions', (req, res) => {
   let subs = readJSON('submissions.json');
@@ -473,8 +574,8 @@ app.post('/api/submissions/:id/payment-proof', uploadProof.single('file'), (req,
     id: 'm_'+Date.now()+'_'+Math.random().toString(36).slice(2),
     fromId: sub.userId, fromName: sub.userName,
     toId: 'admin', toName: 'Admin', toEmail: 'admin@maktech.co.uk',
-    subject: `Payment proof — batch of ${batchSubs.length} file${batchSubs.length>1?'s':''} from ${sub.userName}`,
-    body: `${sub.userName} (${sub.userEmail}) submitted proof of payment for ${batchSubs.length} file${batchSubs.length>1?'s':''}:\n\n${fileList}\n\nSubtotal HT: ${pricing.currency} ${batchTotal}\nTVA (${vatRate*100}%): ${pricing.currency} ${(batchTotal*vatRate).toFixed(0)}\nTotal TTC: ${pricing.currency} ${batchTTC.toFixed(0)}\n\nProof file: ${req.file.originalname}\n\nPlease review and confirm payment to start processing.`,
+    subject: `Preuve de paiement — commande de ${batchSubs.length} doc${batchSubs.length>1?'s':''} de ${sub.userName}`,
+    body: `${sub.userName} (${sub.userEmail}) a soumis une preuve de paiement pour ${batchSubs.length} file${batchSubs.length>1?'s':''}:\n\n${fileList}\n\nSubtotal HT: ${pricing.currency} ${batchTotal}\nTVA (${vatRate*100}%): ${pricing.currency} ${(batchTotal*vatRate).toFixed(0)}\nTotal TTC: ${pricing.currency} ${batchTTC.toFixed(0)}\n\nProof file: ${req.file.originalname}\n\nVeuillez vérifier et confirmer pour commencer le traitement.\n\n L\'Admin`,
     submissionId: sub.id, submissionFileName: batchSubs.map(s=>s.fileName).join(', '),
     sentAt: new Date().toISOString(), read: false
   });
@@ -482,14 +583,14 @@ app.post('/api/submissions/:id/payment-proof', uploadProof.single('file'), (req,
 
   // notification to admin — update existing batch notif or create new
   const notifs = readJSON('notifications.json');
-  const existingIdx = notifs.findIndex(n => n.batchId === sub.batchId && n.type === 'new_submission');
-  if (existingIdx !== -1) {
-    notifs[existingIdx].type = 'payment_ready';
-    notifs[existingIdx].subject = `💰 Payment proof — ${sub.userName} (${batchSubs.length} files)`;
-    notifs[existingIdx].body = `${sub.userName} submitted payment proof for ${batchSubs.length} file${batchSubs.length>1?'s':''}. Total TTC: ${pricing.currency} ${batchTTC.toFixed(0)}`;
-    notifs[existingIdx].submissionId = sub.id;
-    notifs[existingIdx].read = false;
-  } else {
+  // const existingIdx = notifs.findIndex(n => n.batchId === sub.batchId && n.type === 'new_submission');
+  // if (existingIdx !== -1) {
+  //   notifs[existingIdx].type = 'payment_ready';
+  //   notifs[existingIdx].subject = `💰 Payment proof — ${sub.userName} (${batchSubs.length} files)`;
+  //   notifs[existingIdx].body = `${sub.userName} submitted payment proof for ${batchSubs.length} file${batchSubs.length>1?'s':''}. Total TTC: ${pricing.currency} ${batchTTC.toFixed(0)}`;
+  //   notifs[existingIdx].submissionId = sub.id;
+  //   notifs[existingIdx].read = false;
+  // } else {
     notifs.unshift({
       id: 'n_'+Date.now(), type: 'payment_ready', batchId: sub.batchId,
       to: 'admin@maktech.co.uk', toName: 'Admin',
@@ -498,7 +599,7 @@ app.post('/api/submissions/:id/payment-proof', uploadProof.single('file'), (req,
       submissionId: sub.id,
       sentAt: new Date().toISOString(), read: false
     });
-  }
+  // }
   writeJSON('notifications.json', notifs.slice(0,100));
 
   res.json({ submission: subs[idx] });
@@ -544,7 +645,7 @@ app.post('/api/submissions/:id/final', uploadFinal.single('file'), (req, res) =>
     id:'m_'+Date.now(), fromId:'admin', fromName:'Admin',
     toId:sub.userId, toName:sub.userName, toEmail:sub.userEmail,
     subject:`Your typed document ${batchSubs.length>1?'s are':'is'} ready`,
-    body:`Salut ${sub.userName},\n\nVotre document saisi ${batchSubs.length>1?'sont':'est'} prêt pour le téléchargement. \n\nConnectez-vous et cliquez sur Télécharger à côté du numéro de la commande.\n\nCordialement, \n\nL 'équipe voTex`,
+    body:`Salut ${sub.userName},\n\nVotre document saisi ${batchSubs.length>1?'sont':'est'} prêt pour le téléchargement. \n\nConnectez-vous et cliquez sur Télécharger à côté du numéro de la commande.\n\nCordialement, \n\nL'équipe voTex`,
     submissionId:sub.id, submissionFileName:batchSubs.map(s=>s.fileName).join(', '),
     sentAt:new Date().toISOString(), read:false
   });
@@ -781,7 +882,7 @@ app.patch('/api/batches/:batchId/confirm-payment', (req, res) => {
     fromId:'admin', fromName:'Admin',
     toId:batch[0].userId, toName:batch[0].userName, toEmail:batch[0].userEmail,
     subject:`Payment confirmed — ${batch.length} file${batch.length>1?'s':''} in your batch`,
-    body:`Hi ${batch[0].userName},\n\nVotre paiement a été confirmé pour le(s) fichier(s) suivant(s):\n${fileList}\n\nNous avons commencé à travailler sur ${batch.length>1?'ça':'ça'}. Vous serez notifié lorsque le document saisi sera prêt.\n\nCordialement,\n\nL\' équipe voTex`,
+    body:`Hi ${batch[0].userName},\n\nVotre paiement a été confirmé pour le(s) fichier(s) suivant(s):\n${fileList}\n\nNous avons commencé à travailler sur ${batch.length>1?'ça':'ça'}. Vous serez notifié lorsque le document saisi sera prêt.\n\nCordialement,\n\nL'équipe voTex`,
     submissionId:batch[0].id, submissionFileName:batch.map(s=>s.fileName).join(', '),
     sentAt:new Date().toISOString(), read:false
   });
@@ -1168,8 +1269,8 @@ app.patch('/api/managers/:id/pay', (req, res) => {
   notifs.unshift({
     id:'n_'+Date.now(), type:'payment_paid',
     to: mgr.id, toName: mgr.name,
-    subject:`✅ Payment of ${pricing.currency} ${amt} received`,
-    body:`Admin has paid you ${pricing.currency} ${amt}.\nTotal paid to date: ${pricing.currency} ${mgr.totalPaid}.\nThank you for your work!`,
+    subject:`✅ Paiement de ${pricing.currency} ${amt} reçu.`,
+    body:`L'admin vous a payé ${pricing.currency} ${amt}.\nTotal retiré à ce jour: ${pricing.currency} ${mgr.totalPaid}.\nMerci pour votre collaboration!`,
     sentAt: new Date().toISOString(), read: false
   });
   // Notify admin too (in withdrawal tab)

@@ -472,7 +472,7 @@ function ConversationModal({doc,adminUser,pricing,onClose}){
   }
 
   async function markCompleted(){
-    if(!confirm('Mark this case as completed? The student will no longer be able to send feedback.'))return;
+    if(!confirm('Marquer cette commande comme terminée? Le client ne pourra plus faire de réclamation après!'))return;
     await fetch(`/api/submissions/${doc.id}/close-feedback`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:'{}'});
     onClose();
   }
@@ -489,7 +489,7 @@ function ConversationModal({doc,adminUser,pricing,onClose}){
           <div style={{display:'flex',gap:6,alignItems:'center'}}>
             {doc.feedbackClosed
               ?<span style={{fontSize:10,background:'rgba(255,255,255,0.15)',color:'#fff',padding:'3px 8px',borderRadius:20,fontWeight:500}}>✓ Completed</span>
-              :<button onClick={markCompleted} style={{background:'#0f6e56',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'5px 10px',fontSize:11,cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>✓ Mark completed</button>
+              :<button onClick={markCompleted} style={{background:'#0f6e56',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'5px 10px',fontSize:11,cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>✓ Marquer comme terminée</button>
             }
             <button onClick={onClose} style={{background:'transparent',border:'none',color:'rgba(255,255,255,0.7)',cursor:'pointer',fontSize:18,padding:'2px 4px'}}>✕</button>
           </div>
@@ -1225,10 +1225,10 @@ async function calculateFinalBalance(userId) {
         
         {(pricing.alreadyPaid?.[user.id]||0)>0&&<span style={{fontSize:11,color:'#6b6b6b'}}>· Déjà retirés: {sym(pricing.currency)}{pricing.alreadyPaid?.[user.id]||0}</span>}
         <button onClick={async()=>{
-          if(!confirm(`Request payout of ${sym(pricing.currency)}${myEarnings-totalPaidToManager}?`))return;
+          if(!confirm(`Solliciter un paiement de ${sym(pricing.currency)}${myEarnings-totalPaidToManager}?`))return;
           const res=await fetch(`/api/managers/${user.id}/payment-request`,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
           const data=await res.json(); 
-          if(data.error)alert(data.error);else alert('Payment request sent to admin!');refresh();
+          if(data.error)alert(data.error);else alert('Demande envoyée à l\'admin!');refresh();
         }} style={{marginLeft:'auto',background:'#0f6e56',color:'#fff',border:'none',borderRadius:'var(--border-radius-md)',padding:'5px 12px',fontSize:12,cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>
           💸 Solliciter un retrait
         </button>
@@ -1363,7 +1363,7 @@ async function calculateFinalBalance(userId) {
                     <div style={{marginTop:6,fontSize:11,color:'#0f6e56',fontStyle:'italic'}}>✅ Document already sent to student</div>
                   )}
                   {n.type==='feedback'&&n.submissionId&&(
-                    <button onClick={async e=>{e.stopPropagation();if(!confirm('Mark this batch as complete?'))return;await fetch(`/api/submissions/${n.submissionId}/close-feedback`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:'{}'});refresh();}} style={{marginTop:8,fontSize:11,background:'#e1f5ee',color:'#0f6e56',border:'0.5px solid #5dcaa577',borderRadius:'var(--border-radius-md)',padding:'4px 10px',cursor:'pointer',fontFamily:'inherit'}}>
+                    <button onClick={async e=>{e.stopPropagation();if(!confirm('Marquer cette commande comme complète? Le client ne ourra plus faire de réclamation après!'))return;await fetch(`/api/submissions/${n.submissionId}/close-feedback`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:'{}'});refresh();}} style={{marginTop:8,fontSize:11,background:'#e1f5ee',color:'#0f6e56',border:'0.5px solid #5dcaa577',borderRadius:'var(--border-radius-md)',padding:'4px 10px',cursor:'pointer',fontFamily:'inherit'}}>
                       ✓ Cloturer la commande!
                     </button>
                   )}

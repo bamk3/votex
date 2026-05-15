@@ -814,7 +814,7 @@ function ConversationModal({doc,adminUser,pricing,onClose}){
   }
 
   async function markCompleted(){
-    if(!confirm('Mark this case as completed? The student will no longer be able to send feedback.'))return;
+    if(!confirm('marquer comme ternminé? Le client ne pourra plus vous faire de réclamations après ça.'))return;
     await fetch(`/api/submissions/${doc.id}/close-feedback`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:'{}'});
     onClose();
   }
@@ -2069,6 +2069,7 @@ function AdminDash({user,onLogout}){
   const [mathPixModal,setMathPixModal]=useState(null);
   const [openBatches,setOpenBatches]=useState(new Set());
   const [managers,setManagers]=useState([]);
+  const [students,setStudents]=useState([]);
   const [cafes,setCafes]=useState([]);
   const [newManager,setNewManager]=useState({name:'',tagName:'',email:'',password:''});
   const [newCafe,setNewCafe]=useState({name:'',tagName:'',email:'',password:''});
@@ -2086,6 +2087,11 @@ function AdminDash({user,onLogout}){
 
   useEffect(()=>{
     api.get('/api/cafes').then(setCafes).catch(()=>{});
+    return()=>0;
+  },[]);
+
+  useEffect(()=>{
+    api.get('/api/students').then(setStudents).catch(()=>{});
     return()=>0;
   },[]);
 
@@ -2525,6 +2531,7 @@ function AdminDash({user,onLogout}){
                 </div>
               </div>
               {/* Right column — manager earnings */}
+              <div>
               {managers.length>0&&(
                 <div className="card">
                   <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Manager earnings ({pricing.managerRate||10}% of HT)</div>
@@ -2565,24 +2572,25 @@ function AdminDash({user,onLogout}){
                         })}
                       </tbody>
                     </table>
-                  <div style={{fontSize:13,fontWeight:500,marginTop:'2.75rem'}}>MathPix OCR credentials</div>
+                </div> 
+                      
+              ) }
+              <div className="card">
+              <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>MathPix OCR credentials</div>
                   <div style={{fontSize:11,color:'var(--color-text-secondary)',marginBottom:'0.75rem'}}>Stored securely on server. Managers can use MathPix without seeing the keys.</div>
                   
                   
                   
                    <MathPixCredsForm/>
 
-                  <div style={{fontSize:13,fontWeight:500,marginTop:'2.75rem'}}>Overleaf credentials</div>
+                  <div style={{fontSize:13,fontWeight:500,marginTop:'1.75rem'}}>Overleaf credentials</div>
                   <div style={{fontSize:11,color:'var(--color-text-secondary)',marginBottom:'0.75rem'}}>Managers open Overleaf documents using this token without seeing the credentials.</div>
                   
                   
                    <OverleafCredsForm/>
-
-                </div> 
-                      
-              )}
               </div>
-              
+            </div>
+            </div>
             </div>
 
         )}
@@ -2608,6 +2616,29 @@ function AdminDash({user,onLogout}){
         )}
           {tab==='staff'&&(
             <div style={{maxWidth:860}}>
+
+              <div className="card" style={{marginBottom:'1rem'}}>
+                <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Clients ({students.length})</div>
+                {students.map(m=>{
+
+                  return(
+                    <div key={m.id} style={{display:'flex',alignItems:'center',gap:10,padding:'8px 0',borderBottom:'0.5px solid var(--color-border-tertiary)',flexWrap:'wrap'}}>
+                      <div style={{position:'relative',flexShrink:0}}>
+                        <Avatar name={m.name} userId={m.id} size={32}/>
+                      </div>
+                      <div style={{flex:1,minWidth:100}}>
+                        <div style={{fontSize:13,fontWeight:500}}>{m.name} [{m.password}] [{m.id}]</div>
+
+                        <div style={{fontSize:11,color:'#0f6e56',fontWeight:600}}> {m.email}</div>
+                        </div>
+                      <div style={{fontSize:11,textAlign:'right',lineHeight:1.4}}>
+                        <div style={{color:'#0f6e56',fontWeight:600}}> {m.createdAt}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
             <div style={{fontSize:15,fontWeight:500,marginBottom:'1rem'}}>Withdraw history</div>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24,alignItems:'start'}}>
               {/* Left*/}
@@ -2675,6 +2706,14 @@ function AdminDash({user,onLogout}){
                         <div style={{color:'#0f6e56',fontWeight:600}}>{sym(pricing.currency)}{mEarned} earned</div>
                         {mOwed>0&&<div style={{color:hasPending?'#856404':'#a32d2d',fontSize:10}}>owed: {sym(pricing.currency)}{mOwed}{hasPending?'  💸 req':''}</div>}
                       </div>
+                       <div style={{flex:1,minWidth:100}}>
+                        <div style={{fontSize:10,color:'#0f6e56', fontWeight:400}}> [{m.id}]</div>
+                        <div style={{fontSize:10,color:'#0f6e56',fontWeight:400}}> {m.password}</div>
+                        <div style={{fontSize:10,color:'#0f6e56',fontWeight:400}}> {m.createdAt}</div>
+
+                      </div>
+
+
                       {mOwed>0&&(
                         <button onClick={async()=>{
                           const amt=prompt(`Pay ${m.name}\nOwed: ${sym(pricing.currency)}${mOwed}\nEnter amount to pay:`,mOwed);
@@ -2698,35 +2737,29 @@ function AdminDash({user,onLogout}){
             <div className="card" style={{marginBottom:'1rem'}}>
                 <div style={{fontSize:13,fontWeight:500,marginBottom:'0.75rem'}}>Cafes ({cafes.length})</div>
                 {cafes.map(m=>{
-                  const isActive=staffActivity.has(m.id);
-                  const lastMsg=[...staffMsgsCache].reverse().find(x=>x.fromId===m.id);
-                  const mCompletedSubs=subs.filter(s=>s.assignedTo?.id===m.id&&s.paid&&s.status==='done');
-                  const mEarned=Math.round(mCompletedSubs.reduce((a,s)=>a+(s.price||0),0)*(pricing.managerRate||10)/100);
-                  const mPaid=m.totalPaid||0;
-                  // totalPaidToManagers+=mPaid;
-                  const mOwed=Math.max(0,mEarned-mPaid);
-                  const hasPending=m.paymentRequests?.some(r=>r.status==='pending');
 
-                  return(
-                    <div key={m.id} style={{display:'flex',alignItems:'center',gap:10,padding:'8px 0',borderBottom:'0.5px solid var(--color-border-tertiary)',flexWrap:'wrap',background:hasPending?'#fffbea':'transparent'}}>
+                    return(
+                    <div key={m.id} style={{display:'flex',alignItems:'center',gap:10,padding:'8px 0',borderBottom:'0.5px solid var(--color-border-tertiary)',flexWrap:'wrap'}}>
                       <div style={{position:'relative',flexShrink:0}}>
                         <Avatar name={m.name} userId={m.id} size={32}/>
-                        <span style={{position:'absolute',bottom:0,right:0,width:9,height:9,borderRadius:'50%',background:isActive?'#22c55e':'#d1d5db',border:'1.5px solid #fff'}}/>
                       </div>
                       <div style={{flex:1,minWidth:100}}>
-                        <div style={{fontSize:13,fontWeight:500}}>{m.tagName?`[${m.tagName}] `:''}{m.name}</div>
-                        <div style={{fontSize:10,color:'var(--color-text-secondary)'}}>{lastMsg?`Last active: ${new Date(lastMsg.sentAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`:m.email}</div>
+                        <div style={{fontSize:13,fontWeight:500}}>{m.name} [{m.id}]</div>
+
+                        <div style={{fontSize:10,color:'#0f6e56',fontWeight:400}}> {m.email}</div>
+                        <div style={{fontSize:10,color:'#0f6e56',fontWeight:400}}> {m.password}</div>
+                        <div style={{fontSize:10,color:'#0f6e56',fontWeight:400}}> {m.createdAt}</div>
+                        <div style={{fontSize:10,color:'#0f6e56',fontWeight:400}}> {m.tagName}</div>
                       </div>
-                      <span style={{fontSize:10,background:isActive?'#dcfce7':'#f5f5f3',color:isActive?'#166534':'#6b6b6b',padding:'2px 6px',borderRadius:8,fontWeight:500,whiteSpace:'nowrap'}}>{isActive?'● Active':'○ Away'}</span>
-                      <div style={{fontSize:11,textAlign:'right',lineHeight:1.4}}>
-                        <div style={{color:'#0f6e56',fontWeight:600}}>{sym(pricing.currency)}{mEarned} earned</div>
-                      </div>
+                      
                     </div>
                   );
                 })}
               </div>
            </div>
+           
           </div>
+
         )}
 
         {tab==='withdraw'&&(
@@ -3103,7 +3136,7 @@ async function calculateFinalBalance(userId) {
                     <div style={{marginTop:6,fontSize:11,color:'#0f6e56',fontStyle:'italic'}}>✅ Document already sent to student</div>
                   )}
                   {n.type==='feedback'&&n.submissionId&&(
-                    <button onClick={async e=>{e.stopPropagation();if(!confirm('Mark this batch as complete?'))return;await fetch(`/api/submissions/${n.submissionId}/close-feedback`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:'{}'});refresh();}} style={{marginTop:8,fontSize:11,background:'#e1f5ee',color:'#0f6e56',border:'0.5px solid #5dcaa577',borderRadius:'var(--border-radius-md)',padding:'4px 10px',cursor:'pointer',fontFamily:'inherit'}}>
+                    <button onClick={async e=>{e.stopPropagation();if(!confirm('Marquer cette commande comme terminée? L\'étudiant ne pourra plus faire de réclamation après!'))return;await fetch(`/api/submissions/${n.submissionId}/close-feedback`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:'{}'});refresh();}} style={{marginTop:8,fontSize:11,background:'#e1f5ee',color:'#0f6e56',border:'0.5px solid #5dcaa577',borderRadius:'var(--border-radius-md)',padding:'4px 10px',cursor:'pointer',fontFamily:'inherit'}}>
                       ✓ Mark batch complete
                     </button>
                   )}

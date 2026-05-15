@@ -740,7 +740,7 @@ function AuthScreen({onLogin}){
             ))}
           </div>
           {mode==='signup'&&<div className="field"><label>Full name</label><input name="name" placeholder="Your full name" value={form.name} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>}
-          <div className="field"><label>Email</label><input name="email" type="email" placeholder="partice.lumuba@gmail.com" value={form.email} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
+          <div className="field"><label>Email</label><input name="email" type="email" placeholder="partice.lumumba@gmail.com" value={form.email} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
           <div className="field"><label>Password</label><input name="password" type="password" placeholder="••••••••" value={form.password} onChange={handle} onKeyDown={e=>e.key==='Enter'&&submit()}/></div>
           {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
           <button className="btn-primary" onClick={submit} disabled={loading} style={{width:'100%'}}>{loading?'Please wait…':(mode==='login'?'Sign in':'Create account')}</button>
@@ -943,7 +943,7 @@ function StudentDash({user,onLogout}){
               {/* staged files preview */}
               {pendingFiles.length>0&&(
                 <div style={{marginTop:'1rem',background:'var(--color-background-secondary)',borderRadius:'var(--border-radius-md)',padding:'10px 12px'}}>
-                  <div style={{fontSize:12,fontWeight:500,marginBottom:8,color:'var(--color-text-secondary)'}}>{pendingFiles.length} file{pendingFiles.length!==1?'s':''} selected — confirm to upload</div>
+                  <div style={{fontSize:12,fontWeight:500,marginBottom:8,color:'var(--color-text-secondary)'}}>{pendingFiles.length} file{pendingFiles.length!==1?'s':''} selected</div>
                   {pendingFiles.map((f,i)=>(
                     <div key={i} style={{display:'flex',alignItems:'center',gap:8,padding:'4px 0',borderBottom:'0.5px solid var(--color-border-tertiary)'}}>
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{flexShrink:0}}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="var(--color-text-secondary)" strokeWidth="1.5"/><path d="M14 2v6h6" stroke="var(--color-text-secondary)" strokeWidth="1.5"/></svg>
@@ -966,7 +966,7 @@ function StudentDash({user,onLogout}){
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:12,fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.replace(/_/g,' ').replace(/\.pdf$/i,'')}</div>
                         </div>
-                        <button onClick={e=>{e.stopPropagation();setPreviewTemplate(t);}} style={{fontSize:10,color:'#1e3a5f',background:'transparent',border:'0.5px solid #85b7eb77',borderRadius:4,padding:'2px 7px',cursor:'pointer',fontFamily:'inherit',flexShrink:0,whiteSpace:'nowrap'}}>Preview</button>
+                        {/*<button onClick={e=>{e.stopPropagation();setPreviewTemplate(t);}} style={{fontSize:10,color:'#1e3a5f',background:'transparent',border:'0.5px solid #85b7eb77',borderRadius:4,padding:'2px 7px',cursor:'pointer',fontFamily:'inherit',flexShrink:0,whiteSpace:'nowrap'}}>Preview</button>*/}
                       </label>
                     ))}
                   </div>
