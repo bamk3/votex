@@ -179,6 +179,13 @@ app.get('/api/users/:userId', (req, res) => {
   res.json({ totalPaid: user.totalPaid || 0 });
 });
 
+//Cron-job
+
+app.get('/api/cron-ping', (req, res) => {
+    // Send a tiny response to keep the cron job happy
+    res.status(200).send('OK'); 
+});
+
 // ── AVATAR ────────────────────────────────────────────────────────────────────
 app.post('/api/users/:userId/avatar', uploadAvatar.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file.' });
