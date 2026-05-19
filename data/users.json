@@ -19,15 +19,6 @@
     "totalPaid": 0
   },
   {
-    "id": "u_1777833082862",
-    "name": "Samy Tab",
-    "email": "samy@ex.cd",
-    "password": "123",
-    "role": "student",
-    "uploadFolder": "u_Samy_Tab_2026-05-03",
-    "createdAt": "2026-05-03T18:31:22.862Z"
-  },
-  {
     "id": "m_1777837521542",
     "name": "BV Kiakisolako",
     "email": "kiakibienv@gmail.com",
@@ -64,21 +55,74 @@
     "createdAt": "2026-05-05T18:13:31.655Z"
   },
   {
-    "id": "u_1778004811656",
-    "name": "Bureautique 1",
-    "email": "bureautique1@gmail.com",
+    "id": "c_1778933353154",
+    "name": "Bureutique 4",
+    "email": "bureau4@gmail.com",
     "password": "123456",
     "role": "cafe",
-    "uploadFolder": "u_Bureautique_1_2026-05-05",
-    "createdAt": "2026-05-05T18:13:31.656Z"
+    "tagName": "B4",
+    "createdAt": "2026-05-16T12:09:13.154Z"
   },
   {
-    "id": "c_1778780362380",
-    "name": "Bureautique 3",
-    "email": "bureau3@gmail.com",
-    "password": "1234",
-    "role": "cafe",
-    "tagName": "B3",
-    "createdAt": "2026-05-14T17:39:22.380Z"
+    "id": "m_1778964673780",
+    "name": "Jonathan Kalonji",
+    "email": "kalonjijonathan36@gmail.com",
+    "password": "jonathan@votex26",
+    "role": "manager",
+    "tagName": "JoKal",
+    "createdAt": "2026-05-16T20:51:13.780Z",
+    "paymentRequests": [],
+    "totalPaid": 0
+  },
+  {
+    "id": "m_1778967195812",
+    "name": "Nathan Twakali",
+    "email": "nathantwakali8@gmail.com",
+    "password": "nathan@votex26",
+    "role": "manager",
+    "tagName": "NaTwa",
+    "createdAt": "2026-05-16T21:33:15.812Z",
+    "paymentRequests": [],
+    "totalPaid": 0
+  },
+  {
+    "id": "u_1779018732647",
+    "name": "Nganga Jonas",
+    "email": "jonas12",
+    "password": "Olpha12@",
+    "role": "student",
+    "uploadFolder": "u_Nganga_Jonas_2026-05-05",
+    "createdAt": "2026-05-17T11:52:12.647Z"
+  },
+  {
+    "id": "u_1779046387851",
+    "name": "Théophile MIUJIZA",
+    "email": "miujizatheophile@gmail.com",
+    "password": "Theophile7991**",
+    "role": "student",
+    "uploadFolder": "u_Théophile_MIUJIZA_2026-05-17",
+    "createdAt": "2026-05-17T19:33:07.851Z"
+  },
+  {
+    "id": "m_1779031257868",
+    "name": "Guy Gisangi",
+    "email": "gisangiguy5@gmail.com",
+    "password": "guy@votex26",
+    "role": "manager",
+    "tagName": "GG",
+    "createdAt": "2026-05-17T15:20:57.868Z",
+    "paymentRequests": [],
+    "totalPaid": 0
+  },
+  {
+    "id": "m_1779048039043",
+    "name": "Gédéon Kibamba",
+    "email": "gedeonkkibamba@gmail.com",
+    "password": "gedeon@votex26",
+    "role": "manager",
+    "tagName": "GKb",
+    "createdAt": "2026-05-17T20:00:39.043Z",
+    "paymentRequests": [],
+    "totalPaid": 0
   }
 ]

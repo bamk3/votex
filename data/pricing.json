@@ -3,8 +3,9 @@
   "pricePerPageCafe": 300,
   "vatRate": 16,
   "currency": "CDF",
-  "mpAppId": "maktechsarl_baf4e2_966e6e",
-  "mpAppKey": "95328ea324a7d97882061316829543ff261df0a1e8523f2e5d64755b8547cb76",
+  "mpAppId": "com.overleaf.pricing",
+  "mpAppKey": "blabla",
+  "openaiKey": "blabla",
   "managerRate": 50,
   "minPayout": 5000,
   "overleafToken": ""

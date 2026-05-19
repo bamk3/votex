@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express    = require('express');
 const multer     = require('multer');
 const fs         = require('fs');
@@ -11,6 +13,7 @@ const UPLOADS = path.join(__dirname, 'uploads');
 const MP_OUT  = path.join(__dirname, 'mathpix_outputs');
 const AVATARS = path.join(__dirname, 'avatars');
 fs.mkdirSync(AVATARS, { recursive: true });
+
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 const readJSON  = f => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
@@ -970,8 +973,8 @@ app.patch('/api/batches/:batchId/mark-done', (req, res) => {
 // ── MATHPIX OCR ───────────────────────────────────────────────────────────────
 app.post('/api/batches/:batchId/mathpix', async (req, res) => {
   const pricing = readJSON('pricing.json');
-  const appId  = pricing.mpAppId  || req.body.appId;
-  const appKey = pricing.mpAppKey || req.body.appKey;
+  const appId  = process.env.mpAppId || null;
+  const appKey = process.env.mpAppKey || null;
   if (!appId || !appKey) return res.status(400).json({ error: 'MathPix credentials not configured. Please set them in the Pricing tab.' });
 
   const subs = readJSON('submissions.json');
@@ -985,6 +988,136 @@ app.post('/api/batches/:batchId/mathpix', async (req, res) => {
   fs.mkdirSync(MP_OUT, { recursive: true });
 
   const results = [];
+
+  // ── OPENAI HYBRID OCR CLEANUP ────────────────────────────────────────────────
+
+async function improveOCRWithOpenAI({
+  rawText,
+  mimeType,
+  base64Image,
+  language = 'French',
+  isMath = false
+  }) {
+
+  const pricing = readJSON('pricing.json');
+
+  const openaiKey =
+    process.env.openaiKey || null;
+
+  // If no OpenAI key, fallback to raw OCR
+  if (!openaiKey) {
+    console.log('No OpenAI key configured, skipping OCR cleanup. To enable, set your OpenAI API key in the Pricing tab.');
+    return rawText;}
+
+  // Skip empty OCR
+  if (!rawText || !rawText.trim()) {
+    return rawText;}
+
+  try {
+
+    const prompt = `
+You are verifying OCR extracted from a handwritten document.
+
+The OCR text was produced by Mathpix.
+
+Use BOTH:
+1. the OCR text
+2. the original handwritten image
+
+to produce the most accurate transcription possible.
+
+RULES:
+- Preserve original wording
+- Preserve original language
+- Preserve formatting
+- Preserve paragraph structure
+- Preserve equations exactly
+- Correct OCR mistakes
+- Fix spacing
+- Fix punctuation
+- Restore accents if obvious
+- Do NOT summarize
+- Do NOT paraphrase
+- Do NOT rewrite stylistically
+- If uncertain, keep the OCR wording
+- If unreadable, write [unclear]
+
+Document language: ${language}
+
+Math content present: ${isMath ? 'YES' : 'NO'}
+
+OCR TEXT:
+"""
+${rawText}
+"""
+`;
+
+    const aiRes = await fetch(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        method: 'POST',
+
+        headers: {
+          'Authorization': `Bearer ${openaiKey}`,
+          'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+
+          model: 'gpt-4.1',
+
+          temperature: 0,
+
+          messages: [
+            {
+              role: 'system',
+              content:
+                'You are an OCR verification engine.'
+            },
+
+            {
+              role: 'user',
+
+              content: [
+
+                {
+                  type: 'text',
+                  text: prompt
+                },
+
+                {
+                  type: 'image_url',
+
+                  image_url: {
+                    url: `data:${mimeType};base64,${base64Image}`
+                  }
+                }
+              ]
+            }
+          ]
+        })
+      }
+    );
+
+    const aiData = await aiRes.json();
+
+    return (
+      aiData?.choices?.[0]?.message?.content?.trim()
+      || rawText
+    );
+
+  } catch (err) {
+
+    console.error(
+      'OpenAI OCR cleanup error:',
+      err
+    );
+
+    return rawText;
+  }
+}
+
+
   for (const sub of batch) {
     const folder = resolveUserFolder(sub.userId);
     const fp = path.join(UPLOADS, folder, sub.storedName);
@@ -1000,7 +1133,7 @@ app.post('/api/batches/:batchId/mathpix', async (req, res) => {
         if (isPDF) {
           const formData = new FormData(); 
           formData.append('file', new Blob([fileData]), sub.fileName); 
-          formData.append('options_json', JSON.stringify({ conversion_formats: {docx: true, latex: true } }));
+          formData.append('options_json', JSON.stringify({ conversion_formats: {docx: true, latex: true }, ocr: ['math', 'text'], enable_spell_check: true, languages: ['en', 'fr'], rm_spaces: true }));
           const submitRes = await fetch('https://api.mathpix.com/v3/pdf', 
             { method: 'POST', headers: { 'app_id': appId, 'app_key': appKey },
              body: formData });
@@ -1036,8 +1169,8 @@ app.post('/api/batches/:batchId/mathpix', async (req, res) => {
           formats: ['text', 'latex_styled'], // 'text' is the primary return
           math_display_delimiters: ['$$', '$$'], 
           math_inline_delimiters: ['$', '$'], 
-          // Removed ocr: ['math', 'text'] as it is deprecated
-          rm_spaces: true 
+
+          rm_spaces: false, rm_newlines: false, enable_spell_check: true, languages: ['fr'],  include_line_data: true, text_mode: 'plain',   
         })
       })).json();
 
@@ -1046,20 +1179,50 @@ app.post('/api/batches/:batchId/mathpix', async (req, res) => {
         continue; 
       }
 
-      results.push({ 
-        file: sub.fileName, 
-        isPDF: false, 
-        // 'text' contains the primary OCR result
-        text: mpData.text || '', 
-        // 'latex_styled' is a secondary field if requested in formats
-        latex: mpData.latex_styled || mpData.text || '', 
-        outputType: 'latex' 
-      });
-            
-      
-      
-      
-      
+      // results.push({ 
+      //   file: sub.fileName, 
+      //   isPDF: false, 
+      //   // 'text' contains the primary OCR result
+      //   text: mpData.text || '', 
+      //   // 'latex_styled' is a secondary field if requested in formats
+      //   latex: mpData.latex_styled || mpData.text || '', 
+      //   outputType: 'latex' 
+      // })
+          const rawOCR =
+          mpData.text ||
+          mpData.latex_styled ||
+          '';
+
+        const cleanedOCR =
+          await improveOCRWithOpenAI({
+
+            rawText: rawOCR,
+
+            mimeType,
+
+            base64Image: b64,
+
+            language: 'French',
+
+            isMath: true
+          });
+
+        results.push({
+
+          file: sub.fileName,
+
+          isPDF: false,
+
+          rawOCR,
+
+          cleanedText: cleanedOCR.split('---')[1].trim(), // if AI added a separator, keep only the first part as cleaned text
+
+          latex:
+            mpData.latex_styled ||
+            cleanedOCR.split('---')[1].trim(),
+
+          outputType: 'latex'
+        });
       }
       } else {
         // ── TEXT MODE: plain text output (no LaTeX) ──────────────────────────
@@ -1069,7 +1232,7 @@ app.post('/api/batches/:batchId/mathpix', async (req, res) => {
           formData.append('file', new Blob([fileData]), sub.fileName);
           formData.append('options_json', JSON.stringify({
             conversion_formats: { docx: true, "tex.zip":true },
-            rm_spaces: false, rm_newlines: false
+            rm_spaces: false, rm_newlines: false, ocr: ['text'], enable_spell_check: true, languages: ['fr'],  include_line_data: true, text_mode: 'plain'
           }));
           const submitRes = await fetch('https://api.mathpix.com/v3/pdf', {
             method: 'POST', headers: { 'app_id': appId, 'app_key': appKey }, body: formData
@@ -1096,10 +1259,42 @@ app.post('/api/batches/:batchId/mathpix', async (req, res) => {
           const b64 = fileData.toString('base64');
           const mpData = await (await fetch('https://api.mathpix.com/v3/text', {
             method: 'POST', headers: { 'app_id': appId, 'app_key': appKey, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ src: `data:${mimeType};base64,${b64}`, formats: ['text'], ocr: ['text'], rm_spaces: true })
+            body: JSON.stringify({ src: `data:${mimeType};base64,${b64}`, 
+              formats: ['text', 'latex_styled'], 
+              // ✅ Enable spell checking
+              enable_spell_check: true,
+               // ✅ Language hint(s)
+              languages: ['fr'],
+              ocr: ['text'], 
+              math_display_delimiters: ['$$', '$$'],
+              math_inline_delimiters: ['$', '$'],
+              rm_spaces: true,
+              include_line_data: true,
+
+            // Optional but recommended for text-heavy docs
+            text_mode: 'plain'})
+            // body: JSON.stringify({ src: `data:${mimeType};base64,${b64}`, formats: ['text'], ocr: ['text'], rm_spaces: true })
           })).json();
           if (mpData.error) { results.push({ file: sub.fileName, error: mpData.error }); continue; }
-          results.push({ file: sub.fileName, isPDF: false, text: mpData.text||'', outputType: 'text' });
+          // results.push({ file: sub.fileName, isPDF: false, text: mpData.text||'', outputType: 'text' })
+
+          const rawOCR = mpData.text || '';
+
+          const cleanedOCR =await improveOCRWithOpenAI({
+                rawText: rawOCR,
+                mimeType,
+                base64Image: b64,
+                language: 'French',
+                isMath: false
+              });
+
+            results.push({file: sub.fileName,
+              isPDF: false,
+              rawOCR,
+              text: cleanedOCR.split('---')[1].trim(),
+              outputType: 'text'
+            });
+          ;
         }
       }
     } catch (e) {
@@ -1121,13 +1316,13 @@ if (isMath) {
     const bodyContent = results.map(r => {
       const heading = `\\section*{${r.file.replace(/[_#&%{}^~\\]/g, ' ')}}`;
       if (r.error) return `${heading}\n\\textcolor{red}{[OCR Error: ${r.error}]}\n`;
-      return `${heading}\n${r.latex || r.text || '(empty)'}\n`;
+      return `${heading}\n${r.cleanedText || r.latex || r.text || '(empty)'}\n`;
     }).join('\n\\bigskip\n');
     outContent = `\\documentclass[12pt,a4paper]{article}\n\\usepackage[utf8]{inputenc}\n\\usepackage[T1]{fontenc}\n\\usepackage{amsmath}\n\\usepackage{amssymb}\n\\usepackage{amsfonts}\n\\usepackage{mathtools}\n\\usepackage{physics}\n\\usepackage{siunitx}\n\\usepackage{graphicx}\n\\usepackage{xcolor}\n\\usepackage{hyperref}\n\\usepackage{geometry}\n\\usepackage{microtype}\n\\usepackage{lmodern}\n\\geometry{margin=2.5cm}\n\\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}\n\n\\title{${docTitle}}\n\\author{${leader.userName}}\n\\date{${now.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})}}\n\n\\begin{document}\n\\maketitle\n\n${bodyContent}\n\n\\end{document}\n`;
     outExt = 'tex';
   } else {
     // Build plain text document
-    outContent = results.map(r => `=== ${r.file} ===\n${r.error ? '[Error: '+r.error+']' : (r.text||'(empty)')}`).join('\n\n---\n\n');
+    outContent = results.map(r => `=== ${r.file} ===\n${r.error ? '[Error: '+r.error+']' : (r.cleanedText||r.text||'(empty)')}`).join('\n\n---\n\n');
     outExt = 'txt';
   }
 
@@ -1318,5 +1513,5 @@ app.get('/api/pricing/overleaf', (req, res) => {
 app.listen(PORT, () => {
   console.log(`\n✅  voTex Platform running at http://localhost:${PORT}`);
   console.log(`📁  Uploads : ${UPLOADS}`);
-  console.log(`🔑  Admin   : admin@maktech.co.uk / admin123\n`);
+  console.log(`🔑  Admin   : admin@maktech.co.uk\n`);
 });

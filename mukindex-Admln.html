@@ -111,8 +111,9 @@ const POLL_MS = 5000;  // 5 seconds everywhere — real-time
 const CHAT_MS = 5000;  // 5 seconds for open conversations
 
 // ── FOOTER ────────────────────────────────────────────────────────────────────
+
 function Footer(){
-  return <div className="page-footer app-footer"><strong> Pay with MPesa.</strong> <p> MakTech&reg; Group SARL (admin@maktech.co.uk)</p> <p>  &#169; Copyright 2026 · United Kingdom · DRC · Cameroon    </p> </div>;
+  return <div className="page-footer app-footer"><strong> Pay with MPesa au TBC.</strong> <p> MakTech&reg; Group SARL (admin@maktech.co.uk)</p> <p>  &#169; Copyright 2026 · United Kingdom · DRC · Cameroon    </p> </div>; 
 }
 const STATUS={
   awaiting_payment:{label:'Awaiting Payment', bg:'#fff3cd', color:'#856404'},
@@ -1368,7 +1369,7 @@ function StudentDash({user,onLogout}){
                         
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                           <div style={{ fontSize: 11, color: '#856404', background: '#fff3cd', padding: '8px', borderRadius: '4px', border: '0.5px solid #ffeeba' }}>
-                            <strong>Instruction:</strong> Pay using M-Pesa at <strong>TBC</strong>.
+                            <strong>Instruction:</strong> Pay using M-Pesa at <strong>0835763450</strong>.
                           </div>
                           <div>  </div>
                         </div>
@@ -1433,7 +1434,7 @@ function MathPixModal({batch,user,onClose,onDone}){
       const res=await fetch(`/api/batches/${batch[0].batchId}/mathpix`,{
         method:'POST',headers:{'Content-Type':'application/json'},
         // Only send local creds if server doesn't have them
-        body:JSON.stringify(useLocal?{appId:appId.trim(),appKey:appKey.trim()}:{})
+        // body:JSON.stringify(useLocal?{appId:appId.trim(),appKey:appKey.trim()}:{})
       });
       const data=await res.json();
       if(data.error){setErr(data.error);setRunning(false);return}
@@ -1568,7 +1569,7 @@ function MathPixModal({batch,user,onClose,onDone}){
             )}
             {err&&<div className="err" style={{marginBottom:10}}>{err}</div>}
             <button className="btn-primary" onClick={run} disabled={running||(!hasServerCreds&&(!appId.trim()||!appKey.trim()))} style={{width:'100%'}}>
-              {running?'Processing…':'Generate latex'}
+              {running?'Processing…':'Generate text'}
             </button>
             {running&&<div style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:8,textAlign:'center'}}>Sending {batch.length} file{batch.length!==1?'s':''} to MathPix… this may take a moment</div>}
           </>
