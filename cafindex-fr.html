@@ -112,7 +112,7 @@ const CHAT_MS = 5000;
 
 // ── FOOTER ────────────────────────────────────────────────────────────────────
 function Footer(){
-  return <div className="page-footer app-footer"><strong> Payer avec MPesa au TBC.</strong> <p> MakTech&reg; Group SARL (admin@maktech.co.uk)</p> <p>  &#169; Copyright 2026 · United Kingdom · DRC · Cameroon    </p> </div>;
+  return <div className="page-footer app-footer"><strong> Payer avec MPesa au 0835763450.</strong> <p> MakTech&reg; Group SARL (admin@maktech.co.uk)</p> <p>  &#169; Copyright 2026 · United Kingdom · DRC · Cameroon    </p> </div>;
 }
 const STATUS={
   awaiting_payment:{label:'En attente de paiement', bg:'#fff3cd', color:'#856404'},
@@ -1075,7 +1075,8 @@ function StudentDash({user,onLogout}){
                         
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                           <div style={{ fontSize: 11, color: '#856404', background: '#fff3cd', padding: '8px', borderRadius: '4px', border: '0.5px solid #ffeeba' }}>
-                            <strong>Instruction:</strong> Payer avec M-Pesa au <strong>TBC</strong>.
+                            <strong>Instruction:</strong> Payez avec MPesa au <strong><button onClick={()=>{navigator.clipboard.writeText("0835763450").then(()=>{alert("Copied: 0835763450")}).catch(()=>{});}} style={{fontSize:11,padding:'3px 9px',background:'transparent',color:'#0f6e56',border:'0.5px solid #5dcaa577',borderRadius:'var(--border-radius-md)',cursor:'pointer',fontFamily:'inherit'}}>0835763450</button> (Christine Tshamua)</strong>.
+                          
                           </div>
                           <div>  </div>
                         </div>
